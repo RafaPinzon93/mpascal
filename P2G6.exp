@@ -1,0 +1,2 @@
+LexToken(STRING,'" hola richi \\" lol  "',1,0)
+Illegal character '!'

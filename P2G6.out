@@ -1,0 +1,4 @@
+LexToken(STRING,'" hola richi \\"',1,0)
+LexToken(ID,'lol',1,16)
+Illegal character '"'
+Illegal character '!'

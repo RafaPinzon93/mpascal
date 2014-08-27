@@ -1,0 +1,2 @@
+LexToken(STRING,'"abc \\" "',1,0)
+LexToken(STRING,'" "',1,9)

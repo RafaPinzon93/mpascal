@@ -1,0 +1,4 @@
+LexToken(MINUS,'-',1,0)
+LexToken(FLOAT,'2E0',1,1)
+Illegal character '.'
+LexToken(INTEGER,'1',1,5)

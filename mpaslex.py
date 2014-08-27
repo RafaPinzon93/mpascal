@@ -26,7 +26,7 @@ reserved = {
 
 tokens = ['EQUALS','PLUS','MINUS','TIMES','DIVIDE','LPAREN',
     'RPAREN','LT','LE','GT','GE','NE', 'FLOAT',
-    'COMMA','SEMI','SEMICOLON', 'ASSIGN','INTEGER', 'LCORCH', 'RCORCH',
+    'COMMA','SEMI', 'ASSIGN','INTEGER', 'LCORCH', 'RCORCH',
     'STRING','ID','NEWLINE', 'DECLARATION', 'INVCOMNENT'] + list(reserved.values())
 
 def t_ID(t):
@@ -53,14 +53,13 @@ t_GE          = r'>='
 t_NE          = r'!='
 t_COMMA       = r'\,'
 t_SEMI        = r';'
-t_FLOAT       = r'((0|[1-9][0-9]*)\.[0-9]+)([eE][-+]?[0-9]+)?'
+t_FLOAT       = r'((0|[1-9][0-9]*)\.[0-9]+)([eE][-+]?[0-9]+)?|([1-9][0-9]*)([eE][-+]?[0-9]+)'
 t_INTEGER     = r'0|[1-9][0-9]*'
-# t_STRING      = r'\"([a-zA-ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ0-9 ]|["]|[\n]|\\)*?\"'
 
 t_ignore      = ' \t'
 
 def t_STRING(t):
-    r'\"([^\\\n]|[^\\\"])*?\"'
+    r'\"([^\\\n]|[^"]|[^\\\\"])*?\"'
     return t
 
 
@@ -71,9 +70,14 @@ def t_COMMENT(t):
     # No return value. Token discarded
 
 def t_INVCOMMENT(t):
-    r'/\*(.|\n)*(/\*)+'
+    r'(/\*(.|\n)*(/\*)*)|\*/'
     t.lexer.lineno += t.value.count('\n')
-    print "Comentario invalido en la linea '%s'... no se permiten comentarios anidados" % t.lexer.lineno
+    if t.value.count('/*') > 1 :
+        print "Comentario invalido en la linea '%s'... no se permiten comentarios anidados" % t.lexer.lineno
+    elif t.value[-2:] == '*/':
+        print "Comentario no abierto en la linea '%s'" % t.lexer.lineno
+    else:
+        print "Comentario no finalizado"
     t.lexer.skip(1)
 
 def t_newline(t):
@@ -86,13 +90,6 @@ def t_error(t):
 
 lexer = lex.lex()
 
-# Test it out
-data = '''
-"a\n"
-/* esto es un comentario /**/ */
-"asdfas"
--2.34
-'''
 
 pruebas = open("Pruebas.pas", "r")
 str = pruebas.read()

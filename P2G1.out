@@ -1,0 +1,3 @@
+LexToken(STRING,'"abc \\"',1,0)
+LexToken(STRING,'""',1,8)
+Illegal character '"'
