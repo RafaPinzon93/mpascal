@@ -69,15 +69,27 @@ def t_INVINT(t):
     print "Entero invalido = %s" %t.value
     pass
 
-def t_INVSTRING(t):
-    r'\"(([^"]+\\[^n\\\"]))*?\"'
-    print "Invalid String"
-    t.lexer.skip(1)
-
 def t_STRING(t):
     r'\"((\\["\\n])|((\\\")*[^"\\](\\\")*))*?\"'
     #r'\"([^\\\n]|[^"]|[^\\\\"])*?\"'
     return t
+
+def t_INVSTRING(t):
+    #r'\"((\\[^"\\n])|((\\\")*[^"\\](\\\")*))*?\"'
+    r'\"((\\\")*[^"]|[^"](\\\")*)*\"*'
+    invString = t.value[1:]
+    for i in range(0, len(invString)-1):
+        if invString[i] == '\\':
+            if invString[i+1] != '\"' and invString[i+1] != '\\' and invString[i+1] != "n":
+                print "String invalida.. caracter de escape no valido ",(invString[i]+ invString[i+1])," en la linea ",t.lexer.lineno
+                t.lexer.skip(1)
+                pass
+            else:
+                i += 1
+    final = t.value[-2:]
+    if not '\"' in final:
+        print "String no finalizada"
+    t.lexer.skip(1)
 
 def t_COMMENT(t):
     r'/\*(.|\n)*?\*/'
