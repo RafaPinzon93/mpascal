@@ -1,1 +1,1 @@
-" hola richi \"  lol  "!
+" "

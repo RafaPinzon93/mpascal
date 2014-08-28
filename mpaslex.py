@@ -58,16 +58,23 @@ t_INTEGER     = r'0|[1-9][0-9]*'
 
 t_ignore      = ' \t'
 
-def t_INVSTRING(t):
-    r'\"(([^"]+\\[^n\\\"]))*?\"'
-    print "Invalid String"
-    t.lexer.skip(1)
-
 def t_STRING(t):
     r'\"((\\["\\n])|((\\\")*[^"\\](\\\")*))*?\"'
     #r'\"([^\\\n]|[^"]|[^\\\\"])*?\"'
     return t
 
+def t_INVSTRING(t):
+    #r'\"((\\[^"\\n])|((\\\")*[^"\\](\\\")*))*?\"'
+    r'\"((\\\")*[^"]|[^"](\\\")*)*\"*'
+    invString = t.value[1:]
+    for i in range(0, len(invString)-1, 2):
+        if invString[i] == '\\':
+            if invString[i+1] != '\"' and invString[i+1] != '\\' and invString[i+1] != "n":
+                print "String invalida.. caracter de escape no valido '%s'" % (invString[i]+ invString[i+1])
+                t.lexer.skip(1)
+                pass
+    print "String no finalizada"
+    t.lexer.skip(1)
 
 def t_COMMENT(t):
     r'/\*(.|\n)*?\*/'
