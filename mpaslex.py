@@ -58,6 +58,17 @@ t_INTEGER     = r'0|[1-9][0-9]*'
 
 t_ignore      = ' \t'
 
+def t_INVFLOAT(t):
+    r'((0[0-9]+)\.[0-9]*|\.[0-9]*|0[0-9]*[eE][+-]?[0-9]*)'
+    print "Flotante invalido = "+t.value+" en la linea %s" %t.lexer.lineno
+    #t.lexer.skip(1)
+    pass
+
+def t_INVINT(t):
+    r'((0)[0-9]+)'
+    print "Entero invalido = %s" %t.value
+    pass
+
 def t_INVSTRING(t):
     r'\"(([^"]+\\[^n\\\"]))*?\"'
     print "Invalid String"
@@ -67,7 +78,6 @@ def t_STRING(t):
     r'\"((\\["\\n])|((\\\")*[^"\\](\\\")*))*?\"'
     #r'\"([^\\\n]|[^"]|[^\\\\"])*?\"'
     return t
-
 
 def t_COMMENT(t):
     r'/\*(.|\n)*?\*/'
@@ -81,10 +91,10 @@ def t_INVCOMMENT(t):
     if t.value.count('/*') > 1 :
         print "Comentario invalido en la linea '%s'... no se permiten comentarios anidados" % t.lexer.lineno
     elif t.value[-2:] == '*/':
-        print "Comentario no abierto en la linea '%s'" % t.lexer.lineno
+        print "Comentario no abierto en la linea '%s'" %t.lexer.lineno
     else:
         print "Comentario no finalizado"
-    t.lexer.skip(1)
+    pass
 
 def t_newline(t):
     r'\n+'
