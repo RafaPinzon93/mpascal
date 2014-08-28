@@ -27,7 +27,7 @@ reserved = {
 tokens = ['EQUALS','PLUS','MINUS','TIMES','DIVIDE','LPAREN',
     'RPAREN','LT','LE','GT','GE','NE', 'FLOAT',
     'COMMA','SEMI', 'ASSIGN','INTEGER', 'LCORCH', 'RCORCH',
-    'STRING','ID','NEWLINE', 'DECLARATION', 'INVCOMNENT'] + list(reserved.values())
+    'STRING','INVSTRING','ID','NEWLINE', 'DECLARATION', 'INVCOMNENT'] + list(reserved.values())
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
@@ -58,8 +58,13 @@ t_INTEGER     = r'0|[1-9][0-9]*'
 
 t_ignore      = ' \t'
 
+def t_INVSTRING(t):
+    r'\"(([^"]+\\[^n\\\"]))*?\"'
+    print "Invalid String"
+    t.lexer.skip(1)
+
 def t_STRING(t):
-    r'\"([^"](\\\")*)*?\"'
+    r'\"((\\["\\n])|((\\\")*[^"\\](\\\")*))*?\"'
     #r'\"([^\\\n]|[^"]|[^\\\\"])*?\"'
     return t
 
