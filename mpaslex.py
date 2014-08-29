@@ -53,43 +53,47 @@ t_GE          = r'>='
 t_NE          = r'!='
 t_COMMA       = r'\,'
 t_SEMI        = r';'
-t_FLOAT       = r'((0|[1-9][0-9]*)\.[0-9]+)([eE][-+]?[0-9]+)?|([1-9][0-9]*)([eE][-+]?[0-9]+)'
+t_FLOAT       = r'((0|[1-9][0-9]*)\.[0-9]+)([eE][-+]?[0-9]+)?|([1-9][0-9]*|0)([eE][-+]?[0-9]+)'
 t_INTEGER     = r'0|[1-9][0-9]*'
 
 t_ignore      = ' \t'
 
 def t_INVFLOAT(t):
-    r'((0[0-9]+)\.[0-9]*|\.[0-9]*|0[0-9]*[eE][+-]?[0-9]*)'
+    r'((0[0-9]+)\.[0-9]*|\.[0-9]*|0[0-9]+[eE][+-]?[0-9]*)'
     print "Flotante invalido = "+t.value+" en la linea %s" %t.lexer.lineno
     #t.lexer.skip(1)
     pass
 
 def t_INVINT(t):
     r'((0)[0-9]+)'
-    print "Entero invalido = %s" %t.value
+    print "Entero invalido = "+t.value+" en la linea %s" %t.lexer.lineno
     pass
 
 def t_STRING(t):
-    r'\"((\\["\\n])|((\\\")*[^"\\](\\\")*))*?\"'
+    r'\"((\\["\\n])|((\\\")*[^"\\\n](\\\")*))*?\"'
     #r'\"([^\\\n]|[^"]|[^\\\\"])*?\"'
     return t
 
 def t_INVSTRING(t):
     #r'\"((\\[^"\\n])|((\\\")*[^"\\](\\\")*))*?\"'
-    r'\"((\\\")*[^"]|[^"](\\\")*)*\"*'
+    r'\"((\\\")*[^"]|[^"](\\\")*)*(\")?'
     invString = t.value[1:]
     for i in range(0, len(invString)-1):
+        if invString[i] == '\n':
+            print "No se permiten strings con multiples lineas %s" % t.lexer.lineno
+            t.lexer.lineno += 1
+            pass
         if invString[i] == '\\':
             if invString[i+1] != '\"' and invString[i+1] != '\\' and invString[i+1] != "n":
                 print "String invalida.. caracter de escape no valido ",(invString[i]+ invString[i+1])," en la linea ",t.lexer.lineno
-                t.lexer.skip(1)
+                # t.lexer.skip(1)
                 pass
             else:
                 i += 1
     final = t.value[-2:]
-    if not '\"' in final:
-        print "String no finalizada"
-    t.lexer.skip(1)
+    if (not '\"' in final) or (len(t.value) <= 2):
+        print "String no finalizada en la linea %s" % t.lexer.lineno
+    pass
 
 def t_COMMENT(t):
     r'/\*(.|\n)*?\*/'
