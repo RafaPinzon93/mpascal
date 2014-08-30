@@ -82,12 +82,13 @@ def t_INVSTRING(t):
         if invString[i] == '\n':
             print "No se permiten strings con multiples lineas %s" % t.lexer.lineno
             t.lexer.lineno += 1
-            pass
+            # break
+
         if invString[i] == '\\':
             if invString[i+1] != '\"' and invString[i+1] != '\\' and invString[i+1] != "n":
                 print "String invalida.. caracter de escape no valido ",(invString[i]+ invString[i+1])," en la linea ",t.lexer.lineno
-                # t.lexer.skip(1)
-                pass
+                # break
+
             else:
                 i += 1
     final = t.value[-2:]
