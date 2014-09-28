@@ -1,0 +1,94 @@
+BNF
+
+programa: programa funcion
+        | funcion
+        ;
+
+funcion: FUN ID '(' argumentos ')' locales BEGIN declaraciones END
+       ;
+
+argumentos: mparametros
+          | parametro
+          ;
+
+parametro: ID ':' tipo
+         | empty
+         ;
+
+mparametros: ID ':' tipo ';' mparametros
+           | ID ':' tipo
+           ;
+
+locales: locales ID ':' tipo ';'
+       | ID ':' tipo ';'
+       | funcion
+       | empty
+       ;
+
+asignacion: ID ':=' expresion
+          | ID '[' index ']' ':=' expresion
+          | empty
+          ;
+
+declaracion: WHILE relacion DO declaracion
+           | IF relacion THEN declaracion
+           | IF relacion THEN declaracion ELSE declaracion
+           | location ':=' expresion
+           | PRINT '(' STRING ')'
+           | WRITE '(' expresion ')'
+           | READ '(' ubicacion ')'
+           | RETURN expresion
+           | ID '(' argumentos ')'
+         # | SKIP
+         # | BREAK
+           | BEGIN declaraciones END
+           | expresion
+           | asignacion
+
+declaraciones: declaraciones ';' declaracion
+             | BREAK declaraciones
+             | SKIP declaraciones
+             | declaracion
+             ;
+
+tipo: NINT
+    | NFLOAT
+    | NINT '[' expresion ']'
+    | NFLOAT '[' expresion ']'
+
+
+expresion: expresion '+' expresion
+         | expresion '-' expresion
+         | expresion '*' expresion
+         | expresion '/' expresion
+         | '-' expresion
+         | '+' expresion
+         | '(' expresion ')'
+         | ID '(' argumentos ')'
+         | ID
+         | ID '[' expresion ']'
+         | numero
+         | NINT '(' expresion ')'
+         | NFLOAT '(' expresion ')'
+         ;
+
+numero: INTEGER
+      | FLOAT
+      ;
+
+argumentos: argumentos ',' expresion
+          | expresion
+          ;
+
+relacion: expresion '<' expresion
+        | expresion '<=' expresion
+        | expresion '>' expresion
+        | expresion '>=' expresion
+        | expresion '==' expresion
+        | expresion '!=' expresion
+        | relacion AND relacion
+        | relacion OR relacion
+        | NOT relacion
+        | '(' relacion ')'
+        ;
+
