@@ -30,15 +30,16 @@ asignacion: ID ':=' expresion
           | empty
           ;
 
+index : INT
+      | ID
+
 declaracion: WHILE relacion DO declaracion
            | IF relacion THEN declaracion
            | IF relacion THEN declaracion ELSE declaracion
-           | location ':=' expresion
            | PRINT '(' STRING ')'
            | WRITE '(' expresion ')'
            | READ '(' ubicacion ')'
            | RETURN expresion
-           | ID '(' argumentos ')'
          # | SKIP
          # | BREAK
            | BEGIN declaraciones END
@@ -55,6 +56,7 @@ tipo: NINT
     | NFLOAT
     | NINT '[' expresion ']'
     | NFLOAT '[' expresion ']'
+    ;
 
 
 expresion: expresion '+' expresion
