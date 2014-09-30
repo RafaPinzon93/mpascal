@@ -127,6 +127,273 @@ lex.lex()
 
 # Parsing Rules
 
+
+precedence = (
+    ('right', 'ELSE'),
+    ('left', 'OR'),
+    ('left', 'AND'),
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'TIMES', 'DIVIDE'),
+    ('left', 'ID'),
+    ('left', 'SKIP'),
+    ('right', 'SEMI'),
+)
+
+def p_programa_funciones(p):
+    "programa : programa funcion"
+    p[0] = (p[1], p[2])
+
+def p_programa_funcion(p):
+    "programa : funcion"
+    p[0] = p[1]
+
+def p_funcion(p):
+    "funcion : FUN ID LPAREN argumentos RPAREN locales BEGIN declaraciones END"
+    p[0] = ('FUN', p[2], p[4], p[5], p[7], p[9])
+
+def p_argumentos_mpar(p):
+    '''argumentos : mparametros'''
+    p[0] = p[1]
+
+def p_parametro(p):
+    '''parametro : ID DECLARATION tipo'''
+    if len(p) == 4: p[0] = (p[1], p[3])
+    else: p[0] = p[1]
+
+def p_mparametros(p):
+    '''mparametros : mparametros SEMI parametro
+                  | parametro
+                  | empty'''
+    if len(p) > 4: p[0] = (p[1], p[3], p[5])
+    else: p[0] = p[1]
+
+def p_locales(p):
+    '''locales : locales ID DECLARATION tipo SEMI
+              | ID DECLARATION tipo SEMI
+              | funcion '''
+    if len(p) > 5: p[0] = (p[1], p[2], p[4])
+    elif len(p) == 5: p[0] = (p[1], p[3])
+    else: p[0] = p[1]
+
+def p_locales_empty(p):
+    '''locales : empty '''
+    p[0] = p[1]
+
+def p_asignacion(p):
+    '''asignacion : ID ASSIGN expresion
+                 | ID LCORCH index RCORCH ASSIGN expresion
+                 | empty '''
+    if len(p) == 5: p[0] = (p[1], p[4])
+    elif len(p) > 6: p[0] = (p[1], p[3], p[7])
+    else: p[0] = p[1]
+
+def p_declaracion_while(p):
+    '''declaracion : WHILE relacion DO declaracion'''
+    p[0] = ('WHILE', p[1], p[4])
+
+def p_declaracion_if(p):
+    '''declaracion : IF relacion THEN declaracion
+                  | IF relacion THEN declaracion ELSE declaracion
+    '''
+    if len(p) == 5:
+        p[0] = ('IF', p[2], p[4])
+    else:
+        p[0] = ('IF', p[2], p[4], p[6])
+
+
+def p_declaracion_print(p):
+    '''
+        declaracion : PRINT LPAREN STRING RPAREN
+    '''
+    p[0] = ('PRINT', p[3])
+
+def p_declaracion_write(p):
+    '''
+        declaracion : WRITE LPAREN expresion RPAREN
+    '''
+    p[0] = ('WRITE', p[3])
+
+def p_declaracion_read(p):
+    '''
+        declaracion : READ LPAREN expresion RPAREN
+    '''
+    p[0] = ('READ', p[3])
+
+def p_declaracion_return(p):
+    '''
+        declaracion : RETURN expresion
+    '''
+    p[0] = ('RETURN', p[2])
+
+
+def p_declaracion_es(p):
+    '''
+        declaracion : BEGIN declaraciones END
+    '''
+    p[0] = p[2]
+
+def p_declaracion_exp(p):
+    '''
+        declaracion : expresion
+    '''
+    p[0] = p[1]
+
+def p_declaracion_ass(p):
+    '''
+        declaracion : asignacion
+    '''
+    p[0] = p[1]
+
+def p_declaraciones(p):
+    '''declaraciones : declaraciones SEMI declaracion'''
+    p[0] = (p[1], p[3])
+
+def p_declaraciones_b(p):
+    '''declaraciones : declaraciones BREAK'''
+    p[0] = ('BREAK', p[2])
+
+def p_declaraciones_s(p):
+    '''declaraciones : declaraciones SKIP'''
+    p[0] = ('SKIP', p[2])
+
+def p_declaraciones_dec(p):
+    '''declaraciones : declaracion'''
+    p[0] = p[1]
+
+def p_index(p):
+    "index : expresion"
+    p[0] = p[1]
+
+
+def p_tipo_INT(p):
+    ''' tipo : NINT
+            | NINT LCORCH expresion RCORCH
+    '''
+    if len(p) == 5:
+        p[0] = ('NINT', p[3])
+    else:
+        p[0] = p[1]
+
+def p_tipo_FLOAT(p):
+    ''' tipo : NFLOAT
+            | NFLOAT LCORCH expresion RCORCH
+    '''
+    if len(p) == 5:
+        p[0] = ('NFLOAT', p[3])
+    else:
+        p[0] = p[1]
+
+def p_expresion_operadores_bin(p):
+    '''  expresion : expresion PLUS expresion
+                  | expresion MINUS expresion
+                  | expresion TIMES expresion
+                  | expresion DIVIDE expresion
+                  '''
+    if p[2] == 'PLUS':
+        p[0] = p[1] + p[3]
+    elif p[2] == 'MINUS':
+        p[0] = p[1] - p[3]
+    elif p[2] == 'TIMES':
+        p[0] = p[1] * p[3]
+    elif p[2] == 'DIVIDE':
+        p[0] = p[1] / p[3]
+
+def p_expresion_signo(p):
+    ''' expresion : MINUS expresion
+                 | PLUS expresion '''
+    if p[1] == 'MINUS':
+        p[0] = -p[2]
+    elif p[1] == 'PLUS':
+        p[0] = p[2]
+
+def p_expresion_parent(p):
+    '''expresion :  LPAREN expresion RPAREN '''
+    p[0] = p[2]
+
+def p_expresion_ID(p):
+    '''expresion : ID LPAREN argumentos RPAREN
+                | ID
+                | ID LCORCH expresion RCORCH
+    '''
+    if len(p) > 2:
+        if p[2] == 'LPAREN': p[0] = (p[1], p[3])
+        if p[2] == 'LCORCH': p[0] = (p[1], p[3])
+    else:
+        p[0]= p[1]
+
+def p_expresion_numero(p):
+    '''expresion : numero'''
+    p[0] = p[1]
+
+def p_expresion_INT(p):
+    "expresion : NINT LPAREN expresion RPAREN "
+    p[0] = ('NINT', p[3])
+
+def p_expresion_FLOAT(p):
+    '''expresion : NFLOAT LPAREN expresion RPAREN '''
+    p[0] = ('NFLOAT', p[3])
+
+def p_numero_INTEGER(p):
+    '''numero : INTEGER'''
+    p[0] = p[1]
+
+def p_numero_FLOAT(p):
+     '''numero : FLOAT '''
+     p[0] = p[1]
+
+def p_argumentos(p):
+    '''argumentos : argumentos COMMA expresion
+                 | expresion
+    '''
+    if len(p) == 4: p[0] = (p[1], p[3])
+    else: p[0] = p[1]
+
+def p_relacion(p) :
+    '''
+    relacion : expresion LT expresion
+            | expresion GT expresion
+            | expresion LE expresion
+            | expresion GE expresion
+            | expresion EQUALS expresion
+            | expresion NE expresion
+            | relacion AND relacion
+            | relacion OR relacion
+            | NOT relacion
+            | LPAREN relacion RPAREN
+    '''
+    if len(p) == 4:
+        if p[2] == 'LT':
+            p[0] = p[1] < p[3]
+        if p[2] == 'LE':
+            p[0] = p[1] <= p[4]
+        if p[2] == 'GT':
+            p[0] = p[1] > p[3]
+        if p[2] == 'GE':
+            p[0] = p[1] >= p[3]
+        if p[2] == 'EQUALS':
+            p[0] = p[1] == p[3]
+        if p[2] == 'NE':
+            p[0] = p[1] != p[3]
+        if p[2] == 'AND':
+            p[0] = p[1] and p[3]
+        if p[2] == 'OR':
+            p[0] = p[1] or p[3]
+        if p[1] == 'LPAREN':
+            p[0] = p[2]
+
+    if len(p) == 3:
+            p[0] = not p[0]
+
+
+def p_empty(p):
+    'empty :'
+    pass
+
+def p_error(p):
+    print "Syntax error in input!"
+
+#arbol inicio
+
 '''
 Objetos Arbol de Sintaxis Abstracto (AST - Abstract Syntax Tree).
 
@@ -393,269 +660,7 @@ def flatten(top):
     d.visit(top)
     return d.nodes
 
-precedence = (
-    ('right', 'ELSE'),
-    ('left', 'OR'),
-    ('left', 'AND'),
-    ('left', 'PLUS', 'MINUS'),
-    ('left', 'TIMES', 'DIVIDE'),
-    ('left', 'ID'),
-    ('left', 'SKIP'),
-    ('right', 'SEMI'),
-)
-
-def p_programa_funciones(p):
-    "programa : programa funcion"
-    p[0] = (p[1], p[2])
-
-def p_programa_funcion(p):
-    "programa : funcion"
-    p[0] = p[1]
-
-def p_funcion(p):
-    "funcion : FUN ID LPAREN argumentos RPAREN locales BEGIN declaraciones END"
-    p[0] = ('FUN', p[2], p[4], p[5], p[7], p[9])
-
-def p_argumentos_mpar(p):
-    '''argumentos : mparametros'''
-    p[0] = p[1]
-
-def p_parametro(p):
-    '''parametro : ID DECLARATION tipo'''
-    if len(p) == 4: p[0] = (p[1], p[3])
-    else: p[0] = p[1]
-
-def p_mparametros(p):
-    '''mparametros : mparametros SEMI parametro
-                  | parametro
-                  | empty'''
-    if len(p) > 4: p[0] = (p[1], p[3], p[5])
-    else: p[0] = p[1]
-
-def p_locales(p):
-    '''locales : locales ID DECLARATION tipo SEMI
-              | ID DECLARATION tipo SEMI
-              | funcion '''
-    if len(p) > 5: p[0] = (p[1], p[2], p[4])
-    elif len(p) == 5: p[0] = (p[1], p[3])
-    else: p[0] = p[1]
-
-def p_locales_empty(p):
-    '''locales : empty '''
-    p[0] = p[1]
-
-def p_asignacion(p):
-    '''asignacion : ID ASSIGN expresion
-                 | ID LCORCH index RCORCH ASSIGN expresion
-                 | empty '''
-    if len(p) == 5: p[0] = (p[1], p[4])
-    elif len(p) > 6: p[0] = (p[1], p[3], p[7])
-    else: p[0] = p[1]
-
-def p_declaracion_while(p):
-    '''declaracion : WHILE relacion DO declaracion'''
-    p[0] = ('WHILE', p[1], p[4])
-
-def p_declaracion_if(p):
-    '''declaracion : IF relacion THEN declaracion
-                  | IF relacion THEN declaracion ELSE declaracion
-    '''
-    if len(p) == 5:
-        p[0] = ('IF', p[2], p[4])
-    else:
-        p[0] = ('IF', p[2], p[4], p[6])
-
-
-def p_declaracion_print(p):
-    '''
-        declaracion : PRINT LPAREN STRING RPAREN
-    '''
-    p[0] = ('PRINT', p[3])
-
-def p_declaracion_write(p):
-    '''
-        declaracion : WRITE LPAREN expresion RPAREN
-    '''
-    p[0] = ('WRITE', p[3])
-
-def p_declaracion_read(p):
-    '''
-        declaracion : READ LPAREN expresion RPAREN
-    '''
-    p[0] = ('READ', p[3])
-
-def p_declaracion_return(p):
-    '''
-        declaracion : RETURN expresion
-    '''
-    p[0] = ('RETURN', p[2])
-
-
-def p_declaracion_es(p):
-    '''
-        declaracion : BEGIN declaraciones END
-    '''
-    p[0] = p[2]
-
-def p_declaracion_exp(p):
-    '''
-        declaracion : expresion
-    '''
-    p[0] = p[1]
-
-def p_declaracion_ass(p):
-    '''
-        declaracion : asignacion
-    '''
-    p[0] = p[1]
-
-def p_declaraciones(p):
-    '''declaraciones : declaraciones SEMI declaracion'''
-    p[0] = (p[1], p[3])
-
-def p_declaraciones_b(p):
-    '''declaraciones : declaraciones BREAK'''
-    p[0] = ('BREAK', p[2])
-
-def p_declaraciones_s(p):
-    '''declaraciones : declaraciones SKIP'''
-    p[0] = ('SKIP', p[2])
-
-def p_declaraciones_dec(p):
-    '''declaraciones : declaracion'''
-    p[0] = p[1]
-
-def p_index(p):
-    "index : expresion"
-    p[0] = p[1]
-
-
-def p_tipo_INT(p):
-    ''' tipo : NINT
-            | NINT LCORCH expresion RCORCH
-    '''
-    if len(p) == 5:
-        p[0] = ('NINT', p[3])
-    else:
-        p[0] = p[1]
-
-def p_tipo_FLOAT(p):
-    ''' tipo : NFLOAT
-            | NFLOAT LCORCH expresion RCORCH
-    '''
-    if len(p) == 5:
-        p[0] = ('NFLOAT', p[3])
-    else:
-        p[0] = p[1]
-
-def p_expresion_operadores_bin(p):
-    '''  expresion : expresion PLUS expresion
-                  | expresion MINUS expresion
-                  | expresion TIMES expresion
-                  | expresion DIVIDE expresion
-                  '''
-    if p[2] == 'PLUS':
-        p[0] = p[1] + p[3]
-    elif p[2] == 'MINUS':
-        p[0] = p[1] - p[3]
-    elif p[2] == 'TIMES':
-        p[0] = p[1] * p[3]
-    elif p[2] == 'DIVIDE':
-        p[0] = p[1] / p[3]
-
-def p_expresion_signo(p):
-    ''' expresion : MINUS expresion
-                 | PLUS expresion '''
-    if p[1] == 'MINUS':
-        p[0] = -p[2]
-    elif p[1] == 'PLUS':
-        p[0] = p[2]
-
-def p_expresion_parent(p):
-    '''expresion :  LPAREN expresion RPAREN '''
-    p[0] = p[2]
-
-def p_expresion_ID(p):
-    '''expresion : ID LPAREN argumentos RPAREN
-                | ID
-                | ID LCORCH expresion RCORCH
-    '''
-    if len(p) > 2:
-        if p[2] == 'LPAREN': p[0] = (p[1], p[3])
-        if p[2] == 'LCORCH': p[0] = (p[1], p[3])
-    else:
-        p[0]= p[1]
-
-def p_expresion_numero(p):
-    '''expresion : numero'''
-    p[0] = p[1]
-
-def p_expresion_INT(p):
-    "expresion : NINT LPAREN expresion RPAREN "
-    p[0] = ('NINT', p[3])
-
-def p_expresion_FLOAT(p):
-    '''expresion : NFLOAT LPAREN expresion RPAREN '''
-    p[0] = ('NFLOAT', p[3])
-
-def p_numero_INTEGER(p):
-    '''numero : INTEGER'''
-    p[0] = p[1]
-
-def p_numero_FLOAT(p):
-     '''numero : FLOAT '''
-     p[0] = p[1]
-
-def p_argumentos(p):
-    '''argumentos : argumentos COMMA expresion
-                 | expresion
-    '''
-    if len(p) == 4: p[0] = (p[1], p[3])
-    else: p[0] = p[1]
-
-def p_relacion(p) :
-    '''
-    relacion : expresion LT expresion
-            | expresion GT expresion
-            | expresion LE expresion
-            | expresion GE expresion
-            | expresion EQUALS expresion
-            | expresion NE expresion
-            | relacion AND relacion
-            | relacion OR relacion
-            | NOT relacion
-            | LPAREN relacion RPAREN
-    '''
-    if len(p) == 4:
-        if p[2] == 'LT':
-            p[0] = p[1] < p[3]
-        if p[2] == 'LE':
-            p[0] = p[1] <= p[4]
-        if p[2] == 'GT':
-            p[0] = p[1] > p[3]
-        if p[2] == 'GE':
-            p[0] = p[1] >= p[3]
-        if p[2] == 'EQUALS':
-            p[0] = p[1] == p[3]
-        if p[2] == 'NE':
-            p[0] = p[1] != p[3]
-        if p[2] == 'AND':
-            p[0] = p[1] and p[3]
-        if p[2] == 'OR':
-            p[0] = p[1] or p[3]
-        if p[1] == 'LPAREN':
-            p[0] = p[2]
-
-    if len(p) == 3:
-            p[0] = not p[0]
-
-
-def p_empty(p):
-    'empty :'
-    pass
-
-def p_error(p):
-    print "Syntax error in input!"
+#arbol final
 
 # Build the parser
 parser = yacc.yacc()
