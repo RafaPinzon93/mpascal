@@ -27,7 +27,6 @@ locales: locales ID ':' tipo ';'
 
 asignacion: ID ':=' expresion
           | ID '[' index ']' ':=' expresion
-          | empty
           ;
 
 index : INT
@@ -40,8 +39,8 @@ declaracion: WHILE relacion DO declaracion
            | WRITE '(' expresion ')'
            | READ '(' ubicacion ')'
            | RETURN expresion
-         # | SKIP
-         # | BREAK
+         # | declaracion SKIP
+         # | declaracion BREAK
            | BEGIN declaraciones END
            | expresion
            | asignacion

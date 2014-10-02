@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import ply.lex as lex
-import sys, ply.yacc as yacc
+import ply.yacc as yacc
 
 reserved = {
     'fun' : 'FUN',
@@ -123,15 +123,15 @@ def t_error(t):
 
 lex.lex()
 
-# Tokenize
-
+#---------------------------------------------------------------------
 # Parsing Rules
+#---------------------------------------------------------------------
 
 
 precedence = (
-    ('right', 'ELSE'),
+    ('left', 'ELSE'),
     ('left', 'OR'),
-    ('left', 'AND'),
+    ('right', 'AND'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
     ('left', 'ID'),
@@ -141,19 +141,20 @@ precedence = (
 
 def p_programa_funciones(p):
     "programa : programa funcion"
-    p[0] = (p[1], p[2])
+    p[0].append(p[2])
 
 def p_programa_funcion(p):
     "programa : funcion"
-    p[0] = p[1]
+    p[0] = Program([p[1]], funciones = [p[1]])
+    # print p[0]
 
 def p_funcion(p):
     "funcion : FUN ID LPAREN argumentos RPAREN locales BEGIN declaraciones END"
-    p[0] = ('FUN', p[2], p[4], p[5], p[7], p[9])
+    p[0] = Funcion(p[2], p[4], p[6], p[8])
 
 def p_argumentos_mpar(p):
     '''argumentos : mparametros'''
-    p[0] = p[1]
+    p[0] = Parameters([p[1]])
 
 def p_parametro(p):
     '''parametro : ID DECLARATION tipo'''
@@ -164,15 +165,21 @@ def p_mparametros(p):
     '''mparametros : mparametros SEMI parametro
                   | parametro
                   | empty'''
-    if len(p) > 4: p[0] = (p[1], p[3], p[5])
-    else: p[0] = p[1]
+    if len(p) > 4:
+        p[1].append(p[3])
+        p[0] = p[1]
+    else:
+        p[0] = Parametro(p[1])
 
 def p_locales(p):
     '''locales : locales ID DECLARATION tipo SEMI
               | ID DECLARATION tipo SEMI
               | funcion '''
-    if len(p) > 5: p[0] = (p[1], p[2], p[4])
-    elif len(p) == 5: p[0] = (p[1], p[3])
+    if len(p) > 5:
+        # p[1].append(p[2], p[4])
+        p[0] = p[1]
+    elif len(p) == 5:
+        pass# p[0] = Locales(p[1], p[3])
     else: p[0] = p[1]
 
 def p_locales_empty(p):
@@ -181,11 +188,10 @@ def p_locales_empty(p):
 
 def p_asignacion(p):
     '''asignacion : ID ASSIGN expresion
-                 | ID LCORCH index RCORCH ASSIGN expresion
-                 | empty '''
+                  | ID LCORCH index RCORCH ASSIGN expresion
+    '''
     if len(p) == 5: p[0] = (p[1], p[4])
     elif len(p) > 6: p[0] = (p[1], p[3], p[7])
-    else: p[0] = p[1]
 
 def p_declaracion_while(p):
     '''declaracion : WHILE relacion DO declaracion'''
@@ -196,7 +202,7 @@ def p_declaracion_if(p):
                   | IF relacion THEN declaracion ELSE declaracion
     '''
     if len(p) == 5:
-        p[0] = ('IF', p[2], p[4])
+        p[0] = IfStatement() #('IF', p[2], p[4])
     else:
         p[0] = ('IF', p[2], p[4], p[6])
 
@@ -205,7 +211,7 @@ def p_declaracion_print(p):
     '''
         declaracion : PRINT LPAREN STRING RPAREN
     '''
-    p[0] = ('PRINT', p[3])
+    p[0] = PrintStatement(p[3])
 
 def p_declaracion_write(p):
     '''
@@ -238,27 +244,38 @@ def p_declaracion_exp(p):
     '''
     p[0] = p[1]
 
-def p_declaracion_ass(p):
+def p_declaracion_SkBr(p):
+    '''
+        declaracion : SKIP
+                    | BREAK
+    '''
+    p[0] = Declaracion(p[1])
+
+def p_declaracion_assi(p):
     '''
         declaracion : asignacion
     '''
-    p[0] = p[1]
+    p[0] = p[1]#Asignacion(p[1])
 
 def p_declaraciones(p):
     '''declaraciones : declaraciones SEMI declaracion'''
-    p[0] = (p[1], p[3])
+    p[1].append(p[3])
+    p[0] = p[1]
 
-def p_declaraciones_b(p):
-    '''declaraciones : declaraciones BREAK'''
-    p[0] = ('BREAK', p[2])
+# def p_declaracion_b(p):
+#     '''declaraciones : declaraciones BREAK'''
+#     p[1].append(p[2])
+#     p[0] = p[1]
 
-def p_declaraciones_s(p):
-    '''declaraciones : declaraciones SKIP'''
-    p[0] = ('SKIP', p[2])
+
+# def p_declaracion_s(p):
+#     '''declaraciones : declaraciones SKIP'''
+#     p[1].append(p[2])
+#     p[0] = p[1]
 
 def p_declaraciones_dec(p):
     '''declaraciones : declaracion'''
-    p[0] = p[1]
+    p[0] = Declaraciones(p[1], declaraciones = [p[1]])
 
 def p_index(p):
     "index : expresion"
@@ -392,7 +409,10 @@ def p_empty(p):
 def p_error(p):
     print "Syntax error in input!"
 
-#arbol inicio
+
+#---------------------------------------------------------------------
+#AST Structure
+#---------------------------------------------------------------------
 
 '''
 Objetos Arbol de Sintaxis Abstracto (AST - Abstract Syntax Tree).
@@ -417,9 +437,9 @@ class AST(object):
     '''
     _fields = []
     def __init__(self,*args,**kwargs):
-        assert len(args) == len(self._fields)
+        assert len(args) == len(self._fields) #or len(kwargs) == len(self._fields) #assert test a condition, and could pop an error
         for name,value in zip(self._fields,args):
-            setattr(self,name,value)
+            setattr(self,name,value) #Adds attributes to the object (in this case self)
         # Asigna argumentos adicionales (keywords) si se suministran
         for name,value in kwargs.items():
             setattr(self,name,value)
@@ -428,6 +448,10 @@ class AST(object):
         for depth, node in flatten(self):
             print("%s%s" % (" "*(4*depth),node))
 
+    def __repr__(self):
+        return self.__class__.__name__
+
+#No la entiendo muy bien
 def validate_fields(**fields):
     def validator(cls):
         old_init = cls.__init__
@@ -459,30 +483,29 @@ class PrintStatement(AST):
     '''
     _fields = ['expr']
 
-class Literal(AST):
-    '''
-    Un valor constante como 2, 2.5, o "dos"
-    '''
-    _fields = ['value']
-
+@validate_fields(funciones = list)
 class Program(AST):
-    _fields = ['program']
+    _fields = ['funciones']
 
-@validate_fields(statements=list)
-class Statements(AST):
-    _fields = ['statements']
+    def append(self, e):
+        self.funciones.append(e)
+
+    # def __repr__(self):
+    #     return self.funciones[0]
+
+@validate_fields(declaraciones=list)
+class Declaraciones(AST):
+    _fields = ['declaraciones']
 
     def append(self,e):
-        self.statements.append(e)
+        self.declaraciones.append(e)
 
-class Statement(AST):
-    _fields = ['statement']
+class Declaracion(AST):
+    _fields = ['declaracion']
 
-class Extern(AST):
-    _fields = ['func_prototype']
 
-class FuncPrototype(AST):
-    _fields = ['id', 'params', 'typename']
+class Funcion(AST):
+    _fields = ['id', 'argumentos', 'locales', 'declaraciones']
 
 @validate_fields(param_decls=list)
 class Parameters(AST):
@@ -491,8 +514,18 @@ class Parameters(AST):
     def append(self,e):
         self.param_decls.append(e)
 
-class ParamDecl(AST):
-    _fields = ['id', 'typename']
+class Parametro(AST):
+    _fields = ['parametro']
+
+@validate_fields(argumentos = list)
+class Argumentos(AST):
+    _fields = ['argumentos']
+
+    def append(self,e):
+        self.argumentos.append(e)
+
+class Locales(AST):
+    _fields = []
 
 class AssignmentStatement(AST):
     _fields = ['location', 'value']
@@ -660,8 +693,6 @@ def flatten(top):
     d.visit(top)
     return d.nodes
 
-#arbol final
-
 # Build the parser
 parser = yacc.yacc()
 
@@ -670,4 +701,5 @@ str = pruebas.read()
 # print str
 # Give the lexer some input
 
-parser.parse(str)
+x = parser.parse(str)
+x.pprint()
