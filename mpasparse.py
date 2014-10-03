@@ -130,6 +130,7 @@ lex.lex()
 
 precedence = (
     ('left', 'RCORCH'),
+    ('left', 'RPAREN'),
     ('left', 'ELSE'),
     ('left', 'OR'),
     ('right', 'AND'),
@@ -156,8 +157,7 @@ def p_funcion(p):
 
 def p_parametro(p):
     '''parametro : ID DECLARATION tipo'''
-     p[0] = VarDeclaration(p[1], p[3])
-  
+    # p[0] = VarDeclaration(p[1], p[3])
 
 def p_mparametros(p):
     '''mparametros : mparametros COMMA parametro
@@ -337,11 +337,15 @@ def p_expresion_signo(p):
         p[0] = p[2]
 
 def p_expresion_parent(p):
-    '''expresion :  LPAREN expresion RPAREN '''
+    '''
+        expresion :  LPAREN expresion RPAREN
+                  |  LPAREN RPAREN
+    '''
     p[0] = p[2]
 
 def p_expresion_ID(p):
     '''expresion : ID LPAREN argumentos RPAREN
+                | ID LPAREN RPAREN
                 | ID
                 | ID LCORCH expresion RCORCH
     '''
@@ -724,7 +728,7 @@ def flatten(top):
 # Build the parser
 parser = yacc.yacc()
 
-pruebas = open("Pruebas.pas", "r")
+pruebas = open("test2/errors/arrayindex.pas", "r")
 str = pruebas.read()
 # print str
 # Give the lexer some input
