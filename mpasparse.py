@@ -129,6 +129,7 @@ lex.lex()
 
 
 precedence = (
+    ('left', 'RCORCH'),
     ('left', 'ELSE'),
     ('left', 'OR'),
     ('right', 'AND'),
@@ -141,7 +142,8 @@ precedence = (
 
 def p_programa_funciones(p):
     "programa : programa funcion"
-    p[0].append(p[2])
+    p[1].append(p[2])
+    p[0] = p[1]
 
 def p_programa_funcion(p):
     "programa : funcion"
@@ -149,49 +151,59 @@ def p_programa_funcion(p):
     # print p[0]
 
 def p_funcion(p):
-    "funcion : FUN ID LPAREN argumentos RPAREN locales BEGIN declaraciones END"
+    "funcion : FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END"
     p[0] = Funcion(p[2], p[4], p[6], p[8])
-
-def p_argumentos_mpar(p):
-    '''argumentos : mparametros'''
-    p[0] = Parameters([p[1]])
 
 def p_parametro(p):
     '''parametro : ID DECLARATION tipo'''
-    if len(p) == 4: p[0] = (p[1], p[3])
-    else: p[0] = p[1]
+     p[0] = VarDeclaration(p[1], p[3])
+  
 
 def p_mparametros(p):
-    '''mparametros : mparametros SEMI parametro
+    '''mparametros : mparametros COMMA parametro
                   | parametro
                   | empty'''
-    if len(p) > 4:
+    if len(p) == 4:
         p[1].append(p[3])
         p[0] = p[1]
     else:
-        p[0] = Parametro(p[1])
+        p[0] = Parameters([p[1]])
+
+# def p_declaracionvar(p):
+#     '''declaracionvar : ID DECLARATION tipo
+#     '''
+#     p[0] = Locales(p[1], p[3])
+
 
 def p_locales(p):
-    '''locales : locales ID DECLARATION tipo SEMI
-              | ID DECLARATION tipo SEMI
-              | funcion '''
-    if len(p) > 5:
-        # p[1].append(p[2], p[4])
-        p[0] = p[1]
-    elif len(p) == 5:
-        pass# p[0] = Locales(p[1], p[3])
-    else: p[0] = p[1]
 
-def p_locales_empty(p):
-    '''locales : empty '''
-    p[0] = p[1]
+    '''locales : local
+              | empty
+    '''
+    # if len(p) > 5:
+    #     p[1].append(p[2])
+    #     p[0] = p[1]
+    # elif len(p) == 5:
+    #     p[0] = Locales([p[1]])
+    # else: p[0] = Locales([p[1]])
+def p_local(p):
+    '''
+        local : local parametro SEMI
+              | local funcion SEMI
+              | parametro SEMI
+              | funcion SEMI
+    '''
+
+# def p_locales_empty(p):
+#     '''locales : empty '''
+#     p[0] = p[1]
 
 def p_asignacion(p):
     '''asignacion : ID ASSIGN expresion
                   | ID LCORCH index RCORCH ASSIGN expresion
     '''
-    if len(p) == 5: p[0] = (p[1], p[4])
-    elif len(p) > 6: p[0] = (p[1], p[3], p[7])
+    # if len(p) == 4: p[0] = (p[1], p[4])
+    # elif len(p) > 6: p[0] = (p[1], p[3], p[7])
 
 def p_declaracion_while(p):
     '''declaracion : WHILE relacion DO declaracion'''
@@ -202,9 +214,9 @@ def p_declaracion_if(p):
                   | IF relacion THEN declaracion ELSE declaracion
     '''
     if len(p) == 5:
-        p[0] = IfStatement() #('IF', p[2], p[4])
+        p[0] = IfStatement(p[2], p[4], None) #('IF', p[2], p[4])
     else:
-        p[0] = ('IF', p[2], p[4], p[6])
+        pass# p[0] = ('IF', p[2], p[4], p[6])
 
 
 def p_declaracion_print(p):
@@ -217,13 +229,14 @@ def p_declaracion_write(p):
     '''
         declaracion : WRITE LPAREN expresion RPAREN
     '''
-    p[0] = ('WRITE', p[3])
+    p[0] = WriteStatements(p[3])
+
 
 def p_declaracion_read(p):
     '''
         declaracion : READ LPAREN expresion RPAREN
     '''
-    p[0] = ('READ', p[3])
+    p[0] = ReadStatements(p[3])
 
 def p_declaracion_return(p):
     '''
@@ -284,10 +297,10 @@ def p_index(p):
 
 def p_tipo_INT(p):
     ''' tipo : NINT
-            | NINT LCORCH expresion RCORCH
+             | NINT LCORCH expresion RCORCH
     '''
     if len(p) == 5:
-        p[0] = ('NINT', p[3])
+        p[0] = Nint(p[3])
     else:
         p[0] = p[1]
 
@@ -296,7 +309,7 @@ def p_tipo_FLOAT(p):
             | NFLOAT LCORCH expresion RCORCH
     '''
     if len(p) == 5:
-        p[0] = ('NFLOAT', p[3])
+        p[0] = Nfloat(p[3])
     else:
         p[0] = p[1]
 
@@ -407,8 +420,9 @@ def p_empty(p):
     pass
 
 def p_error(p):
-    print "Syntax error in input!"
-
+    # line   = p.lineno()        # line number of the PLUS token
+    # index  = p.lexpos()
+    print "Error de sintaxis linea: ", p
 
 #---------------------------------------------------------------------
 #AST Structure
@@ -524,17 +538,25 @@ class Argumentos(AST):
     def append(self,e):
         self.argumentos.append(e)
 
+@validate_fields(locales = list)
 class Locales(AST):
-    _fields = []
+    _fields = ['locales']
+    def append(self, e):
+        self.locales.append(e)
 
 class AssignmentStatement(AST):
     _fields = ['location', 'value']
 
-class ConstDeclaration(AST):
-    _fields = ['id', 'value']
+class Nint(AST):
+    _fields = ['expr']
 
-class VarDeclaration(AST):
-    _fields = ['id', 'typename', 'value']
+class Nfloat(AST):
+    _fields = ['expr']
+# class ConstDeclaration(AST):
+#     _fields = ['id', 'value']
+
+# class VarDeclaration(AST):
+#     _fields = ['id', 'typename', 'value']
 
 class IfStatement(AST):
     _fields = ['condition', 'then_b', 'else_b']
@@ -542,11 +564,17 @@ class IfStatement(AST):
 class WhileStatement(AST):
     _fields = ['condition', 'body']
 
-class LoadLocation(AST):
-    _fields = ['name']
+class WriteStatements(AST):
+    _fields = ['expr']
 
-class StoreVar(AST):
-    _fields = ['name']
+class ReadStatements(AST):
+    _fields = ['expr']
+
+# class LoadLocation(AST):
+#     _fields = ['name']
+
+# class StoreVar(AST):
+    # _fields = ['name']
 
 class UnaryOp(AST):
     _fields = ['op', 'left']
@@ -554,20 +582,20 @@ class UnaryOp(AST):
 class BinaryOp(AST):
     _fields = ['op', 'left', 'right']
 
-class RelationalOp(AST):
-    _fields = ['op', 'left', 'right']
+# class RelationalOp(AST):
+#     _fields = ['op', 'left', 'right']
 
-class Group(AST):
-    _fields = ['expression']
+# class Group(AST):
+#     _fields = ['expression']
 
-class FunCall(AST):
-    _fields = ['id', 'params']
+# class FunCall(AST):
+#     _fields = ['id', 'params']
 
-class ExprList(AST):
-    _fields = ['expressions']
+# class ExprList(AST):
+#     _fields = ['expressions']
 
-    def append(self, e):
-        self.expressions.append(e)
+#     def append(self, e):
+#         self.expressions.append(e)
 
 class Empty(AST):
     _fields = []
