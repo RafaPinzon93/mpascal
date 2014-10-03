@@ -206,7 +206,7 @@ def p_asignacion(p):
 
 def p_declaracion_while(p):
     '''declaracion : WHILE relacion DO declaracion'''
-    p[0] = ('WHILE', p[1], p[4])
+    p[0] = WhileStatement(p[2], p[1])
 
 def p_declaracion_if(p):
     '''declaracion : IF relacion THEN declaracion
@@ -241,7 +241,7 @@ def p_declaracion_return(p):
     '''
         declaracion : RETURN expresion
     '''
-    p[0] = ('RETURN', p[2])
+    p[0] = Return(p[2])
 
 
 def p_declaracion_es(p):
@@ -319,34 +319,38 @@ def p_expresion_operadores_bin(p):
                   | expresion DIVIDE expresion
                   '''
     if p[2] == 'PLUS':
-        p[0] = p[1] + p[3]
+        p[0] = BinaryOp(p[2], p[1], p[3])
     elif p[2] == 'MINUS':
-        p[0] = p[1] - p[3]
+        p[0] = BinaryOp(p[2], p[1], p[3])
     elif p[2] == 'TIMES':
-        p[0] = p[1] * p[3]
+        p[0] = BinaryOp(p[2], p[1], p[3])
     elif p[2] == 'DIVIDE':
-        p[0] = p[1] / p[3]
+        p[0] = BinaryOp(p[2], p[1], p[3])
 
 def p_expresion_signo(p):
     ''' expresion : MINUS expresion
                  | PLUS expresion '''
+
     if p[1] == 'MINUS':
-        p[0] = -p[2]
+        p[0] = UnaryOp(p[1], p[2])
     elif p[1] == 'PLUS':
-        p[0] = p[2]
+        p[0] = UnaryOp(p[1], p[2])
 
 def p_expresion_parent(p):
     '''
         expresion :  LPAREN expresion RPAREN
                   |  LPAREN RPAREN
     '''
-    p[0] = p[2]
+    if len(p) == 3:
+        p[0] = p[2] 
+    else: p[0] = None
+ 
 
 def p_expresion_ID(p):
     '''expresion : ID LPAREN argumentos RPAREN
-                | ID LPAREN RPAREN
-                | ID
-                | ID LCORCH expresion RCORCH
+                 | ID LPAREN RPAREN
+                 | ID
+                 | ID LCORCH expresion RCORCH
     '''
     if len(p) > 2:
         if p[2] == 'LPAREN': p[0] = (p[1], p[3])
@@ -354,9 +358,11 @@ def p_expresion_ID(p):
     else:
         p[0]= p[1]
 
+
 def p_expresion_numero(p):
     '''expresion : numero'''
-    p[0] = p[1]
+    p[0] = Numero(p[1])
+
 
 def p_expresion_INT(p):
     "expresion : NINT LPAREN expresion RPAREN "
@@ -368,18 +374,20 @@ def p_expresion_FLOAT(p):
 
 def p_numero_INTEGER(p):
     '''numero : INTEGER'''
-    p[0] = p[1]
+    p[0] = Literal(p[1])
 
 def p_numero_FLOAT(p):
      '''numero : FLOAT '''
-     p[0] = p[1]
+     p[0] = Literal(p[1])
 
 def p_argumentos(p):
     '''argumentos : argumentos COMMA expresion
                  | expresion
     '''
-    if len(p) == 4: p[0] = (p[1], p[3])
-    else: p[0] = p[1]
+    if len(p) == 4: 
+        p[1].append(p[3])
+        p[0] = p[1]
+    else: p[0] = Argumentos([p[1]])
 
 def p_relacion(p) :
     '''
@@ -396,26 +404,26 @@ def p_relacion(p) :
     '''
     if len(p) == 4:
         if p[2] == 'LT':
-            p[0] = p[1] < p[3]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[2] == 'LE':
-            p[0] = p[1] <= p[4]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[2] == 'GT':
-            p[0] = p[1] > p[3]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[2] == 'GE':
-            p[0] = p[1] >= p[3]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[2] == 'EQUALS':
-            p[0] = p[1] == p[3]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[2] == 'NE':
-            p[0] = p[1] != p[3]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[2] == 'AND':
-            p[0] = p[1] and p[3]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[2] == 'OR':
-            p[0] = p[1] or p[3]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[1] == 'LPAREN':
             p[0] = p[2]
 
     if len(p) == 3:
-            p[0] = not p[0]
+            p[0] = UnaryOp(p[1], p[2])
 
 
 def p_empty(p):
@@ -590,6 +598,10 @@ class ReadStatements(AST):
 # class StoreVar(AST):
     # _fields = ['name']
 
+
+class Return(AST):
+    _fields = ['expresion']
+
 class UnaryOp(AST):
     _fields = ['op', 'left']
 
@@ -610,6 +622,12 @@ class BinaryOp(AST):
 
 #     def append(self, e):
 #         self.expressions.append(e)
+class Numero(AST):
+    _fields = ['numero']
+
+class Literal(AST):
+    _fields = ['valor']
+
 
 class Empty(AST):
     _fields = []
@@ -738,7 +756,7 @@ def flatten(top):
 # Build the parser
 parser = yacc.yacc()
 
-pruebas = open("test2/hello.pas", "r")
+pruebas = open("test2/quick.pas", "r")
 str = pruebas.read()
 # print str
 # Give the lexer some input
