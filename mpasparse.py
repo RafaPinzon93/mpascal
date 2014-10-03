@@ -300,18 +300,18 @@ def p_tipo_INT(p):
              | NINT LCORCH expresion RCORCH
     '''
     if len(p) == 5:
-        p[0] = Nint(p[3])
+        p[0] = Tipo_Nint(p[3])
     else:
-        p[0] = p[1]
+        p[0] = Tipo_Nint(None)
 
 def p_tipo_FLOAT(p):
     ''' tipo : NFLOAT
             | NFLOAT LCORCH expresion RCORCH
     '''
     if len(p) == 5:
-        p[0] = Nfloat(p[3])
+        p[0] = Tipo_Nfloat(p[3])
     else:
-        p[0] = p[1]
+        p[0] = Tipo_Nfloat(None)
 
 def p_expresion_operadores_bin(p):
     '''  expresion : expresion PLUS expresion
@@ -557,8 +557,11 @@ class Nint(AST):
 class Nfloat(AST):
     _fields = ['expr']
 
-class Tipo(AST):
-    _fields = []
+class Tipo_Nint(AST):
+    _fields = ['expresion']
+
+class Tipo_Nfloat(AST):
+    _fields = ['expresion']
 
 
 # class ConstDeclaration(AST):
@@ -733,7 +736,7 @@ def flatten(top):
 # Build the parser
 parser = yacc.yacc()
 
-pruebas = open("test2/errors/arrayindex.pas", "r")
+pruebas = open("test2/hello.pas", "r")
 str = pruebas.read()
 # print str
 # Give the lexer some input
