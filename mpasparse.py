@@ -357,11 +357,11 @@ def p_expresion_numero(p):
 
 def p_expresion_INT(p):
     "expresion : NINT LPAREN expresion RPAREN "
-    p[0] = ('NINT', p[3])
+    p[0] = Nint(p[3])
 
 def p_expresion_FLOAT(p):
     '''expresion : NFLOAT LPAREN expresion RPAREN '''
-    p[0] = ('NFLOAT', p[3])
+    p[0] = Nfloat(p[3])
 
 def p_numero_INTEGER(p):
     '''numero : INTEGER'''
@@ -552,6 +552,11 @@ class Nint(AST):
 
 class Nfloat(AST):
     _fields = ['expr']
+
+class Tipo(AST):
+    _fields = []
+
+
 # class ConstDeclaration(AST):
 #     _fields = ['id', 'value']
 
