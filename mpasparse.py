@@ -129,6 +129,7 @@ lex.lex()
 
 
 precedence = (
+    ('left', 'RCORCH'),
     ('left', 'ELSE'),
     ('left', 'OR'),
     ('right', 'AND'),
@@ -141,7 +142,8 @@ precedence = (
 
 def p_programa_funciones(p):
     "programa : programa funcion"
-    p[0].append(p[2])
+    p[1].append(p[2])
+    p[0] = p[1]
 
 def p_programa_funcion(p):
     "programa : funcion"
@@ -149,49 +151,51 @@ def p_programa_funcion(p):
     # print p[0]
 
 def p_funcion(p):
-    "funcion : FUN ID LPAREN argumentos RPAREN locales BEGIN declaraciones END"
+    "funcion : FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END"
     p[0] = Funcion(p[2], p[4], p[6], p[8])
-
-def p_argumentos_mpar(p):
-    '''argumentos : mparametros'''
-    p[0] = Parameters([p[1]])
 
 def p_parametro(p):
     '''parametro : ID DECLARATION tipo'''
-    if len(p) == 4: p[0] = (p[1], p[3])
-    else: p[0] = p[1]
+
 
 def p_mparametros(p):
-    '''mparametros : mparametros SEMI parametro
+    '''mparametros : mparametros COMMA parametro
                   | parametro
                   | empty'''
-    if len(p) > 4:
+    if len(p) == 4:
         p[1].append(p[3])
         p[0] = p[1]
     else:
-        p[0] = Parametro(p[1])
+        p[0] = Parameters([p[1]])
 
 def p_locales(p):
-    '''locales : locales ID DECLARATION tipo SEMI
-              | ID DECLARATION tipo SEMI
-              | funcion '''
-    if len(p) > 5:
-        # p[1].append(p[2], p[4])
-        p[0] = p[1]
-    elif len(p) == 5:
-        pass# p[0] = Locales(p[1], p[3])
-    else: p[0] = p[1]
+    '''locales : local
+              | empty
+    '''
+    # if len(p) > 5:
+    #     p[1].append(p[2])
+    #     p[0] = p[1]
+    # elif len(p) == 5:
+    #     p[0] = Locales([p[1]])
+    # else: p[0] = Locales([p[1]])
+def p_local(p):
+    '''
+        local : local parametro SEMI
+              | local funcion SEMI
+              | parametro SEMI
+              | funcion SEMI
+    '''
 
-def p_locales_empty(p):
-    '''locales : empty '''
-    p[0] = p[1]
+# def p_locales_empty(p):
+#     '''locales : empty '''
+#     p[0] = p[1]
 
 def p_asignacion(p):
     '''asignacion : ID ASSIGN expresion
                   | ID LCORCH index RCORCH ASSIGN expresion
     '''
-    if len(p) == 5: p[0] = (p[1], p[4])
-    elif len(p) > 6: p[0] = (p[1], p[3], p[7])
+    # if len(p) == 4: p[0] = (p[1], p[4])
+    # elif len(p) > 6: p[0] = (p[1], p[3], p[7])
 
 def p_declaracion_while(p):
     '''declaracion : WHILE relacion DO declaracion'''
@@ -202,9 +206,9 @@ def p_declaracion_if(p):
                   | IF relacion THEN declaracion ELSE declaracion
     '''
     if len(p) == 5:
-        p[0] = IfStatement() #('IF', p[2], p[4])
+        p[0] = IfStatement(p[2], p[4], None) #('IF', p[2], p[4])
     else:
-        p[0] = ('IF', p[2], p[4], p[6])
+        pass# p[0] = ('IF', p[2], p[4], p[6])
 
 
 def p_declaracion_print(p):
@@ -407,8 +411,9 @@ def p_empty(p):
     pass
 
 def p_error(p):
-    print "Syntax error in input!"
-
+    # line   = p.lineno()        # line number of the PLUS token
+    # index  = p.lexpos()
+    print "Error de sintaxis linea: ", p
 
 #---------------------------------------------------------------------
 #AST Structure
@@ -524,8 +529,11 @@ class Argumentos(AST):
     def append(self,e):
         self.argumentos.append(e)
 
+@validate_fields(locales = list)
 class Locales(AST):
-    _fields = []
+    _fields = ['locales']
+    def append(self, e):
+        self.locales.append(e)
 
 class AssignmentStatement(AST):
     _fields = ['location', 'value']
