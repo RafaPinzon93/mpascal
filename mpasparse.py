@@ -180,12 +180,8 @@ def p_locales(p):
     '''locales : local
               | empty
     '''
-    # if len(p) > 5:
-    #     p[1].append(p[2])
-    #     p[0] = p[1]
-    # elif len(p) == 5:
-    #     p[0] = Locales([p[1]])
-    # else: p[0] = Locales([p[1]])
+    p[0] = Locales(p[1])
+
 def p_local(p):
     '''
         local : local parametro SEMI
@@ -193,7 +189,10 @@ def p_local(p):
               | parametro SEMI
               | funcion SEMI
     '''
-
+    if len(p) == 4: 
+        p[1].append(p[2]) 
+        p[0] = p[1]
+    else: p[0] = Local([p[1]])
 # def p_locales_empty(p):
 #     '''locales : empty '''
 #     p[0] = p[1]
@@ -542,11 +541,14 @@ class Argumentos(AST):
     def append(self,e):
         self.argumentos.append(e)
 
-@validate_fields(locales = list)
+@validate_fields(local = list)
+class Local(AST):
+    _fields = ['local']
+    def append(self, e):
+        self.local.append(e)
+
 class Locales(AST):
     _fields = ['locales']
-    def append(self, e):
-        self.locales.append(e)
 
 class AssignmentStatement(AST):
     _fields = ['location', 'value']
