@@ -34,7 +34,7 @@ def t_ID(t):
     t.type = reserved.get(t.value, 'ID')
     return t
 
-t_EQUALS      = r'='
+t_EQUALS      = r'=='
 t_ASSIGN      = r':='
 t_DECLARATION = r':'
 t_PLUS        = r'\+'
@@ -121,19 +121,19 @@ def t_error(t):
     print "Illegal character '%s'" % t.value[0]
     t.lexer.skip(1)
 
-lexer = lex.lex()
+def make_lexer():
+    return lex.lex()
 
 
-pruebas = open("Pruebas.pas", "r")
-str = pruebas.read()
-# print str
-# Give the lexer some input
-lexer.input(str)
+if __name__ == '__main__':
+    import sys
 
-pruebas.close()
+    if len(sys.argv) != 2:
+        sys.stderr.write("Usage: %s filename\n" % sys.argv[0])
+        raise SystemExit(1)
 
-# Tokenize
-while True:
-    tok = lexer.token()
-    if not tok: break      # No more input
-    print tok
+    lexer = make_lexer()
+    lexer.input(open(sys.argv[1]).read())
+    for tok in iter(lexer.token,None):
+        sys.stdout.write("%s\n" % tok)
+

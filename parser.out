@@ -2,9 +2,10 @@ Created by PLY version 3.4 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    INVSTRING
     NEWLINE
+    INVSTRING
     INVCOMNENT
+    CONTINUE
 
 Grammar
 
@@ -81,6 +82,7 @@ ASSIGN               : 14 15
 BEGIN                : 3 23
 BREAK                : 26
 COMMA                : 5 52
+CONTINUE             : 
 DECLARATION          : 4
 DIVIDE               : 38
 DO                   : 16
