@@ -2698,13 +2698,13 @@ state 118
     (60) relacion -> relacion . AND relacion
     (61) relacion -> relacion . OR relacion
 
+    AND             reduce using rule 60 (relacion -> relacion AND relacion .)
     OR              reduce using rule 60 (relacion -> relacion AND relacion .)
     DO              reduce using rule 60 (relacion -> relacion AND relacion .)
     THEN            reduce using rule 60 (relacion -> relacion AND relacion .)
     RPAREN          reduce using rule 60 (relacion -> relacion AND relacion .)
-    AND             shift and go to state 87
 
-  ! AND             [ reduce using rule 60 (relacion -> relacion AND relacion .) ]
+  ! AND             [ shift and go to state 87 ]
   ! OR              [ shift and go to state 89 ]
 
 

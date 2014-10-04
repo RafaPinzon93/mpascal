@@ -129,16 +129,15 @@ lex.lex()
 
 
 precedence = (
-    ('left', 'RCORCH'),
-    ('left', 'RPAREN'),
-    ('left', 'ELSE'),
+    ('right', 'ASSIGN'),
     ('left', 'OR'),
-    ('right', 'AND'),
+    ('left', 'AND'),
+    ('left', 'EQUALS', 'NE'),
+    ('left', 'LT', 'LE', 'GT', 'GE'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
-    ('left', 'ID'),
-    ('left', 'SKIP'),
-    ('right', 'SEMI'),
+    ('left', 'RCORCH'),
+    ('left', 'RPAREN'),
 )
 
 def p_programa_funciones(p):
@@ -467,7 +466,7 @@ class AST(object):
             print("%s%s" % (" "*(4*depth),node))
 
     def __repr__(self):
-        return self.__class__.__name__
+        return ' '.join(self._fields)
 
 #No la entiendo muy bien
 def validate_fields(**fields):
@@ -728,7 +727,7 @@ def flatten(top):
 # Build the parser
 parser = yacc.yacc()
 
-pruebas = open("test2/errors/arrayindex.pas", "r")
+pruebas = open("test2/hello.pas", "r")
 str = pruebas.read()
 # print str
 # Give the lexer some input
