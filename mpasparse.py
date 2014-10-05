@@ -1,149 +1,26 @@
 # -*- coding: utf-8 -*-
 import ply.lex as lex
 import ply.yacc as yacc
-
-reserved = {
-    'fun' : 'FUN',
-    'begin' : 'BEGIN',
-    'end' : 'END',
-    'if' : 'IF',
-    'then' : 'THEN',
-    'else' : 'ELSE',
-    'while' : 'WHILE',
-    'print' : 'PRINT',
-    'write' : 'WRITE',
-    'read' : 'READ',
-    'skip' : 'SKIP',
-    'do' : 'DO',
-    'break' : 'BREAK',
-    'and' : 'AND',
-    'or' : 'OR',
-    'not' : 'NOT',
-    'return' : 'RETURN',
-    'int' : 'NINT',
-    'float' : 'NFLOAT'
-    }
-
-tokens = ['EQUALS','PLUS','MINUS','TIMES','DIVIDE','LPAREN',
-    'RPAREN','LT','LE','GT','GE','NE', 'FLOAT',
-    'COMMA','SEMI', 'ASSIGN','INTEGER', 'LCORCH', 'RCORCH',
-    'STRING','INVSTRING','ID','NEWLINE', 'DECLARATION', 'INVCOMNENT'] + list(reserved.values())
-
-def t_ID(t):
-    r'[a-zA-Z_][a-zA-Z_0-9]*'
-    t.type = reserved.get(t.value, 'ID')
-    return t
-
-t_EQUALS      = r'=='
-t_ASSIGN      = r':='
-t_DECLARATION = r':'
-t_PLUS        = r'\+'
-t_MINUS       = r'-'
-t_TIMES       = r'\*'
-# t_POWER   = r'\^'
-t_DIVIDE      = r'/'
-t_LPAREN      = r'\('
-t_RPAREN      = r'\)'
-t_LCORCH      = r'\['
-t_RCORCH      = r'\]'
-t_LT          = r'<'
-t_LE          = r'<='
-t_GT          = r'>'
-t_GE          = r'>='
-t_NE          = r'!='
-t_COMMA       = r'\,'
-t_SEMI        = r';'
-t_FLOAT       = r'((0|[1-9][0-9]*)\.[0-9]+)([eE][-+]?[0-9]+)?|([1-9][0-9]*|0)([eE][-+]?[0-9]+)'
-t_INTEGER     = r'0|[1-9][0-9]*'
-
-t_ignore      = ' \t'
-
-def t_INVFLOAT(t):
-    r'((0[0-9]+)\.[0-9]*|\.[0-9]*|0[0-9]+[eE][+-]?[0-9]*)'
-    print "Flotante invalido = "+t.value+" en la linea %s" %t.lexer.lineno
-    #t.lexer.skip(1)
-    pass
-
-def t_INVINT(t):
-    r'((0)[0-9]+)'
-    print "Entero invalido = "+t.value+" en la linea %s" %t.lexer.lineno
-    pass
-
-def t_STRING(t):
-    r'\"((\\["\\n])|((\\\")*[^"\\\n](\\\")*))*?\"'
-    #r'\"([^\\\n]|[^"]|[^\\\\"])*?\"'
-    return t
-
-def t_INVSTRING(t):
-    #r'\"((\\[^"\\n])|((\\\")*[^"\\](\\\")*))*?\"'
-    r'\"((\\\")*[^"]|[^"](\\\")*)*(\")?'
-    invString = t.value[1:]
-    for i in range(0, len(invString)-1):
-        if invString[i] == '\n':
-            print "No se permiten strings con multiples lineas %s" % t.lexer.lineno
-            t.lexer.lineno += 1
-            # break
-
-        if invString[i] == '\\':
-            if invString[i+1] != '\"' and invString[i+1] != '\\' and invString[i+1] != "n":
-                print "String invalida.. caracter de escape no valido ",(invString[i]+ invString[i+1])," en la linea ",t.lexer.lineno
-                # break
-
-            else:
-                i += 1
-    final = t.value[-2:]
-    if (not '\"' in final) or (len(t.value) <= 2):
-        print "String no finalizada en la linea %s" % t.lexer.lineno
-    pass
-
-def t_COMMENT(t):
-    r'/\*(.|\n)*?\*/'
-    t.lexer.lineno += t.value.count('\n')
-    pass
-    # No return value. Token discarded
-
-def t_INVCOMMENT(t):
-    r'(/\*(.|\n)*(/\*)*)|\*/'
-    t.lexer.lineno += t.value.count('\n')
-    if t.value.count('/*') > 1 :
-        print "Comentario invalido en la linea '%s'... no se permiten comentarios anidados" % t.lexer.lineno
-    elif t.value[-2:] == '*/':
-        print "Comentario no abierto en la linea '%s'" %t.lexer.lineno
-    else:
-        print "Comentario no finalizado"
-    pass
-
-def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
-
-def t_error(t):
-    print "Illegal character '%s'" % t.value[0]
-    t.lexer.skip(1)
-
-lex.lex()
-
-#---------------------------------------------------------------------
-# Parsing Rules
-#---------------------------------------------------------------------
-
+from mpaslex import tokens
 
 precedence = (
-    ('left', 'RCORCH'),
-    ('left', 'ELSE'),
+    ('right', 'ASSIGN'),
     ('left', 'OR'),
-    ('right', 'AND'),
+    ('left', 'AND'),
+    ('left', 'EQUALS', 'NE'),
+    ('left', 'LT', 'LE', 'GT', 'GE'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
-    ('left', 'ID'),
-    ('left', 'SKIP'),
-    ('right', 'SEMI'),
+    ('left', 'RCORCH'),
+    ('left', 'RPAREN'),
 )
 
 def p_programa_funciones(p):
     "programa : programa funcion"
-    p[1].append(p[2])
     p[0] = p[1]
+    p[0].append(p[2])
+    # p[1].append(p[2])
+    # p[0] = p[1]
 
 def p_programa_funcion(p):
     "programa : funcion"
@@ -156,8 +33,7 @@ def p_funcion(p):
 
 def p_parametro(p):
     '''parametro : ID DECLARATION tipo'''
-     p[0] = VarDeclaration(p[1], p[3])
-  
+    # p[0] = VarDeclaration(p[1], p[3])
 
 def p_mparametros(p):
     '''mparametros : mparametros COMMA parametro
@@ -180,12 +56,8 @@ def p_locales(p):
     '''locales : local
               | empty
     '''
-    # if len(p) > 5:
-    #     p[1].append(p[2])
-    #     p[0] = p[1]
-    # elif len(p) == 5:
-    #     p[0] = Locales([p[1]])
-    # else: p[0] = Locales([p[1]])
+    p[0] = Locales(p[1])
+
 def p_local(p):
     '''
         local : local parametro SEMI
@@ -193,7 +65,10 @@ def p_local(p):
               | parametro SEMI
               | funcion SEMI
     '''
-
+    if len(p) == 4:
+        p[1].append(p[2])
+        p[0] = p[1]
+    else: p[0] = Local([p[1]])
 # def p_locales_empty(p):
 #     '''locales : empty '''
 #     p[0] = p[1]
@@ -207,7 +82,7 @@ def p_asignacion(p):
 
 def p_declaracion_while(p):
     '''declaracion : WHILE relacion DO declaracion'''
-    p[0] = ('WHILE', p[1], p[4])
+    p[0] = WhileStatement(p[2], p[1])
 
 def p_declaracion_if(p):
     '''declaracion : IF relacion THEN declaracion
@@ -242,7 +117,7 @@ def p_declaracion_return(p):
     '''
         declaracion : RETURN expresion
     '''
-    p[0] = ('RETURN', p[2])
+    p[0] = Return(p[2])
 
 
 def p_declaracion_es(p):
@@ -300,18 +175,18 @@ def p_tipo_INT(p):
              | NINT LCORCH expresion RCORCH
     '''
     if len(p) == 5:
-        p[0] = Nint(p[3])
+        p[0] = Tipo_Nint(p[3])
     else:
-        p[0] = p[1]
+        p[0] = Tipo_Nint(None)
 
 def p_tipo_FLOAT(p):
     ''' tipo : NFLOAT
             | NFLOAT LCORCH expresion RCORCH
     '''
     if len(p) == 5:
-        p[0] = Nfloat(p[3])
+        p[0] = Tipo_Nfloat(p[3])
     else:
-        p[0] = p[1]
+        p[0] = Tipo_Nfloat(None)
 
 def p_expresion_operadores_bin(p):
     '''  expresion : expresion PLUS expresion
@@ -320,30 +195,38 @@ def p_expresion_operadores_bin(p):
                   | expresion DIVIDE expresion
                   '''
     if p[2] == 'PLUS':
-        p[0] = p[1] + p[3]
+        p[0] = BinaryOp(p[2], p[1], p[3])
     elif p[2] == 'MINUS':
-        p[0] = p[1] - p[3]
+        p[0] = BinaryOp(p[2], p[1], p[3])
     elif p[2] == 'TIMES':
-        p[0] = p[1] * p[3]
+        p[0] = BinaryOp(p[2], p[1], p[3])
     elif p[2] == 'DIVIDE':
-        p[0] = p[1] / p[3]
+        p[0] = BinaryOp(p[2], p[1], p[3])
 
 def p_expresion_signo(p):
     ''' expresion : MINUS expresion
                  | PLUS expresion '''
+
     if p[1] == 'MINUS':
-        p[0] = -p[2]
+        p[0] = UnaryOp(p[1], p[2])
     elif p[1] == 'PLUS':
-        p[0] = p[2]
+        p[0] = UnaryOp(p[1], p[2])
 
 def p_expresion_parent(p):
-    '''expresion :  LPAREN expresion RPAREN '''
-    p[0] = p[2]
+    '''
+        expresion :  LPAREN expresion RPAREN
+                  |  LPAREN RPAREN
+    '''
+    if len(p) == 3:
+        p[0] = p[2]
+    else: p[0] = None
+
 
 def p_expresion_ID(p):
     '''expresion : ID LPAREN argumentos RPAREN
-                | ID
-                | ID LCORCH expresion RCORCH
+                 | ID LPAREN RPAREN
+                 | ID
+                 | ID LCORCH expresion RCORCH
     '''
     if len(p) > 2:
         if p[2] == 'LPAREN': p[0] = (p[1], p[3])
@@ -351,32 +234,36 @@ def p_expresion_ID(p):
     else:
         p[0]= p[1]
 
+
 def p_expresion_numero(p):
     '''expresion : numero'''
-    p[0] = p[1]
+    p[0] = Numero(p[1])
+
 
 def p_expresion_INT(p):
     "expresion : NINT LPAREN expresion RPAREN "
-    p[0] = ('NINT', p[3])
+    p[0] = Nint(p[3])
 
 def p_expresion_FLOAT(p):
     '''expresion : NFLOAT LPAREN expresion RPAREN '''
-    p[0] = ('NFLOAT', p[3])
+    p[0] = Nfloat(p[3])
 
 def p_numero_INTEGER(p):
     '''numero : INTEGER'''
-    p[0] = p[1]
+    p[0] = Literal(p[1])
 
 def p_numero_FLOAT(p):
      '''numero : FLOAT '''
-     p[0] = p[1]
+     p[0] = Literal(p[1])
 
 def p_argumentos(p):
     '''argumentos : argumentos COMMA expresion
                  | expresion
     '''
-    if len(p) == 4: p[0] = (p[1], p[3])
-    else: p[0] = p[1]
+    if len(p) == 4:
+        p[1].append(p[3])
+        p[0] = p[1]
+    else: p[0] = Argumentos([p[1]])
 
 def p_relacion(p) :
     '''
@@ -393,26 +280,26 @@ def p_relacion(p) :
     '''
     if len(p) == 4:
         if p[2] == 'LT':
-            p[0] = p[1] < p[3]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[2] == 'LE':
-            p[0] = p[1] <= p[4]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[2] == 'GT':
-            p[0] = p[1] > p[3]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[2] == 'GE':
-            p[0] = p[1] >= p[3]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[2] == 'EQUALS':
-            p[0] = p[1] == p[3]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[2] == 'NE':
-            p[0] = p[1] != p[3]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[2] == 'AND':
-            p[0] = p[1] and p[3]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[2] == 'OR':
-            p[0] = p[1] or p[3]
+            p[0] = BinaryOp(p[2], p[1], p[3])
         if p[1] == 'LPAREN':
             p[0] = p[2]
 
     if len(p) == 3:
-            p[0] = not p[0]
+            p[0] = UnaryOp(p[1], p[2])
 
 
 def p_empty(p):
@@ -420,9 +307,10 @@ def p_empty(p):
     pass
 
 def p_error(p):
-    # line   = p.lineno()        # line number of the PLUS token
-    # index  = p.lexpos()
-    print "Error de sintaxis linea: ", p
+    if p:
+        error(p.lineno, "Syntax error in input at token '%s'" % p.value)
+    else:
+        error("EOF","Syntax error. No more input.")
 
 #---------------------------------------------------------------------
 #AST Structure
@@ -463,7 +351,16 @@ class AST(object):
             print("%s%s" % (" "*(4*depth),node))
 
     def __repr__(self):
-        return self.__class__.__name__
+<<<<<<< HEAD
+        return ' '.join(self._fields)
+=======
+        excluded = {"lineno"}
+        return "{}[{}]".format(self.__class__.__name__,
+        {key: value
+        for key, value in vars(self).items()
+        if not key.startswith("_") and not key in excluded})
+        #return "{}".format(self.__class__.__name__)#vars(self))
+>>>>>>> origin/master
 
 #No la entiendo muy bien
 def validate_fields(**fields):
@@ -538,11 +435,14 @@ class Argumentos(AST):
     def append(self,e):
         self.argumentos.append(e)
 
-@validate_fields(locales = list)
+@validate_fields(local = list)
+class Local(AST):
+    _fields = ['local']
+    def append(self, e):
+        self.local.append(e)
+
 class Locales(AST):
     _fields = ['locales']
-    def append(self, e):
-        self.locales.append(e)
 
 class AssignmentStatement(AST):
     _fields = ['location', 'value']
@@ -552,6 +452,14 @@ class Nint(AST):
 
 class Nfloat(AST):
     _fields = ['expr']
+
+class Tipo_Nint(AST):
+    _fields = ['expresion']
+
+class Tipo_Nfloat(AST):
+    _fields = ['expresion']
+
+
 # class ConstDeclaration(AST):
 #     _fields = ['id', 'value']
 
@@ -576,6 +484,10 @@ class ReadStatements(AST):
 # class StoreVar(AST):
     # _fields = ['name']
 
+
+class Return(AST):
+    _fields = ['expresion']
+
 class UnaryOp(AST):
     _fields = ['op', 'left']
 
@@ -596,6 +508,12 @@ class BinaryOp(AST):
 
 #     def append(self, e):
 #         self.expressions.append(e)
+class Numero(AST):
+    _fields = ['numero']
+
+class Literal(AST):
+    _fields = ['valor']
+
 
 class Empty(AST):
     _fields = []
@@ -722,12 +640,35 @@ def flatten(top):
     return d.nodes
 
 # Build the parser
-parser = yacc.yacc()
 
-pruebas = open("Pruebas.pas", "r")
+<<<<<<< HEAD
+pruebas = open("test2/hello.pas", "r")
 str = pruebas.read()
 # print str
 # Give the lexer some input
+=======
+def make_parser():
+    parser = yacc.yacc()
+    return parser
 
-x = parser.parse(str)
-x.pprint()
+if __name__ == '__main__':
+    import mpaslex
+    import sys
+    lexer = mpaslex.make_lexer()
+    parser = make_parser()
+    program = parser.parse(open(sys.argv[1]).read())
+    program.pprint()
+    # Output the resulting parse tree structure
+
+
+
+# parser = yacc.yacc()
+
+# pruebas = (open(sys.argv[1]).read())
+# str = pruebas.read()
+# # print str
+# # Give the lexer some input
+>>>>>>> origin/master
+
+# x = parser.parse(str)
+# x.pprint()
