@@ -300,7 +300,10 @@ def p_declaraciones_dec(p):
 
 
 def p_location(p):
-    "location : ID"
+    '''
+        location : ID
+                 | ID LCORCH expresion RCORCH
+    '''
 
 def p_index(p):
     "index : expresion"
