@@ -254,7 +254,7 @@ def p_declaracion_es(p):
     '''
         declaracion : BEGIN declaraciones END
     '''
-    p[0] = Declaraciones(p[2])
+    p[0] = Declaraciones([p[2]])
 
 
 
@@ -297,18 +297,18 @@ def p_tipo_INT(p):
              | NINT LCORCH expresion RCORCH
     '''
     if len(p) == 5:
-        p[0] = Tipo_Nint(p[3])
+        p[0] = ArrayInt(p[3])
     else:
-        p[0] = Tipo_Nint(None)
+        p[0] = p[1]
 
 def p_tipo_FLOAT(p):
     ''' tipo : NFLOAT
             | NFLOAT LCORCH expresion RCORCH
     '''
     if len(p) == 5:
-        p[0] = Tipo_Nfloat(p[3])
+        p[0] = ArrayFloat(p[3])
     else:
-        p[0] = Tipo_Nfloat(None)
+        p[0] = p[1]
 
 def p_expresion_operadores_bin(p):
     '''  expresion : expresion PLUS expresion
@@ -316,14 +316,7 @@ def p_expresion_operadores_bin(p):
                   | expresion TIMES expresion
                   | expresion DIVIDE expresion
                   '''
-    if p[2] == 'PLUS':
-        p[0] = BinaryOp(p[2], p[1], p[3])
-    elif p[2] == 'MINUS':
-        p[0] = BinaryOp(p[2], p[1], p[3])
-    elif p[2] == 'TIMES':
-        p[0] = BinaryOp(p[2], p[1], p[3])
-    elif p[2] == 'DIVIDE':
-        p[0] = BinaryOp(p[2], p[1], p[3])
+    p[0] = BinaryOp(p[2], p[1], p[3])
 
 
 def p_expresion_signo(p):
@@ -351,11 +344,12 @@ def p_expresion_ID(p):
                  | ID LCORCH expresion RCORCH
     '''
     if len(p) > 4:
-        p[0] = ExpresionID(p[1], p[3])
-    elif len(p) == 4:
-        p[0] = ExpresionID(p[1], None)
+        if p[2] == 'LPAREN':
+            p[0] = ExpresionFun(p[1], p[3])
+        else:
+            p[0] = ExpresionIdArray(p[1], p[3])
     else:
-        p[0]= p[1]
+        p[0] = ExpresionID(p[1])
 
 def p_expresion_ID_error(p):
     '''expresion : ID LPAREN error RPAREN
@@ -446,7 +440,7 @@ if __name__ == '__main__':
     parser = make_parser()
     program = parser.parse(open(sys.argv[1]).read())
     program.pprint()
-    print "Succeded"
+    #print "Succeded"
     # Output the resulting parse tree structure
 
 
