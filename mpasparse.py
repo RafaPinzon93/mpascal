@@ -60,7 +60,7 @@ def p_funcion_error2(p):
 
 def p_funcion_error3(p):
     "funcion : FUN ID LPAREN mparametros RPAREN locales BEGIN error END"
-    print("Funcion con declaraciones mal formadas %s" % p[8].value)
+    print("Funcion con declaraciones mal formadas '%s' en la linea %s" % (p[8].value,p[8].lineno))
     p[0] = None
     p.parser.error = 1
 
