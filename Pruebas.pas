@@ -1,16 +1,7 @@
-<<<<<<< HEAD
-fun main()
-begin
-   skip
-end
 fun foo()
-begin
-    break
-end
-=======
-fun foo()
-    lala>1
     begin
-        break
+
+       a := 0;
+       if (a<1) then print ("la") else return (skp)
+
     end
->>>>>>> ff9ee3d000d89436e780ff8fc362ad7dca649587
