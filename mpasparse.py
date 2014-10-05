@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import ply.lex as lex
 import ply.yacc as yacc
 from mpaslex import tokens
 from mpasast import *
@@ -48,25 +47,31 @@ def p_funcion(p):
 #errores experimentales
 def p_funcion_error1(p):
     "funcion : FUN ID LPAREN error RPAREN locales BEGIN declaraciones END"
-    print("Funcion con parametros mal formados %s" % p[3])
+    print("Funcion con parametros mal formados ")
     p[0] = None
     p.parser.error = 1
 
-def p_funcion_error2(p):
-    "funcion : FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END"
-    print("Funcion con locales mal formadas %s" % p[8].value)
-    p[0] = None
-    p.parser.error = 1
+#def p_funcion_error2(p):
+    #"funcion : FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END"
+    #print("Funcion con locales mal formadas")
+    #p[0] = None
+    #p.parser.error = 1
 
 def p_funcion_error3(p):
     "funcion : FUN ID LPAREN mparametros RPAREN locales BEGIN error END"
-    print("Funcion con declaraciones mal formadas '%s' en la linea %s" % (p[8].value,p[8].lineno))
+    print("Funcion con declaraciones mal formadas")
     p[0] = None
-    p.parser.error = 1
 
 def p_parametro(p):
     '''parametro : ID DECLARATION tipo'''
     p[0] = Parametro(p[1], p[3])
+
+def p_parametro_error(p):
+    '''parametro : ID DECLARATION error'''
+    print("Parametro con tipo mal formado" )
+    p[0] = None
+    p.parser.error = 1
+
 
 
 def p_mparametros(p):
@@ -79,10 +84,25 @@ def p_mparametros(p):
     else:
         p[0] = Parameters([p[1]])
 
-# def p_declaracionvar(p):
-#     '''declaracionvar : ID DECLARATION tipo
-#     '''
-#     p[0] = Locales(p[1], p[3])
+
+def p_mparametros_error1(p):
+    '''mparametros : error COMMA parametro'''
+    print("parametros con error en los parametros" )
+    p[0] = None
+    p.parser.error = 1
+
+def p_funcion_error2(p):
+    "funcion : FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END"
+    print("Funcion con locales mal formadas")
+    p[0] = None
+    p.parser.error = 1
+
+def p_mparametros_error3(p):
+    '''mparametros : mparametros COMMA error'''
+    print("Parametros con error en el parametro simbolo = '%s' linea = %s" %(p[3].value, p[3].lineno))
+    p[0] = None
+    p.parser.error = 1
+
 
 
 def p_locales(p):
@@ -91,6 +111,7 @@ def p_locales(p):
               | empty
     '''
     p[0] = Locales(p[1])
+
 
 def p_local(p):
     '''
@@ -107,6 +128,26 @@ def p_local(p):
 #     '''locales : empty '''
 #     p[0] = p[1]
 
+def p_local_error(p):
+    '''local : local error SEMI
+             | local parametro error
+             | local funcion error
+             | error SEMI
+             | funcion error
+             | parametro error'''
+    if len(p) == 4:
+        if p[3] == 'SEMI':
+            print ("Error en local simbolo = '%s' linea = %s" %(p[2].value, p[2].lineno))
+        else:
+            print ("Error en local simbolo = '%s' linea = %s" %(p[3].value, p[3].lineno))
+    elif len(p) == 3:
+        if p[2] == 'SEMI':
+            print ("Error en local simbolo = '%s' linea = %s" %(p[1].value, p[1].lineno))
+        else:
+            print ("Error en local simbolo = '%s' linea = %s" %(p[1].value, p[1].lineno))
+    p[0] = None
+    p.parser.error = 1
+
 def p_asignacion(p):
     '''asignacion : ID ASSIGN expresion
                   | ID LCORCH index RCORCH ASSIGN expresion
@@ -114,9 +155,33 @@ def p_asignacion(p):
     # if len(p) == 4: p[0] = (p[1], p[4])
     # elif len(p) > 6: p[0] = (p[1], p[3], p[7])
 
+def p_asignacion_error(p):
+    '''asignacion : ID ASSIGN error
+                  | ID LCORCH error RCORCH ASSIGN expresion
+                  | ID LCORCH index RCORCH ASSIGN error
+                  | ID error index RCORCH ASSIGN expresion
+                  | ID error index error ASSIGN expresion
+                  | ID LCORCH index error ASSIGN expresion
+                  '''
+    print ("Error en asignacion")
+    p[0] = None
+    p.parser.error = 1
+
 def p_declaracion_while(p):
     '''declaracion : WHILE relacion DO declaracion'''
     p[0] = WhileStatement(p[2], p[1])
+
+def p_declaracion_location(p):
+    "declaracion : location ASSIGN expresion"
+
+def p_declaracion_while_error(p):
+    '''declaracion : WHILE error DO declaracion
+                   | WHILE relacion DO error'''
+    print ("Error en formacion de declaracion WHILE")
+    p[0] = None
+    p.parser.error = 1
+
+
 
 def p_declaracion_if(p):
     '''declaracion : IF relacion THEN declaracion
@@ -127,6 +192,14 @@ def p_declaracion_if(p):
     else:
         p[0] = IfStatement(p[2], p[4], p[6])
 
+def p_declaracion_if_error(p):
+    '''declaracion : IF error THEN declaracion
+                   | IF relacion THEN error
+                   | IF relacion THEN declaracion ELSE error'''
+    print ("Error en formacion de declaracion IF")
+    p[0] = None
+    p.parser.error = 1
+
 
 def p_declaracion_print(p):
     '''
@@ -134,18 +207,44 @@ def p_declaracion_print(p):
     '''
     p[0] = PrintStatement(p[3])
 
+def p_declaracion_print_error(p):
+    '''declaracion : PRINT LPAREN error RPAREN
+                   | PRINT LPAREN STRING error
+                   | PRINT error STRING RPAREN
+                   | PRINT error STRING error'''
+    print ("Error en formacion de declaracion PRINT")
+    p[0] = None
+    p.parser.error = 1
+
 def p_declaracion_write(p):
     '''
         declaracion : WRITE LPAREN expresion RPAREN
     '''
     p[0] = WriteStatements(p[3])
 
+def p_declaracion_write_error(p):
+    '''declaracion : WRITE LPAREN error RPAREN
+                   | WRITE error expresion RPAREN
+                   | WRITE LPAREN expresion error
+                   | WRITE error expresion error'''
+    print ("Error en formacion de declaracion WRITE")
+    p[0] = None
+    p.parser.error = 1
 
 def p_declaracion_read(p):
     '''
-        declaracion : READ LPAREN expresion RPAREN
+        declaracion : READ LPAREN location RPAREN
     '''
     p[0] = ReadStatements(p[3])
+
+def p_declaracion_read_error(p):
+    '''declaracion : READ LPAREN error RPAREN
+                   | READ error location RPAREN
+                   | READ LPAREN location error
+                   | READ error location error'''
+    print ("Error en formacion de declaracion READ")
+    p[0] = None
+    p.parser.error = 1
 
 def p_declaracion_return(p):
     '''
@@ -154,11 +253,21 @@ def p_declaracion_return(p):
     p[0] = Return(p[2])
 
 
+def p_declaracion_return_error(p):
+    '''
+        declaracion : RETURN error
+    '''
+    print ("error en formacion de declaracion RETURN")
+    p[0] = None
+    p.parser.error = 1
+
 def p_declaracion_es(p):
     '''
         declaracion : BEGIN declaraciones END
     '''
     p[0] = Declaraciones([p[2]])
+
+
 
 def p_declaracion_exp(p):
     '''
@@ -184,20 +293,14 @@ def p_declaraciones(p):
     p[1].append(p[3])
     p[0] = p[1]
 
-# def p_declaracion_b(p):
-#     '''declaraciones : declaraciones BREAK'''
-#     p[1].append(p[2])
-#     p[0] = p[1]
-
-
-# def p_declaracion_s(p):
-#     '''declaraciones : declaraciones SKIP'''
-#     p[1].append(p[2])
-#     p[0] = p[1]
 
 def p_declaraciones_dec(p):
     '''declaraciones : declaracion'''
     p[0] = Declaraciones([p[1]])
+
+
+def p_location(p):
+    "location : ID"
 
 def p_index(p):
     "index : expresion"
@@ -230,6 +333,7 @@ def p_expresion_operadores_bin(p):
                   '''
     p[0] = BinaryOp(p[2], p[1], p[3])
 
+
 def p_expresion_signo(p):
     ''' expresion : MINUS expresion %prec UNARY
                  | PLUS expresion %prec UNARY '''
@@ -261,6 +365,16 @@ def p_expresion_ID(p):
             p[0] = ExpresionIdArray(p[1], p[3])
     else:
         p[0] = ExpresionID(p[1])
+
+def p_expresion_ID_error(p):
+    '''expresion : ID LPAREN error RPAREN
+                 | ID LPAREN argumentos error
+                 | ID error argumentos RPAREN
+                 | ID LPAREN error
+                 | ID error expresion RCORCH'''
+    print ("Error en formacion de expresion ID")
+    p[0] = None
+    p.parser.error = 1
 
 
 def p_expresion_numero(p):
@@ -320,7 +434,13 @@ def p_empty(p):
     pass
 
 def p_error(p):
-    print("Error %s" %p)
+    # x= yacc.token()
+    # print ("Error simbolo '%s' linea = %s" %(x.value, x.lineno))
+    if p:
+        print ("Error simbolo '%s' linea = %s" %(p.value, p.lineno)),
+    else:
+        print("EOF Syntax error. No more input.")
+
 
 
 
