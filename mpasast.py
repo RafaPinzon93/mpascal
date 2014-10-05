@@ -173,13 +173,13 @@ class Nfloat(AST):
     def __str__(self):
         return self.__class__.__name__+" ("+ str(vars(self).values()[0])+")"
 
-class Tipo_Nint(AST):
+class ArrayInt(AST):
     _fields = ['expresion']
 
     def __str__(self):
         return self.__class__.__name__+" ("+ str(vars(self).values()[0])+")"
 
-class Tipo_Nfloat(AST):
+class ArrayFloat(AST):
     _fields = ['expresion']
 
     def __str__(self):
@@ -204,11 +204,23 @@ class WriteStatements(AST):
 class ReadStatements(AST):
     _fields = ['expr']
 
-class ExpresionID(AST):
+class ExpresionIdArray(AST):
     _fields = ['id', 'expresion']
 
     def __str__(self):
         return self.__class__.__name__+" ("+ str(vars(self).values()[1])+")"
+
+class ExpresionFun(AST):
+    _fields = ['id', 'expresion']
+
+    def __str__(self):
+        return self.__class__.__name__+" ("+ str(vars(self).values()[1])+")"
+
+class ExpresionID(AST):
+    _fields = ['id']
+
+    def __str__(self):
+        return self.__class__.__name__+" ("+ str(vars(self).values()[0])+")"
 
 # class LoadLocation(AST):
 #     _fields = ['name']
@@ -218,8 +230,14 @@ class ExpresionID(AST):
 class RelOp(AST):
     _fields = ['op', 'left', 'right']
 
+    def __str__(self):
+        return self.__class__.__name__+" ("+ str(vars(self).values()[2])+")"
+
 class Return(AST):
     _fields = ['expresion']
+
+    def __str__(self):
+        return self.__class__.__name__+" ("+ str(vars(self).values())+")"
 
 class UnaryOp(AST):
     _fields = ['op', 'left']
@@ -227,6 +245,8 @@ class UnaryOp(AST):
 class BinaryOp(AST):
     _fields = ['op', 'left', 'right']
 
+    def __str__(self):
+        return self.__class__.__name__+" ("+ str(vars(self).values()[2])+")"
 
 class Numero(AST):
     _fields = ['numero']
