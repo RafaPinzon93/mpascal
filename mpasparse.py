@@ -22,18 +22,43 @@ def p_programa_funciones(p):
     # p[1].append(p[2])
     # p[0] = p[1]
 
+# errores experimentales
+def p_programa_funciones_error(p):
+    "programa : error"
+    p[0] = None
+    p.parser.error = 1
+
 def p_programa_funcion(p):
     "programa : funcion"
-    p[0] = Program([p[1]], funciones = [p[1]])
+    p[0] = Program([p[1]])
     # print p[0]
 
 def p_funcion(p):
     "funcion : FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END"
     p[0] = Funcion(p[2], p[4], p[6], p[8])
 
+#errores experimentales
+def p_funcion_error1(p):
+    "funcion : FUN ID LPAREN error RPAREN locales BEGIN declaraciones END"
+    print("Funcion con parametros mal formados %s" % p[3])
+    p[0] = None
+    p.parser.error = 1
+
+def p_funcion_error2(p):
+    "funcion : FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END"
+    print("Funcion con locales mal formadas %s" % p[8].value)
+    p[0] = None
+    p.parser.error = 1
+
+def p_funcion_error3(p):
+    "funcion : FUN ID LPAREN mparametros RPAREN locales BEGIN error END"
+    print("Funcion con declaraciones mal formadas %s" % p[8].value)
+    p[0] = None
+    p.parser.error = 1
+
 def p_parametro(p):
     '''parametro : ID DECLARATION tipo'''
-    # p[0] = VarDeclaration(p[1], p[3])
+    p[0] = Parametro(p[1], p[3])
 
 def p_mparametros(p):
     '''mparametros : mparametros COMMA parametro
@@ -219,7 +244,8 @@ def p_expresion_parent(p):
     '''
     if len(p) == 3:
         p[0] = p[2]
-    else: p[0] = None
+    else:
+        p[0] = None
 
 
 def p_expresion_ID(p):
@@ -307,10 +333,8 @@ def p_empty(p):
     pass
 
 def p_error(p):
-    if p:
-        error(p.lineno, "Syntax error in input at token '%s'" % p.value)
-    else:
-        error("EOF","Syntax error. No more input.")
+    if not p:
+        print("SYNTAX ERROR AT EOF")
 
 #---------------------------------------------------------------------
 #AST Structure
@@ -351,16 +375,16 @@ class AST(object):
             print("%s%s" % (" "*(4*depth),node))
 
     def __repr__(self):
-<<<<<<< HEAD
-        return ' '.join(self._fields)
-=======
+
+        # return ' '.join(self._fields)
+
         excluded = {"lineno"}
-        return "{}[{}]".format(self.__class__.__name__,
-        {key: value
-        for key, value in vars(self).items()
-        if not key.startswith("_") and not key in excluded})
-        #return "{}".format(self.__class__.__name__)#vars(self))
->>>>>>> origin/master
+        return "{}".format(self.__class__.__name__)
+        # {key: value
+        # for key, value in vars(self).items()
+        # if not key.startswith("_") and not key in excluded})
+        # #return "{}".format(self.__class__.__name__)#vars(self))
+
 
 #No la entiendo muy bien
 def validate_fields(**fields):
@@ -426,7 +450,7 @@ class Parameters(AST):
         self.param_decls.append(e)
 
 class Parametro(AST):
-    _fields = ['parametro']
+    _fields = ['id', 'parametro']
 
 @validate_fields(argumentos = list)
 class Argumentos(AST):
@@ -462,9 +486,6 @@ class Tipo_Nfloat(AST):
 
 # class ConstDeclaration(AST):
 #     _fields = ['id', 'value']
-
-# class VarDeclaration(AST):
-#     _fields = ['id', 'typename', 'value']
 
 class IfStatement(AST):
     _fields = ['condition', 'then_b', 'else_b']
@@ -641,12 +662,10 @@ def flatten(top):
 
 # Build the parser
 
-<<<<<<< HEAD
-pruebas = open("test2/hello.pas", "r")
-str = pruebas.read()
+
 # print str
 # Give the lexer some input
-=======
+
 def make_parser():
     parser = yacc.yacc()
     return parser
@@ -661,14 +680,3 @@ if __name__ == '__main__':
     # Output the resulting parse tree structure
 
 
-
-# parser = yacc.yacc()
-
-# pruebas = (open(sys.argv[1]).read())
-# str = pruebas.read()
-# # print str
-# # Give the lexer some input
->>>>>>> origin/master
-
-# x = parser.parse(str)
-# x.pprint()
