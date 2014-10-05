@@ -1355,6 +1355,8 @@ state 66
 
     PLUS            reduce using rule 39 (expresion -> MINUS expresion .)
     MINUS           reduce using rule 39 (expresion -> MINUS expresion .)
+    TIMES           reduce using rule 39 (expresion -> MINUS expresion .)
+    DIVIDE          reduce using rule 39 (expresion -> MINUS expresion .)
     END             reduce using rule 39 (expresion -> MINUS expresion .)
     SEMI            reduce using rule 39 (expresion -> MINUS expresion .)
     RCORCH          reduce using rule 39 (expresion -> MINUS expresion .)
@@ -1371,13 +1373,11 @@ state 66
     AND             reduce using rule 39 (expresion -> MINUS expresion .)
     OR              reduce using rule 39 (expresion -> MINUS expresion .)
     THEN            reduce using rule 39 (expresion -> MINUS expresion .)
-    TIMES           shift and go to state 81
-    DIVIDE          shift and go to state 78
 
-  ! TIMES           [ reduce using rule 39 (expresion -> MINUS expresion .) ]
-  ! DIVIDE          [ reduce using rule 39 (expresion -> MINUS expresion .) ]
   ! PLUS            [ shift and go to state 79 ]
   ! MINUS           [ shift and go to state 80 ]
+  ! TIMES           [ shift and go to state 81 ]
+  ! DIVIDE          [ shift and go to state 78 ]
 
 
 state 67
@@ -1465,6 +1465,8 @@ state 70
 
     PLUS            reduce using rule 40 (expresion -> PLUS expresion .)
     MINUS           reduce using rule 40 (expresion -> PLUS expresion .)
+    TIMES           reduce using rule 40 (expresion -> PLUS expresion .)
+    DIVIDE          reduce using rule 40 (expresion -> PLUS expresion .)
     END             reduce using rule 40 (expresion -> PLUS expresion .)
     SEMI            reduce using rule 40 (expresion -> PLUS expresion .)
     RCORCH          reduce using rule 40 (expresion -> PLUS expresion .)
@@ -1481,13 +1483,11 @@ state 70
     AND             reduce using rule 40 (expresion -> PLUS expresion .)
     OR              reduce using rule 40 (expresion -> PLUS expresion .)
     THEN            reduce using rule 40 (expresion -> PLUS expresion .)
-    TIMES           shift and go to state 81
-    DIVIDE          shift and go to state 78
 
-  ! TIMES           [ reduce using rule 40 (expresion -> PLUS expresion .) ]
-  ! DIVIDE          [ reduce using rule 40 (expresion -> PLUS expresion .) ]
   ! PLUS            [ shift and go to state 79 ]
   ! MINUS           [ shift and go to state 80 ]
+  ! TIMES           [ shift and go to state 81 ]
+  ! DIVIDE          [ shift and go to state 78 ]
 
 
 state 71
