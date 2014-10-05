@@ -5,17 +5,20 @@ from mpaslex import tokens
 from mpasast import *
 
 precedence = (
-    ('left', 'RCORCH'),
-    ('left', 'RPAREN'),
-    ('left', 'ELSE'),
+    ('right', 'ASSIGN'),
     ('left', 'OR'),
-    ('right', 'AND'),
+    ('left', 'AND'),
+    ('left', 'EQUALS', 'NE'),
+    ('left', 'LT', 'LE', 'GT', 'GE'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
     ('left', 'ID'),
     ('left', 'SKIP'),
     ('right', 'SEMI'),
     ('right', 'UNARY'),
+    ('left', 'RCORCH'),
+    ('left', 'RPAREN'),
+
 )
 
 def p_programa_funciones(p):
@@ -25,9 +28,15 @@ def p_programa_funciones(p):
     # p[1].append(p[2])
     # p[0] = p[1]
 
+# errores experimentales
+def p_programa_funciones_error(p):
+    "programa : error"
+    p[0] = None
+    p.parser.error = 1
+
 def p_programa_funcion(p):
     "programa : funcion"
-    p[0] = Program([p[1]], funciones = [p[1]])
+    p[0] = Program([p[1]])
     # print p[0]
 
 def p_funcion(p):
@@ -36,10 +45,29 @@ def p_funcion(p):
     '''
     p[0] = Funcion(p[2], p[4], p[6], p[8])
 
+#errores experimentales
+def p_funcion_error1(p):
+    "funcion : FUN ID LPAREN error RPAREN locales BEGIN declaraciones END"
+    print("Funcion con parametros mal formados %s" % p[3])
+    p[0] = None
+    p.parser.error = 1
+
+def p_funcion_error2(p):
+    "funcion : FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END"
+    print("Funcion con locales mal formadas %s" % p[8].value)
+    p[0] = None
+    p.parser.error = 1
+
+def p_funcion_error3(p):
+    "funcion : FUN ID LPAREN mparametros RPAREN locales BEGIN error END"
+    print("Funcion con declaraciones mal formadas %s" % p[8].value)
+    p[0] = None
+    p.parser.error = 1
+
 def p_parametro(p):
     '''parametro : ID DECLARATION tipo'''
     p[0] = Parametro(p[1], p[3])
-    # p[0] = VarDeclaration(p[1], p[3])
+
 
 def p_mparametros(p):
     '''mparametros : mparametros COMMA parametro
@@ -223,7 +251,8 @@ def p_expresion_parent(p):
     '''
     if len(p) == 3:
         p[0] = p[2]
-    else: p[0] = None
+    else:
+        p[0] = None
 
 
 def p_expresion_ID(p):
@@ -300,7 +329,12 @@ def p_error(p):
     print("Error %s" %p)
 
 
+
 # Build the parser
+
+
+# print str
+# Give the lexer some input
 
 def make_parser():
     parser = yacc.yacc()
@@ -317,13 +351,3 @@ if __name__ == '__main__':
     # Output the resulting parse tree structure
 
 
-
-# parser = yacc.yacc()
-
-# pruebas = (open(sys.argv[1]).read())
-# str = pruebas.read()
-# # print str
-# # Give the lexer some input
-
-# x = parser.parse(str)
-# x.pprint()
