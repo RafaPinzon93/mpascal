@@ -304,6 +304,10 @@ def p_location(p):
         location : ID
                  | ID LCORCH expresion RCORCH
     '''
+    if len(p) == 2:
+        p[0] = Location(p[1])
+    else:
+        p[0] = LocationArray(p[1], p[3])
 
 def p_index(p):
     "index : expresion"

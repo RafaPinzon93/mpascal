@@ -222,6 +222,17 @@ class ExpresionID(AST):
     def __str__(self):
         return self.__class__.__name__+" ("+ str(vars(self).values()[0])+")"
 
+class Location(AST):
+    _fields = ['id']
+
+    def __str__(self):
+        return self.__class__.__name__+" ("+ str(vars(self).values()[0])+")"
+
+class LocationArray(AST):
+    _fields = ['id', 'expresion']
+
+    def __str__(self):
+        return self.__class__.__name__+" ("+ str(vars(self).values()[1])+")"
 # class LoadLocation(AST):
 #     _fields = ['name']
 
