@@ -2,8 +2,8 @@ Created by PLY version 3.4 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    INVSTRING
     NEWLINE
+    INVSTRING
     INVCOMNENT
     CONTINUE
 
@@ -1317,39 +1317,6 @@ state 65
 
 state 66
 
-<<<<<<< HEAD
-    (39) expresion -> MINUS expresion .
-    (35) expresion -> expresion . PLUS expresion
-    (36) expresion -> expresion . MINUS expresion
-    (37) expresion -> expresion . TIMES expresion
-    (38) expresion -> expresion . DIVIDE expresion
-
-    PLUS            reduce using rule 39 (expresion -> MINUS expresion .)
-    MINUS           reduce using rule 39 (expresion -> MINUS expresion .)
-    TIMES           reduce using rule 39 (expresion -> MINUS expresion .)
-    DIVIDE          reduce using rule 39 (expresion -> MINUS expresion .)
-    END             reduce using rule 39 (expresion -> MINUS expresion .)
-    SEMI            reduce using rule 39 (expresion -> MINUS expresion .)
-    RCORCH          reduce using rule 39 (expresion -> MINUS expresion .)
-    ELSE            reduce using rule 39 (expresion -> MINUS expresion .)
-    LT              reduce using rule 39 (expresion -> MINUS expresion .)
-    GT              reduce using rule 39 (expresion -> MINUS expresion .)
-    LE              reduce using rule 39 (expresion -> MINUS expresion .)
-    GE              reduce using rule 39 (expresion -> MINUS expresion .)
-    EQUALS          reduce using rule 39 (expresion -> MINUS expresion .)
-    NE              reduce using rule 39 (expresion -> MINUS expresion .)
-    RPAREN          reduce using rule 39 (expresion -> MINUS expresion .)
-    COMMA           reduce using rule 39 (expresion -> MINUS expresion .)
-    DO              reduce using rule 39 (expresion -> MINUS expresion .)
-    AND             reduce using rule 39 (expresion -> MINUS expresion .)
-    OR              reduce using rule 39 (expresion -> MINUS expresion .)
-    THEN            reduce using rule 39 (expresion -> MINUS expresion .)
-
-  ! PLUS            [ shift and go to state 79 ]
-  ! MINUS           [ shift and go to state 80 ]
-  ! TIMES           [ shift and go to state 81 ]
-  ! DIVIDE          [ shift and go to state 78 ]
-=======
     (38) tipo -> NFLOAT LCORCH expresion . RCORCH
     (39) expresion -> expresion . PLUS expresion
     (40) expresion -> expresion . MINUS expresion
@@ -1361,7 +1328,6 @@ state 66
     MINUS           shift and go to state 90
     TIMES           shift and go to state 91
     DIVIDE          shift and go to state 88
->>>>>>> ff9ee3d000d89436e780ff8fc362ad7dca649587
 
 
 state 67
@@ -1474,45 +1440,11 @@ state 69
 
 state 70
 
-<<<<<<< HEAD
-    (40) expresion -> PLUS expresion .
-    (35) expresion -> expresion . PLUS expresion
-    (36) expresion -> expresion . MINUS expresion
-    (37) expresion -> expresion . TIMES expresion
-    (38) expresion -> expresion . DIVIDE expresion
-
-    PLUS            reduce using rule 40 (expresion -> PLUS expresion .)
-    MINUS           reduce using rule 40 (expresion -> PLUS expresion .)
-    TIMES           reduce using rule 40 (expresion -> PLUS expresion .)
-    DIVIDE          reduce using rule 40 (expresion -> PLUS expresion .)
-    END             reduce using rule 40 (expresion -> PLUS expresion .)
-    SEMI            reduce using rule 40 (expresion -> PLUS expresion .)
-    RCORCH          reduce using rule 40 (expresion -> PLUS expresion .)
-    ELSE            reduce using rule 40 (expresion -> PLUS expresion .)
-    LT              reduce using rule 40 (expresion -> PLUS expresion .)
-    GT              reduce using rule 40 (expresion -> PLUS expresion .)
-    LE              reduce using rule 40 (expresion -> PLUS expresion .)
-    GE              reduce using rule 40 (expresion -> PLUS expresion .)
-    EQUALS          reduce using rule 40 (expresion -> PLUS expresion .)
-    NE              reduce using rule 40 (expresion -> PLUS expresion .)
-    RPAREN          reduce using rule 40 (expresion -> PLUS expresion .)
-    COMMA           reduce using rule 40 (expresion -> PLUS expresion .)
-    DO              reduce using rule 40 (expresion -> PLUS expresion .)
-    AND             reduce using rule 40 (expresion -> PLUS expresion .)
-    OR              reduce using rule 40 (expresion -> PLUS expresion .)
-    THEN            reduce using rule 40 (expresion -> PLUS expresion .)
-
-  ! PLUS            [ shift and go to state 79 ]
-  ! MINUS           [ shift and go to state 80 ]
-  ! TIMES           [ shift and go to state 81 ]
-  ! DIVIDE          [ shift and go to state 78 ]
-=======
     (6) funcion -> FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END .
 
     FUN             reduce using rule 6 (funcion -> FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END .)
     $end            reduce using rule 6 (funcion -> FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END .)
     SEMI            reduce using rule 6 (funcion -> FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END .)
->>>>>>> ff9ee3d000d89436e780ff8fc362ad7dca649587
 
 
 state 71
@@ -1662,6 +1594,8 @@ state 76
     RPAREN          reduce using rule 43 (expresion -> MINUS expresion .)
     PLUS            reduce using rule 43 (expresion -> MINUS expresion .)
     MINUS           reduce using rule 43 (expresion -> MINUS expresion .)
+    TIMES           reduce using rule 43 (expresion -> MINUS expresion .)
+    DIVIDE          reduce using rule 43 (expresion -> MINUS expresion .)
     LT              reduce using rule 43 (expresion -> MINUS expresion .)
     GT              reduce using rule 43 (expresion -> MINUS expresion .)
     LE              reduce using rule 43 (expresion -> MINUS expresion .)
@@ -1677,13 +1611,11 @@ state 76
     AND             reduce using rule 43 (expresion -> MINUS expresion .)
     OR              reduce using rule 43 (expresion -> MINUS expresion .)
     THEN            reduce using rule 43 (expresion -> MINUS expresion .)
-    TIMES           shift and go to state 91
-    DIVIDE          shift and go to state 88
 
-  ! TIMES           [ reduce using rule 43 (expresion -> MINUS expresion .) ]
-  ! DIVIDE          [ reduce using rule 43 (expresion -> MINUS expresion .) ]
   ! PLUS            [ shift and go to state 89 ]
   ! MINUS           [ shift and go to state 90 ]
+  ! TIMES           [ shift and go to state 91 ]
+  ! DIVIDE          [ shift and go to state 88 ]
 
 
 state 77
@@ -1772,6 +1704,8 @@ state 80
     RPAREN          reduce using rule 44 (expresion -> PLUS expresion .)
     PLUS            reduce using rule 44 (expresion -> PLUS expresion .)
     MINUS           reduce using rule 44 (expresion -> PLUS expresion .)
+    TIMES           reduce using rule 44 (expresion -> PLUS expresion .)
+    DIVIDE          reduce using rule 44 (expresion -> PLUS expresion .)
     LT              reduce using rule 44 (expresion -> PLUS expresion .)
     GT              reduce using rule 44 (expresion -> PLUS expresion .)
     LE              reduce using rule 44 (expresion -> PLUS expresion .)
@@ -1787,13 +1721,11 @@ state 80
     AND             reduce using rule 44 (expresion -> PLUS expresion .)
     OR              reduce using rule 44 (expresion -> PLUS expresion .)
     THEN            reduce using rule 44 (expresion -> PLUS expresion .)
-    TIMES           shift and go to state 91
-    DIVIDE          shift and go to state 88
 
-  ! TIMES           [ reduce using rule 44 (expresion -> PLUS expresion .) ]
-  ! DIVIDE          [ reduce using rule 44 (expresion -> PLUS expresion .) ]
   ! PLUS            [ shift and go to state 89 ]
   ! MINUS           [ shift and go to state 90 ]
+  ! TIMES           [ shift and go to state 91 ]
+  ! DIVIDE          [ shift and go to state 88 ]
 
 
 state 81
