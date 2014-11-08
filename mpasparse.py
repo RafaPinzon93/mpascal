@@ -24,8 +24,7 @@ def p_programa_funciones(p):
     "programa : programa funcion"
     p[0] = p[1]
     p[0].append(p[2])
-    # p[1].append(p[2])
-    # p[0] = p[1]
+
 
 # errores experimentales
 def p_programa_funciones_error(p):
@@ -64,7 +63,7 @@ def p_funcion_error3(p):
 
 def p_parametro(p):
     '''parametro : ID DECLARATION tipo'''
-    p[0] = Parametro(p[1], p[3])
+    p[0] = Parametro(p.slice[1], p[3])
 
 def p_parametro_error(p):
     '''parametro : ID DECLARATION error'''
@@ -149,11 +148,13 @@ def p_local_error(p):
     p.parser.error = 1
 
 def p_asignacion(p):
-    '''asignacion : ID ASSIGN expresion
-                  | ID LCORCH index RCORCH ASSIGN expresion
-    '''
-    # if len(p) == 4: p[0] = (p[1], p[4])
-    # elif len(p) > 6: p[0] = (p[1], p[3], p[7])
+    "asignacion : ID ASSIGN expresion"
+    p[0] = Asignacion(p[1], p[3])
+
+
+def p_asignacion_index(p):
+    "asignacion : ID LCORCH index RCORCH ASSIGN expresion"
+    p[0] = AssignVecStatement(p[1], p[3], p[6])
 
 def p_asignacion_error(p):
     '''asignacion : ID ASSIGN error
@@ -171,8 +172,9 @@ def p_declaracion_while(p):
     '''declaracion : WHILE relacion DO declaracion'''
     p[0] = WhileStatement(p[2], p[1])
 
-def p_declaracion_location(p):
-    "declaracion : location ASSIGN expresion"
+# def p_declaracion_location(p):
+#     "declaracion : location ASSIGN expresion"
+#     p[0] = LocationExpr(p[1], p[3])
 
 def p_declaracion_while_error(p):
     '''declaracion : WHILE error DO declaracion
@@ -233,15 +235,13 @@ def p_declaracion_write_error(p):
 
 def p_declaracion_read(p):
     '''
-        declaracion : READ LPAREN location RPAREN
+        declaracion : READ LPAREN ID RPAREN
     '''
-    p[0] = ReadStatements(p[3])
+    p[0] = ReadStatements(p.slice[3])
 
 def p_declaracion_read_error(p):
     '''declaracion : READ LPAREN error RPAREN
-                   | READ error location RPAREN
-                   | READ LPAREN location error
-                   | READ error location error'''
+    '''
     print ("Error en formacion de declaracion READ")
     p[0] = None
     p.parser.error = 1
@@ -266,6 +266,7 @@ def p_declaracion_es(p):
         declaracion : BEGIN declaraciones END
     '''
     p[0] = Declaraciones([p[2]])
+    #p[0] = p[2]
 
 
 
@@ -286,12 +287,15 @@ def p_declaracion_assi(p):
     '''
         declaracion : asignacion
     '''
-    p[0] = p[1]#Asignacion(p[1])
+    p[0] = p[1]
+
+
 
 def p_declaraciones(p):
     '''declaraciones : declaraciones SEMI declaracion'''
-    p[1].append(p[3])
     p[0] = p[1]
+    p[0].append(p[3])
+
 
 
 def p_declaraciones_dec(p):
@@ -299,15 +303,16 @@ def p_declaraciones_dec(p):
     p[0] = Declaraciones([p[1]])
 
 
-def p_location(p):
-    '''
-        location : ID
-                 | ID LCORCH expresion RCORCH
-    '''
-    if len(p) == 2:
-        p[0] = Location(p[1])
-    else:
-        p[0] = LocationArray(p[1], p[3])
+
+# def p_location(p):
+#     '''
+#         location : ID
+#                  | ID LCORCH expresion RCORCH
+#     '''
+#     if len(p) == 2:
+#         p[0] = Location(p[1])
+#     else:
+#         p[0] = LocationArray(p[1], p[3])
 
 def p_index(p):
     "index : expresion"
@@ -353,10 +358,13 @@ def p_expresion_parent(p):
         expresion :  LPAREN expresion RPAREN
                   |  LPAREN RPAREN
     '''
-    if len(p) == 3:
+    if len(p) == 4:
         p[0] = p[2]
+
     else:
         p[0] = None
+
+
 
 
 def p_expresion_ID(p):
@@ -367,11 +375,11 @@ def p_expresion_ID(p):
     '''
     if len(p) > 4:
         if p[2] == 'LPAREN':
-            p[0] = ExpresionFun(p[1], p[3])
+            p[0] = ExpresionFun(p.slice[1], p[3])
         else:
-            p[0] = ExpresionIdArray(p[1], p[3])
+            p[0] = ExpresionIdArray(p.slice[1], p[3])
     else:
-        p[0] = ExpresionID(p[1])
+        p[0] = ExpresionID(p.slice[1])
 
 def p_expresion_ID_error(p):
     '''expresion : ID LPAREN error RPAREN
@@ -386,24 +394,24 @@ def p_expresion_ID_error(p):
 
 def p_expresion_numero(p):
     '''expresion : numero'''
-    p[0] = Numero(p[1])
+    p[0] = Numero(p.slice[1])
 
 
 def p_expresion_INT(p):
     "expresion : NINT LPAREN expresion RPAREN "
-    p[0] = Nint(p[3])
+    p[0] = Nint(p.slice[3])
 
 def p_expresion_FLOAT(p):
     '''expresion : NFLOAT LPAREN expresion RPAREN '''
-    p[0] = Nfloat(p[3])
+    p[0] = Nfloat(p.slice[3])
 
 def p_numero_INTEGER(p):
     '''numero : INTEGER'''
-    p[0] = Literal(p[1])
+    p[0] = Literal(p.slice[1])
 
 def p_numero_FLOAT(p):
      '''numero : FLOAT '''
-     p[0] = Literal(p[1])
+     p[0] = Literal(p.slice[1])
 
 def p_argumentos(p):
     '''argumentos : argumentos COMMA expresion
@@ -470,5 +478,3 @@ if __name__ == '__main__':
     program.pprint()
     #print "Succeded"
     # Output the resulting parse tree structure
-
-

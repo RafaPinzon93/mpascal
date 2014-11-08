@@ -21,3 +21,5 @@ se reconocerá la menor cantidad de expresiones ('*?' non-greedy) que comiencen 
 
 Para los comentarios inválidos: (/\*(.|\n)*(/\*)*)|\*/
 Le añadimos a diferencia de los comentarios válidos que reconociera más '/*' ó que reconociera un comentario cerrado sin abrir '*/'
+
+IMPORTANTE: al imprimir el árbol sintáctico de un programa muy grande por consola sale un error RuntimeError, comentar el "program.pprint()" en la linea 470 del mpasparse.py para que corran las pruebas grandes como "test2/bigexpr.pas".
