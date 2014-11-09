@@ -41,14 +41,10 @@ def p_funcion(p):
     '''
         funcion : FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END
     '''
-    p[0] = Funcion(p[2], p[4], p[6], p[8])
+    p[0] = Funcion(p.slice[2], p[4], p[6], p[8])
+
 
 #errores experimentales
-def p_funcion_error1(p):
-    "funcion : FUN ID LPAREN error RPAREN locales BEGIN declaraciones END"
-    print("Funcion con parametros mal formados ")
-    p[0] = None
-    p.parser.error = 1
 
 #def p_funcion_error2(p):
     #"funcion : FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END"
@@ -56,20 +52,11 @@ def p_funcion_error1(p):
     #p[0] = None
     #p.parser.error = 1
 
-def p_funcion_error3(p):
-    "funcion : FUN ID LPAREN mparametros RPAREN locales BEGIN error END"
-    print("Funcion con declaraciones mal formadas")
-    p[0] = None
+
 
 def p_parametro(p):
     '''parametro : ID DECLARATION tipo'''
     p[0] = Parametro(p.slice[1], p[3])
-
-def p_parametro_error(p):
-    '''parametro : ID DECLARATION error'''
-    print("Parametro con tipo mal formado" )
-    p[0] = None
-    p.parser.error = 1
 
 
 
@@ -84,11 +71,7 @@ def p_mparametros(p):
         p[0] = Parameters([p[1]])
 
 
-def p_mparametros_error1(p):
-    '''mparametros : error COMMA parametro'''
-    print("parametros con error en los parametros" )
-    p[0] = None
-    p.parser.error = 1
+
 
 def p_funcion_error2(p):
     "funcion : FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END"
@@ -96,33 +79,28 @@ def p_funcion_error2(p):
     p[0] = None
     p.parser.error = 1
 
-def p_mparametros_error3(p):
-    '''mparametros : mparametros COMMA error'''
-    print("Parametros con error en el parametro simbolo = '%s' linea = %s" %(p[3].value, p[3].lineno))
-    p[0] = None
-    p.parser.error = 1
 
-
-
-def p_locales(p):
-
-    '''locales : local
-              | empty
-    '''
-    p[0] = Locales(p[1])
 
 
 def p_local(p):
+
+    '''local : locales
+              | empty
     '''
-        local : local parametro SEMI
-              | local funcion SEMI
+    p[0] = Local(p[1])
+
+
+def p_locales(p):
+    '''
+        locales : locales parametro SEMI
+              | locales funcion SEMI
               | parametro SEMI
               | funcion SEMI
     '''
     if len(p) == 4:
         p[1].append(p[2])
         p[0] = p[1]
-    else: p[0] = Local([p[1]])
+    else: p[0] = Locales([p[1]])
 # def p_locales_empty(p):
 #     '''locales : empty '''
 #     p[0] = p[1]
@@ -149,39 +127,21 @@ def p_local_error(p):
 
 def p_asignacion(p):
     "asignacion : ID ASSIGN expresion"
-    p[0] = Asignacion(p[1], p[3])
+    p[0] = Asignacion(p.slice[1], p[3])
 
 
 def p_asignacion_index(p):
     "asignacion : ID LCORCH index RCORCH ASSIGN expresion"
-    p[0] = AssignVecStatement(p[1], p[3], p[6])
+    p[0] = AssignVecStatement(p.slice[1], p[3], p[6])
 
-def p_asignacion_error(p):
-    '''asignacion : ID ASSIGN error
-                  | ID LCORCH error RCORCH ASSIGN expresion
-                  | ID LCORCH index RCORCH ASSIGN error
-                  | ID error index RCORCH ASSIGN expresion
-                  | ID error index error ASSIGN expresion
-                  | ID LCORCH index error ASSIGN expresion
-                  '''
-    print ("Error en asignacion")
-    p[0] = None
-    p.parser.error = 1
 
 def p_declaracion_while(p):
     '''declaracion : WHILE relacion DO declaracion'''
-    p[0] = WhileStatement(p[2], p[1])
+    p[0] = WhileStatement(p[2], p[4])
 
 # def p_declaracion_location(p):
 #     "declaracion : location ASSIGN expresion"
 #     p[0] = LocationExpr(p[1], p[3])
-
-def p_declaracion_while_error(p):
-    '''declaracion : WHILE error DO declaracion
-                   | WHILE relacion DO error'''
-    print ("Error en formacion de declaracion WHILE")
-    p[0] = None
-    p.parser.error = 1
 
 
 
@@ -190,17 +150,11 @@ def p_declaracion_if(p):
                   | IF relacion THEN declaracion ELSE declaracion
     '''
     if len(p) == 5:
-        p[0] = IfStatement(p[2], p[4], None) #('IF', p[2], p[4])
+        p[0] = IfStatement(p[2], p[4]) #('IF', p[2], p[4])
     else:
-        p[0] = IfStatement(p[2], p[4], p[6])
+        p[0] = IfStatementElse(p[2], p[4], p[6])
 
-def p_declaracion_if_error(p):
-    '''declaracion : IF error THEN declaracion
-                   | IF relacion THEN error
-                   | IF relacion THEN declaracion ELSE error'''
-    print ("Error en formacion de declaracion IF")
-    p[0] = None
-    p.parser.error = 1
+
 
 
 def p_declaracion_print(p):
@@ -209,14 +163,7 @@ def p_declaracion_print(p):
     '''
     p[0] = PrintStatement(p[3])
 
-def p_declaracion_print_error(p):
-    '''declaracion : PRINT LPAREN error RPAREN
-                   | PRINT LPAREN STRING error
-                   | PRINT error STRING RPAREN
-                   | PRINT error STRING error'''
-    print ("Error en formacion de declaracion PRINT")
-    p[0] = None
-    p.parser.error = 1
+
 
 def p_declaracion_write(p):
     '''
@@ -239,27 +186,14 @@ def p_declaracion_read(p):
     '''
     p[0] = ReadStatements(p.slice[3])
 
-def p_declaracion_read_error(p):
-    '''declaracion : READ LPAREN error RPAREN
-    '''
-    print ("Error en formacion de declaracion READ")
-    p[0] = None
-    p.parser.error = 1
 
 def p_declaracion_return(p):
     '''
         declaracion : RETURN expresion
     '''
-    p[0] = Return(p[2])
+    p[0] = Return(p[2], p.slice[1])
 
 
-def p_declaracion_return_error(p):
-    '''
-        declaracion : RETURN error
-    '''
-    print ("error en formacion de declaracion RETURN")
-    p[0] = None
-    p.parser.error = 1
 
 def p_declaracion_es(p):
     '''
@@ -324,18 +258,18 @@ def p_tipo_INT(p):
              | NINT LCORCH expresion RCORCH
     '''
     if len(p) == 5:
-        p[0] = ArrayInt(p[3])
+        p[0] = ArrayInt(p[1], p.slice[3])
     else:
-        p[0] = p[1]
+        p[0] = ArrayInt(p[1], None)
 
 def p_tipo_FLOAT(p):
     ''' tipo : NFLOAT
             | NFLOAT LCORCH expresion RCORCH
     '''
     if len(p) == 5:
-        p[0] = ArrayFloat(p[3])
+        p[0] = ArrayFloat(p[1],p.slice[3])
     else:
-        p[0] = p[1]
+        p[0] = ArrayFloat(p[1], None)
 
 def p_expresion_operadores_bin(p):
     '''  expresion : expresion PLUS expresion
@@ -373,45 +307,40 @@ def p_expresion_ID(p):
                  | ID
                  | ID LCORCH expresion RCORCH
     '''
+
     if len(p) > 4:
-        if p[2] == 'LPAREN':
+        if p[2] == '(':
             p[0] = ExpresionFun(p.slice[1], p[3])
         else:
             p[0] = ExpresionIdArray(p.slice[1], p[3])
+    elif len(p) == 4:
+        p[0] = ExpresionFun(p.slice[1], None)
     else:
         p[0] = ExpresionID(p.slice[1])
 
-def p_expresion_ID_error(p):
-    '''expresion : ID LPAREN error RPAREN
-                 | ID LPAREN argumentos error
-                 | ID error argumentos RPAREN
-                 | ID LPAREN error
-                 | ID error expresion RCORCH'''
-    print ("Error en formacion de expresion ID")
-    p[0] = None
-    p.parser.error = 1
 
 
 def p_expresion_numero(p):
     '''expresion : numero'''
-    p[0] = Numero(p.slice[1])
+    p[0] = p[1]
 
 
 def p_expresion_INT(p):
     "expresion : NINT LPAREN expresion RPAREN "
-    p[0] = Nint(p.slice[3])
+    p[0] = Nint(p[1], p[3])
 
 def p_expresion_FLOAT(p):
     '''expresion : NFLOAT LPAREN expresion RPAREN '''
-    p[0] = Nfloat(p.slice[3])
+    p[0] = Nfloat(p[1],p[3])
+
 
 def p_numero_INTEGER(p):
     '''numero : INTEGER'''
-    p[0] = Literal(p.slice[1])
+    p[0] = NumeroInt(p.slice[1])
 
 def p_numero_FLOAT(p):
      '''numero : FLOAT '''
-     p[0] = Literal(p.slice[1])
+     p[0] = NumeroFloat(p.slice[1])
 
 def p_argumentos(p):
     '''argumentos : argumentos COMMA expresion
@@ -436,7 +365,7 @@ def p_relacion(p) :
             | LPAREN relacion RPAREN
     '''
     if len(p) == 4:
-        if p[1] == 'LPAREN':
+        if p[1] == '(':
             p[0] = p[2]
         else:
             p[0] = RelOp(p[2], p[1], p[3])
@@ -476,5 +405,6 @@ if __name__ == '__main__':
     parser = make_parser()
     program = parser.parse(open(sys.argv[1]).read())
     program.pprint()
+    program.semantico()
     #print "Succeded"
     # Output the resulting parse tree structure
