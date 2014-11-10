@@ -191,7 +191,7 @@ class Program(AST):
 
         m=get_symbol("main")
         if not m:
-            print(" Error : funcion main no definida.")
+            print(" Error : funcion main sin definir.")
 
     # def __repr__(self):
     #     return self.funciones[0]
@@ -311,7 +311,7 @@ class Asignacion(AST):
     def semantico(self):
         m=get_symbol(self.ID.value)
         if not m:
-            print("Error no existe la variable %s en la linea %s"% (self.ID.value,str(self.ID.lineno)))
+            print("Error,  la variable %s no existe en la linea %s"% (self.ID.value,str(self.ID.lineno)))
         else:
             self.expresion.semantico()
             if (m.type==self.expresion.type):
@@ -328,13 +328,13 @@ class AssignVecStatement(AST):
     def semantico(self):
         m=get_symbol(self.ID.value)
         if not m:
-            print("Error no existe la variable %s en la linea %s"% (self.ID.value,str(self.ID.lineno)))
+            print("Error, la variable %s  no existe en la linea %s"% (self.ID.value,str(self.ID.lineno)))
         else:
             self.expresion.semantico()
             self.index.semantico()
             if (m.type==self.expresion.type):
                 if self.index.type != int:
-                    print("Error en el indice de la variable %s en la linea %s los indices deben ser enteros"% (m.name,str(self.ID.lineno)))
+                    print("Error en el indice de la variable %s en la linea %s, se esperan indices enteros"% (m.name,str(self.ID.lineno)))
             else:
                 if not(self.expresion.type == None):
                     print("Error en la asignacion de %s en la linea %s , %s es de tipo %s y se le esta asignando un valor del tipo %s" % (m.name,str(self.ID.lineno),m.name,m.type,self.expresion.type))
@@ -428,7 +428,7 @@ class ReadStatements(AST):
         m=get_symbol(self.expr.value)
 
         if not m:
-            print("Error no existe la variable %s en la linea %s"% (self.expr.value,str(self.expr.lineno)))
+            print("Error, la variable %s no existe  en la linea %s"% (self.expr.value,str(self.expr.lineno)))
 
 class ExpresionIdArray(AST):
     type=None
@@ -442,7 +442,7 @@ class ExpresionIdArray(AST):
         n=get_symbol(self.ID.value)
         #print self.ID.value
         if not n:
-            print("Error no existe la variable %s en la linea %s"% (self.ID.value,str(self.ID.lineno)))
+            print("Error, la variable %s no existe  en la linea %s"% (self.ID.value,str(self.ID.lineno)))
         else:
             self.type=n.type
 
@@ -463,7 +463,7 @@ class ExpresionFun(AST):
         #     if m.params or m.params==0 : #what the fuck
         #         if m.params==0 :
         #             if self.arguments :
-        #                 print("Error en la linea %s : La funcion %s no requiere argumentos." % (self.ID.lineno,self.ID.value))
+        #                 print("Error en la linea %s : La funcion %s no espera argumentos." % (self.ID.lineno,self.ID.value))
         #             else:
         #                 self.type = m.type
         #         else:
@@ -493,18 +493,18 @@ class ExpresionFun(AST):
         #                     #             print("3.Error en la linea %s : Los tipos en el llamado de la funcion %s no son correctos. En el argumento %s (%s) se esperaba un %s y se ingreso un %s. " % (self.ID.lineno,self.ID.value,str(i+1),arg.ID.value,m.params[i].type,arg.type ))
         #                     i +=1
         #             else:
-        #                 print("Error en la linea %s : Faltan parametros en el llamado a la funcion %s, se esperaban %s parametros."% (self.ID.lineno,self.ID.value,len(m.params)))
+        #                 print("Error en la linea %s : Hacen falta parametros en el llamado a la funcion %s, se esperaban %s parametros."% (self.ID.lineno,self.ID.value,len(m.params)))
         #             self.type = m.type
         #     else:
         #         print("Error en la linea %s : La variable %s no es una funcion." % (self.ID.lineno, self.ID.value))
         # else:
-        #     print("Error en la linea %s : La funcion principal main no se puede llamar dentro de una funcion."% self.ID.lineno)
+        #     print("Error en la linea %s : No es posible llamar la funcion principal main dentro de una funcion."% self.ID.lineno)
         m=get_symbol(self.ID.value)
         if not m:
-            print("Error no existe la funcion \"%s\" en la linea \"%s\""% (self.ID.value,str(self.ID.lineno)))
+            print("Error, la funcion \"%s\" no existe  en la linea \"%s\""% (self.ID.value,str(self.ID.lineno)))
         if self.arguments:
             if len(m.params) != len(self.arguments.argumentos):
-                print("Faltan parametros en la funcion \"%s\" de la linea %s" % (m.name,self.ID.lineno))
+                print("Hacen falta parametros en la funcion \"%s\" de la linea %s" % (m.name,self.ID.lineno))
             else :
                 i = 0
                 for arg in self.arguments.argumentos:
@@ -516,10 +516,10 @@ class ExpresionFun(AST):
                     # if m.params[i].tipo.expresion.value:
                     #     if len(vars(arg)) == 2:
                     #         if arg.expresion != m.params[i].tipo.expresion.value:
-                    #             print ("Error tamaño de argumento")
+                    #             print ("Error en el tamaño de argumento")
                     i +=1
         elif not self.arguments and (len(m.params)>0):
-            print "La funcion requiere mas parametros en la la funcion  \"%s\" en la linea %s" % (self.ID.value, self.ID.lineno)
+            print "se requieren mas parametros en la funcion  \"%s\" en la linea %s" % (self.ID.value, self.ID.lineno)
 
         self.type = m.type
 
@@ -536,7 +536,7 @@ class ExpresionID(AST):
         n=get_symbol(self.ID.value)
         #print self.ID.value
         if not n:
-            print("Error no existe la variable %s en la linea %s"% (self.ID.value,str(self.ID.lineno)))
+            print("Error, no existe la variable %s en la linea %s"% (self.ID.value,str(self.ID.lineno)))
         else:
             self.type=n.type
 
@@ -593,7 +593,7 @@ class Return(AST):
         if not m:
             attach_symbol(self.token,self.type)
         elif m.type != self.type:
-            print("Conflicto de tipos con del return en la linea %s"%(repr(self.token.lineno)))
+            print("Conflicto de tipos con el return en la linea %s"%(repr(self.token.lineno)))
 
 class UnaryOp(AST):
     type=None

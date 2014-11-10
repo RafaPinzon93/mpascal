@@ -43,22 +43,34 @@ def p_funcion(p):
     '''
     p[0] = Funcion(p.slice[2], p[4], p[6], p[8])
 
+def p_funcion_error1(p):
+    "funcion : FUN ID LPAREN error RPAREN locales BEGIN declaraciones END"
+    print("Funcion con parametros invalidos ")
+    p[0] = None
+    p.parser.error = 1
 
-#errores experimentales
+def p_funcion_error2(p):
+    "funcion : FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END"
+    print("Se esperaba una expresion valida")
+    p[0] = None
+    p.parser.error = 1
 
-#def p_funcion_error2(p):
-    #"funcion : FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END"
-    #print("Funcion con locales mal formadas")
-    #p[0] = None
-    #p.parser.error = 1
 
+def p_funcion_error3(p):
+    "funcion : FUN ID LPAREN mparametros RPAREN locales BEGIN error END"
+    print("Se esperaba un END al final de la funcion")
+    p[0] = None
 
 
 def p_parametro(p):
     '''parametro : ID DECLARATION tipo'''
     p[0] = Parametro(p.slice[1], p[3])
 
-
+def p_parametro_error(p):
+    '''parametro : ID DECLARATION error'''
+    print("se esperaba un tipo de declaracion conocido" )
+    p[0] = None
+    p.parser.error = 1
 
 def p_mparametros(p):
     '''mparametros : mparametros COMMA parametro
@@ -71,15 +83,17 @@ def p_mparametros(p):
         p[0] = Parameters([p[1]])
 
 
-
-
-def p_funcion_error2(p):
-    "funcion : FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END"
-    print("Funcion con locales mal formadas")
+def p_mparametros_error1(p):
+    '''mparametros : error COMMA parametro'''
+    print("parametros mal escritos" )
     p[0] = None
     p.parser.error = 1
 
-
+def p_mparametros_error3(p):
+    '''mparametros : mparametros COMMA error'''
+    print("Parametros con error en el parametro simbolo = '%s' linea = %s" %(p[3].value, p[3].lineno))
+    p[0] = None
+    p.parser.error = 1
 
 
 def p_local(p):
@@ -105,29 +119,60 @@ def p_locales(p):
 #     '''locales : empty '''
 #     p[0] = p[1]
 
-def p_local_error(p):
-    '''local : local error SEMI
-             | local parametro error
-             | local funcion error
+def p_locales_error(p):
+    '''locales : locales error SEMI
+             | locales parametro error
+             | locales funcion error
              | error SEMI
              | funcion error
              | parametro error'''
-    if len(p) == 4:
-        if p[3] == 'SEMI':
-            print ("Error en local simbolo = '%s' linea = %s" %(p[2].value, p[2].lineno))
-        else:
-            print ("Error en local simbolo = '%s' linea = %s" %(p[3].value, p[3].lineno))
-    elif len(p) == 3:
-        if p[2] == 'SEMI':
-            print ("Error en local simbolo = '%s' linea = %s" %(p[1].value, p[1].lineno))
-        else:
-            print ("Error en local simbolo = '%s' linea = %s" %(p[1].value, p[1].lineno))
     p[0] = None
     p.parser.error = 1
 
 def p_asignacion(p):
     "asignacion : ID ASSIGN expresion"
     p[0] = Asignacion(p.slice[1], p[3])
+
+def p_asignacion_error(p):
+    '''asignacion : ID error index error ASSIGN expresion
+                  '''
+    print ("Error en asignacion")
+    p[0] = None
+    p.parser.error = 1
+
+def p_asignacion_error1(p):
+    '''asignacion : ID LCORCH index RCORCH ASSIGN error
+                  '''
+    print ("se esperaba un SEMI")
+    p[0] = None
+    p.parser.error = 1
+
+def p_asignacion_error2(p):
+    '''asignacion : ID LCORCH error RCORCH ASSIGN expresion
+                  '''
+    print ("se esperaba un index entre los corchetes")
+    p[0] = None
+    p.parser.error = 1
+
+def p_asignacion_error3(p):
+    '''asignacion : ID error index RCORCH ASSIGN expresion'''
+    print ("se esperaba el corchete izquierdo")
+    p[0] = None
+    p.parser.error = 1
+
+def p_asignacion_error4(p):
+    '''asignacion : ID LCORCH index error ASSIGN expresion
+                  '''
+    print ("se esperaba el corchete derecho")
+    p[0] = None
+    p.parser.error = 1
+
+def p_asignacion_error5(p):
+    '''asignacion : ID ASSIGN error
+                  '''
+    print ("se esperaba un SEMI")
+    p[0] = None
+    p.parser.error = 1
 
 
 def p_asignacion_index(p):
@@ -139,11 +184,12 @@ def p_declaracion_while(p):
     '''declaracion : WHILE relacion DO declaracion'''
     p[0] = WhileStatement(p[2], p[4])
 
-# def p_declaracion_location(p):
-#     "declaracion : location ASSIGN expresion"
-#     p[0] = LocationExpr(p[1], p[3])
-
-
+def p_declaracion_while_error(p):
+    '''declaracion : WHILE error DO declaracion
+                   | WHILE relacion DO error'''
+    print ("se esperaba relacion valida para declaracion WHILE")
+    p[0] = None
+    p.parser.error = 1
 
 def p_declaracion_if(p):
     '''declaracion : IF relacion THEN declaracion
@@ -154,7 +200,13 @@ def p_declaracion_if(p):
     else:
         p[0] = IfStatementElse(p[2], p[4], p[6])
 
-
+def p_declaracion_if_error(p):
+    '''declaracion : IF error THEN declaracion
+                   | IF relacion THEN error
+                   | IF relacion THEN declaracion ELSE error'''
+    print ("Error en formacion de declaracion IF")
+    p[0] = None
+    p.parser.error = 1
 
 
 def p_declaracion_print(p):
@@ -163,6 +215,14 @@ def p_declaracion_print(p):
     '''
     p[0] = PrintStatement(p[3])
 
+def p_declaracion_print_error(p):
+    '''declaracion : PRINT LPAREN error RPAREN
+                   | PRINT LPAREN STRING error
+                   | PRINT error STRING RPAREN
+                   | PRINT error STRING error'''
+    print ("Se esperaba una expresion valida")
+    p[0] = None
+    p.parser.error = 1
 
 
 def p_declaracion_write(p):
@@ -176,7 +236,7 @@ def p_declaracion_write_error(p):
                    | WRITE error expresion RPAREN
                    | WRITE LPAREN expresion error
                    | WRITE error expresion error'''
-    print ("Error en formacion de declaracion WRITE")
+    print ("Se esperaba una expresion valida en declaracion WRITE")
     p[0] = None
     p.parser.error = 1
 
@@ -186,6 +246,14 @@ def p_declaracion_read(p):
     '''
     p[0] = ReadStatements(p.slice[3])
 
+def p_declaracion_read_error(p):
+    '''declaracion : READ LPAREN error RPAREN
+                   | READ LPAREN ID error
+                   | READ error ID RPAREN
+    '''
+    print ("Se esperaba una expresion valida en declaracion READ")
+    p[0] = None
+    p.parser.error = 1
 
 def p_declaracion_return(p):
     '''
@@ -193,7 +261,13 @@ def p_declaracion_return(p):
     '''
     p[0] = Return(p[2], p.slice[1])
 
-
+def p_declaracion_return_error(p):
+    '''
+        declaracion : RETURN error
+    '''
+    print ("error en formacion de declaracion RETURN")
+    p[0] = None
+    p.parser.error = 1
 
 def p_declaracion_es(p):
     '''
@@ -381,7 +455,7 @@ def p_error(p):
     # x= yacc.token()
     # print ("Error simbolo '%s' linea = %s" %(x.value, x.lineno))
     if p:
-        print ("Error simbolo '%s' linea = %s" %(p.value, p.lineno)),
+        print ("Error en simbolo '%s' linea = %s" %(p.value, p.lineno)),
     else:
         print("EOF Syntax error. No more input.")
 
@@ -406,5 +480,5 @@ if __name__ == '__main__':
     program = parser.parse(open(sys.argv[1]).read())
     program.pprint()
     program.semantico()
-    #print "Succeded"
+    print "Succeded"
     # Output the resulting parse tree structure
