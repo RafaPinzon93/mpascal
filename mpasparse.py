@@ -472,7 +472,7 @@ def make_parser():
     parser = yacc.yacc()
     return parser
 
-if __name__ == '__main__':
+def sintactico():
     import mpaslex
     import sys
     lexer = mpaslex.make_lexer()
@@ -481,4 +481,5 @@ if __name__ == '__main__':
     program.pprint()
     program.semantico()
     print "Succeded"
+    return program
     # Output the resulting parse tree structure
