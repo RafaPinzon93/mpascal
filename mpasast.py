@@ -196,10 +196,12 @@ class Program(AST):
     # def __repr__(self):
     #     return self.funciones[0]
 
-@validate_fields(declaraciones=list)
+@validate_fields(declaraciones = list)
 class Declaraciones(AST):
     _fields = ['declaraciones']
 
+    def __iter__(self):
+        return self.declaraciones.__iter__()
 
     def append(self,e):
         self.declaraciones.append(e)
@@ -228,6 +230,8 @@ class Declaracion(AST):
 class Funcion(AST):
     _fields = ['ID', 'parametros', 'locales', 'declaraciones']
 
+    type='int'
+
     def __str__(self):
         return self.__class__.__name__+" "+ self.ID.value +" ( "+ ''.join(str(x) for x in self.parametros.param_decls) +")"
 
@@ -247,7 +251,7 @@ class Funcion(AST):
         if self.locales:
             self.locales.semantico()
         self.declaraciones.semantico()
-        m = get_symbol("Freturn")
+        m = get_symbol("%return")
         if m:
             a = get_symbol(self.ID.value)
             self.type = m.type
@@ -306,7 +310,7 @@ class Asignacion(AST):
     _fields = ['ID', 'expresion']
 
     def __str__(self):
-        return str(self.ID.value) + " :" + str(self.expresion)
+        return str(self.ID.value) + " :=" + str(self.expresion)
 
     def semantico(self):
         m=get_symbol(self.ID.value)
