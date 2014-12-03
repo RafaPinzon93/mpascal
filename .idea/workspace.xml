@@ -5,10 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="993e43f6-6c88-47e6-ac4f-37c6e374f52b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test3/fact.pas" afterPath="$PROJECT_DIR$/test3/fact.pas" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test2/hello.pas" afterPath="$PROJECT_DIR$/test2/hello.pas" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mpasast.py" afterPath="$PROJECT_DIR$/mpasast.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mpasgen.py" afterPath="$PROJECT_DIR$/mpasgen.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="mpascal.iws" />
@@ -499,13 +495,18 @@
       <created>1416866097755</created>
       <updated>1416866097755</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Parte 2 Cuarta entrega">
+      <created>1417640723762</created>
+      <updated>1417640723762</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32755905" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32125986" sideWeight="0.8931186" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -521,7 +522,6 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24963397" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -573,7 +573,8 @@
     <MESSAGE value="Adición de errores al pasparse&#10; &#10;" />
     <MESSAGE value="Adición de errores al pasparse&#10;cambio de prints &#10; &#10;" />
     <MESSAGE value="Parte 1 Cuarta entrega" />
-    <option name="LAST_COMMIT_MESSAGE" value="Parte 1 Cuarta entrega" />
+    <MESSAGE value="Parte 2 Cuarta entrega" />
+    <option name="LAST_COMMIT_MESSAGE" value="Parte 2 Cuarta entrega" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
