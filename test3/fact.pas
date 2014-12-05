@@ -1,7 +1,9 @@
 fun fact(n:int)
   begin
-     if n == 1 then return 1
-     else return n * fact(n-1)
+    a:=1;
+   if n == 1
+   then
+   return 1
   end
 
 fun main()
