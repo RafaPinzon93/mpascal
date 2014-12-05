@@ -39,7 +39,7 @@ def p_programa_funcion(p):
 
 def p_funcion(p):
     '''
-        funcion : FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END
+        funcion : FUN ID LPAREN mparametros RPAREN local BEGIN declaraciones END
     '''
     p[0] = Funcion(p.slice[2], p[4], p[6], p[8])
 
@@ -106,9 +106,9 @@ def p_locales(p):
 #     p[0] = p[1]
 
 def p_local_error(p):
-    '''local : local error SEMI
-             | local parametro error
-             | local funcion error
+    '''locales : locales error SEMI
+             | locales parametro error
+             | locales funcion error
              | error SEMI
              | funcion error
              | parametro error'''
@@ -269,7 +269,7 @@ def p_tipo_FLOAT(p):
     if len(p) == 5:
         p[0] = ArrayFloat(p[1],p.slice[3])
     else:
-        p[0] = ArrayFloat(p[1], None)
+        p[0] = Nfloat(p[1], None)
 
 def p_expresion_operadores_bin(p):
     '''  expresion : expresion PLUS expresion

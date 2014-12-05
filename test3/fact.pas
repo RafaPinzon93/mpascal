@@ -1,10 +1,10 @@
-fun fact(n:int):asf
+fun fact(n:int)
   begin
      if n == 1 then return 1
      else return n * fact(n-1)
   end
 
-fun mai()
+fun main()
    x:int;
    r:int;
    begin
