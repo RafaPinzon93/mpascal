@@ -2,8 +2,8 @@ Created by PLY version 3.4 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    INVSTRING
     NEWLINE
+    INVSTRING
     INVCOMNENT
     CONTINUE
 
@@ -13,10 +13,10 @@ Rule 0     S' -> programa
 Rule 1     programa -> programa funcion
 Rule 2     programa -> error
 Rule 3     programa -> funcion
-Rule 4     funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END
-Rule 5     funcion -> FUN ID LPAREN error RPAREN locales BEGIN declaraciones END
+Rule 4     funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN declaraciones END
+Rule 5     funcion -> FUN ID LPAREN error RPAREN local BEGIN declaraciones END
 Rule 6     funcion -> FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END
-Rule 7     funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN error END
+Rule 7     funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN error END
 Rule 8     parametro -> ID DECLARATION tipo
 Rule 9     parametro -> ID DECLARATION error
 Rule 10    mparametros -> mparametros COMMA parametro
@@ -170,8 +170,8 @@ empty                : 12 16
 expresion            : 27 28 30 31 32 34 48 50 51 52 57 60 66 68 70 71 71 72 72 73 73 74 74 75 76 77 82 84 85 88 89 90 90 91 91 92 92 93 93 94 94 95 95
 funcion              : 1 3 18 20 23 25
 index                : 28 29 31 32 34
-local                : 
-locales              : 4 5 7 15 17 18 21 22 23
+local                : 4 5 7
+locales              : 15 17 18 21 22 23
 mparametros          : 4 6 7 10 14
 numero               : 83
 parametro            : 10 11 13 17 19 22 26
@@ -187,10 +187,10 @@ state 0
     (1) programa -> . programa funcion
     (2) programa -> . error
     (3) programa -> . funcion
-    (4) funcion -> . FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END
-    (5) funcion -> . FUN ID LPAREN error RPAREN locales BEGIN declaraciones END
+    (4) funcion -> . FUN ID LPAREN mparametros RPAREN local BEGIN declaraciones END
+    (5) funcion -> . FUN ID LPAREN error RPAREN local BEGIN declaraciones END
     (6) funcion -> . FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END
-    (7) funcion -> . FUN ID LPAREN mparametros RPAREN locales BEGIN error END
+    (7) funcion -> . FUN ID LPAREN mparametros RPAREN local BEGIN error END
 
     error           shift and go to state 2
     FUN             shift and go to state 3
@@ -202,10 +202,10 @@ state 1
 
     (0) S' -> programa .
     (1) programa -> programa . funcion
-    (4) funcion -> . FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END
-    (5) funcion -> . FUN ID LPAREN error RPAREN locales BEGIN declaraciones END
+    (4) funcion -> . FUN ID LPAREN mparametros RPAREN local BEGIN declaraciones END
+    (5) funcion -> . FUN ID LPAREN error RPAREN local BEGIN declaraciones END
     (6) funcion -> . FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END
-    (7) funcion -> . FUN ID LPAREN mparametros RPAREN locales BEGIN error END
+    (7) funcion -> . FUN ID LPAREN mparametros RPAREN local BEGIN error END
 
     FUN             shift and go to state 3
 
@@ -221,10 +221,10 @@ state 2
 
 state 3
 
-    (4) funcion -> FUN . ID LPAREN mparametros RPAREN locales BEGIN declaraciones END
-    (5) funcion -> FUN . ID LPAREN error RPAREN locales BEGIN declaraciones END
+    (4) funcion -> FUN . ID LPAREN mparametros RPAREN local BEGIN declaraciones END
+    (5) funcion -> FUN . ID LPAREN error RPAREN local BEGIN declaraciones END
     (6) funcion -> FUN . ID LPAREN mparametros RPAREN error BEGIN declaraciones END
-    (7) funcion -> FUN . ID LPAREN mparametros RPAREN locales BEGIN error END
+    (7) funcion -> FUN . ID LPAREN mparametros RPAREN local BEGIN error END
 
     ID              shift and go to state 6
 
@@ -247,20 +247,20 @@ state 5
 
 state 6
 
-    (4) funcion -> FUN ID . LPAREN mparametros RPAREN locales BEGIN declaraciones END
-    (5) funcion -> FUN ID . LPAREN error RPAREN locales BEGIN declaraciones END
+    (4) funcion -> FUN ID . LPAREN mparametros RPAREN local BEGIN declaraciones END
+    (5) funcion -> FUN ID . LPAREN error RPAREN local BEGIN declaraciones END
     (6) funcion -> FUN ID . LPAREN mparametros RPAREN error BEGIN declaraciones END
-    (7) funcion -> FUN ID . LPAREN mparametros RPAREN locales BEGIN error END
+    (7) funcion -> FUN ID . LPAREN mparametros RPAREN local BEGIN error END
 
     LPAREN          shift and go to state 7
 
 
 state 7
 
-    (4) funcion -> FUN ID LPAREN . mparametros RPAREN locales BEGIN declaraciones END
-    (5) funcion -> FUN ID LPAREN . error RPAREN locales BEGIN declaraciones END
+    (4) funcion -> FUN ID LPAREN . mparametros RPAREN local BEGIN declaraciones END
+    (5) funcion -> FUN ID LPAREN . error RPAREN local BEGIN declaraciones END
     (6) funcion -> FUN ID LPAREN . mparametros RPAREN error BEGIN declaraciones END
-    (7) funcion -> FUN ID LPAREN . mparametros RPAREN locales BEGIN error END
+    (7) funcion -> FUN ID LPAREN . mparametros RPAREN local BEGIN error END
     (10) mparametros -> . mparametros COMMA parametro
     (11) mparametros -> . parametro
     (12) mparametros -> . empty
@@ -270,14 +270,14 @@ state 7
     (9) parametro -> . ID DECLARATION error
     (100) empty -> .
 
-    error           shift and go to state 11
-    ID              shift and go to state 12
+    error           shift and go to state 10
+    ID              shift and go to state 11
     RPAREN          reduce using rule 100 (empty -> .)
     COMMA           reduce using rule 100 (empty -> .)
 
     parametro                      shift and go to state 8
-    mparametros                    shift and go to state 10
-    empty                          shift and go to state 9
+    mparametros                    shift and go to state 9
+    empty                          shift and go to state 12
 
 state 8
 
@@ -289,17 +289,9 @@ state 8
 
 state 9
 
-    (12) mparametros -> empty .
-
-    RPAREN          reduce using rule 12 (mparametros -> empty .)
-    COMMA           reduce using rule 12 (mparametros -> empty .)
-
-
-state 10
-
-    (4) funcion -> FUN ID LPAREN mparametros . RPAREN locales BEGIN declaraciones END
+    (4) funcion -> FUN ID LPAREN mparametros . RPAREN local BEGIN declaraciones END
     (6) funcion -> FUN ID LPAREN mparametros . RPAREN error BEGIN declaraciones END
-    (7) funcion -> FUN ID LPAREN mparametros . RPAREN locales BEGIN error END
+    (7) funcion -> FUN ID LPAREN mparametros . RPAREN local BEGIN error END
     (10) mparametros -> mparametros . COMMA parametro
     (14) mparametros -> mparametros . COMMA error
 
@@ -307,16 +299,16 @@ state 10
     COMMA           shift and go to state 14
 
 
-state 11
+state 10
 
-    (5) funcion -> FUN ID LPAREN error . RPAREN locales BEGIN declaraciones END
+    (5) funcion -> FUN ID LPAREN error . RPAREN local BEGIN declaraciones END
     (13) mparametros -> error . COMMA parametro
 
     RPAREN          shift and go to state 15
     COMMA           shift and go to state 16
 
 
-state 12
+state 11
 
     (8) parametro -> ID . DECLARATION tipo
     (9) parametro -> ID . DECLARATION error
@@ -324,11 +316,21 @@ state 12
     DECLARATION     shift and go to state 17
 
 
+state 12
+
+    (12) mparametros -> empty .
+
+    RPAREN          reduce using rule 12 (mparametros -> empty .)
+    COMMA           reduce using rule 12 (mparametros -> empty .)
+
+
 state 13
 
-    (4) funcion -> FUN ID LPAREN mparametros RPAREN . locales BEGIN declaraciones END
+    (4) funcion -> FUN ID LPAREN mparametros RPAREN . local BEGIN declaraciones END
     (6) funcion -> FUN ID LPAREN mparametros RPAREN . error BEGIN declaraciones END
-    (7) funcion -> FUN ID LPAREN mparametros RPAREN . locales BEGIN error END
+    (7) funcion -> FUN ID LPAREN mparametros RPAREN . local BEGIN error END
+    (15) local -> . locales
+    (16) local -> . empty
     (17) locales -> . locales parametro SEMI
     (18) locales -> . locales funcion SEMI
     (19) locales -> . parametro SEMI
@@ -339,20 +341,24 @@ state 13
     (24) locales -> . error SEMI
     (25) locales -> . funcion error
     (26) locales -> . parametro error
+    (100) empty -> .
     (8) parametro -> . ID DECLARATION tipo
     (9) parametro -> . ID DECLARATION error
-    (4) funcion -> . FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END
-    (5) funcion -> . FUN ID LPAREN error RPAREN locales BEGIN declaraciones END
+    (4) funcion -> . FUN ID LPAREN mparametros RPAREN local BEGIN declaraciones END
+    (5) funcion -> . FUN ID LPAREN error RPAREN local BEGIN declaraciones END
     (6) funcion -> . FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END
-    (7) funcion -> . FUN ID LPAREN mparametros RPAREN locales BEGIN error END
+    (7) funcion -> . FUN ID LPAREN mparametros RPAREN local BEGIN error END
 
-    error           shift and go to state 19
-    ID              shift and go to state 12
+    error           shift and go to state 20
+    BEGIN           reduce using rule 100 (empty -> .)
+    ID              shift and go to state 11
     FUN             shift and go to state 3
 
     parametro                      shift and go to state 18
-    locales                        shift and go to state 20
-    funcion                        shift and go to state 21
+    locales                        shift and go to state 22
+    local                          shift and go to state 21
+    empty                          shift and go to state 19
+    funcion                        shift and go to state 23
 
 state 14
 
@@ -361,14 +367,16 @@ state 14
     (8) parametro -> . ID DECLARATION tipo
     (9) parametro -> . ID DECLARATION error
 
-    error           shift and go to state 23
-    ID              shift and go to state 12
+    error           shift and go to state 25
+    ID              shift and go to state 11
 
-    parametro                      shift and go to state 22
+    parametro                      shift and go to state 24
 
 state 15
 
-    (5) funcion -> FUN ID LPAREN error RPAREN . locales BEGIN declaraciones END
+    (5) funcion -> FUN ID LPAREN error RPAREN . local BEGIN declaraciones END
+    (15) local -> . locales
+    (16) local -> . empty
     (17) locales -> . locales parametro SEMI
     (18) locales -> . locales funcion SEMI
     (19) locales -> . parametro SEMI
@@ -379,20 +387,24 @@ state 15
     (24) locales -> . error SEMI
     (25) locales -> . funcion error
     (26) locales -> . parametro error
+    (100) empty -> .
     (8) parametro -> . ID DECLARATION tipo
     (9) parametro -> . ID DECLARATION error
-    (4) funcion -> . FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END
-    (5) funcion -> . FUN ID LPAREN error RPAREN locales BEGIN declaraciones END
+    (4) funcion -> . FUN ID LPAREN mparametros RPAREN local BEGIN declaraciones END
+    (5) funcion -> . FUN ID LPAREN error RPAREN local BEGIN declaraciones END
     (6) funcion -> . FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END
-    (7) funcion -> . FUN ID LPAREN mparametros RPAREN locales BEGIN error END
+    (7) funcion -> . FUN ID LPAREN mparametros RPAREN local BEGIN error END
 
-    error           shift and go to state 24
-    ID              shift and go to state 12
+    error           shift and go to state 26
+    BEGIN           reduce using rule 100 (empty -> .)
+    ID              shift and go to state 11
     FUN             shift and go to state 3
 
     parametro                      shift and go to state 18
-    locales                        shift and go to state 25
-    funcion                        shift and go to state 21
+    locales                        shift and go to state 22
+    local                          shift and go to state 27
+    empty                          shift and go to state 19
+    funcion                        shift and go to state 23
 
 state 16
 
@@ -400,9 +412,9 @@ state 16
     (8) parametro -> . ID DECLARATION tipo
     (9) parametro -> . ID DECLARATION error
 
-    ID              shift and go to state 12
+    ID              shift and go to state 11
 
-    parametro                      shift and go to state 26
+    parametro                      shift and go to state 28
 
 state 17
 
@@ -413,34 +425,48 @@ state 17
     (69) tipo -> . NFLOAT
     (70) tipo -> . NFLOAT LCORCH expresion RCORCH
 
-    error           shift and go to state 29
-    NINT            shift and go to state 27
-    NFLOAT          shift and go to state 30
+    error           shift and go to state 31
+    NINT            shift and go to state 29
+    NFLOAT          shift and go to state 32
 
-    tipo                           shift and go to state 28
+    tipo                           shift and go to state 30
 
 state 18
 
     (19) locales -> parametro . SEMI
     (26) locales -> parametro . error
 
-    SEMI            shift and go to state 31
-    error           shift and go to state 32
+    SEMI            shift and go to state 33
+    error           shift and go to state 34
 
 
 state 19
 
-    (6) funcion -> FUN ID LPAREN mparametros RPAREN error . BEGIN declaraciones END
-    (24) locales -> error . SEMI
+    (16) local -> empty .
 
-    BEGIN           shift and go to state 33
-    SEMI            shift and go to state 34
+    BEGIN           reduce using rule 16 (local -> empty .)
 
 
 state 20
 
-    (4) funcion -> FUN ID LPAREN mparametros RPAREN locales . BEGIN declaraciones END
-    (7) funcion -> FUN ID LPAREN mparametros RPAREN locales . BEGIN error END
+    (6) funcion -> FUN ID LPAREN mparametros RPAREN error . BEGIN declaraciones END
+    (24) locales -> error . SEMI
+
+    BEGIN           shift and go to state 35
+    SEMI            shift and go to state 36
+
+
+state 21
+
+    (4) funcion -> FUN ID LPAREN mparametros RPAREN local . BEGIN declaraciones END
+    (7) funcion -> FUN ID LPAREN mparametros RPAREN local . BEGIN error END
+
+    BEGIN           shift and go to state 37
+
+
+state 22
+
+    (15) local -> locales .
     (17) locales -> locales . parametro SEMI
     (18) locales -> locales . funcion SEMI
     (21) locales -> locales . error SEMI
@@ -448,29 +474,29 @@ state 20
     (23) locales -> locales . funcion error
     (8) parametro -> . ID DECLARATION tipo
     (9) parametro -> . ID DECLARATION error
-    (4) funcion -> . FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END
-    (5) funcion -> . FUN ID LPAREN error RPAREN locales BEGIN declaraciones END
+    (4) funcion -> . FUN ID LPAREN mparametros RPAREN local BEGIN declaraciones END
+    (5) funcion -> . FUN ID LPAREN error RPAREN local BEGIN declaraciones END
     (6) funcion -> . FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END
-    (7) funcion -> . FUN ID LPAREN mparametros RPAREN locales BEGIN error END
+    (7) funcion -> . FUN ID LPAREN mparametros RPAREN local BEGIN error END
 
-    BEGIN           shift and go to state 35
-    error           shift and go to state 37
-    ID              shift and go to state 12
+    BEGIN           reduce using rule 15 (local -> locales .)
+    error           shift and go to state 39
+    ID              shift and go to state 11
     FUN             shift and go to state 3
 
-    parametro                      shift and go to state 36
-    funcion                        shift and go to state 38
+    parametro                      shift and go to state 38
+    funcion                        shift and go to state 40
 
-state 21
+state 23
 
     (20) locales -> funcion . SEMI
     (25) locales -> funcion . error
 
-    SEMI            shift and go to state 40
-    error           shift and go to state 39
+    SEMI            shift and go to state 42
+    error           shift and go to state 41
 
 
-state 22
+state 24
 
     (10) mparametros -> mparametros COMMA parametro .
 
@@ -478,7 +504,7 @@ state 22
     COMMA           reduce using rule 10 (mparametros -> mparametros COMMA parametro .)
 
 
-state 23
+state 25
 
     (14) mparametros -> mparametros COMMA error .
 
@@ -486,37 +512,21 @@ state 23
     COMMA           reduce using rule 14 (mparametros -> mparametros COMMA error .)
 
 
-state 24
+state 26
 
     (24) locales -> error . SEMI
 
-    SEMI            shift and go to state 34
+    SEMI            shift and go to state 36
 
 
-state 25
+state 27
 
-    (5) funcion -> FUN ID LPAREN error RPAREN locales . BEGIN declaraciones END
-    (17) locales -> locales . parametro SEMI
-    (18) locales -> locales . funcion SEMI
-    (21) locales -> locales . error SEMI
-    (22) locales -> locales . parametro error
-    (23) locales -> locales . funcion error
-    (8) parametro -> . ID DECLARATION tipo
-    (9) parametro -> . ID DECLARATION error
-    (4) funcion -> . FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END
-    (5) funcion -> . FUN ID LPAREN error RPAREN locales BEGIN declaraciones END
-    (6) funcion -> . FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END
-    (7) funcion -> . FUN ID LPAREN mparametros RPAREN locales BEGIN error END
+    (5) funcion -> FUN ID LPAREN error RPAREN local . BEGIN declaraciones END
 
-    BEGIN           shift and go to state 41
-    error           shift and go to state 37
-    ID              shift and go to state 12
-    FUN             shift and go to state 3
+    BEGIN           shift and go to state 43
 
-    parametro                      shift and go to state 36
-    funcion                        shift and go to state 38
 
-state 26
+state 28
 
     (13) mparametros -> error COMMA parametro .
 
@@ -524,7 +534,7 @@ state 26
     COMMA           reduce using rule 13 (mparametros -> error COMMA parametro .)
 
 
-state 27
+state 29
 
     (67) tipo -> NINT .
     (68) tipo -> NINT . LCORCH expresion RCORCH
@@ -533,10 +543,10 @@ state 27
     COMMA           reduce using rule 67 (tipo -> NINT .)
     SEMI            reduce using rule 67 (tipo -> NINT .)
     error           reduce using rule 67 (tipo -> NINT .)
-    LCORCH          shift and go to state 42
+    LCORCH          shift and go to state 44
 
 
-state 28
+state 30
 
     (8) parametro -> ID DECLARATION tipo .
 
@@ -546,7 +556,7 @@ state 28
     error           reduce using rule 8 (parametro -> ID DECLARATION tipo .)
 
 
-state 29
+state 31
 
     (9) parametro -> ID DECLARATION error .
 
@@ -556,7 +566,7 @@ state 29
     error           reduce using rule 9 (parametro -> ID DECLARATION error .)
 
 
-state 30
+state 32
 
     (69) tipo -> NFLOAT .
     (70) tipo -> NFLOAT . LCORCH expresion RCORCH
@@ -565,30 +575,30 @@ state 30
     COMMA           reduce using rule 69 (tipo -> NFLOAT .)
     SEMI            reduce using rule 69 (tipo -> NFLOAT .)
     error           reduce using rule 69 (tipo -> NFLOAT .)
-    LCORCH          shift and go to state 43
-
-
-state 31
-
-    (19) locales -> parametro SEMI .
-
-    BEGIN           reduce using rule 19 (locales -> parametro SEMI .)
-    error           reduce using rule 19 (locales -> parametro SEMI .)
-    ID              reduce using rule 19 (locales -> parametro SEMI .)
-    FUN             reduce using rule 19 (locales -> parametro SEMI .)
-
-
-state 32
-
-    (26) locales -> parametro error .
-
-    BEGIN           reduce using rule 26 (locales -> parametro error .)
-    error           reduce using rule 26 (locales -> parametro error .)
-    ID              reduce using rule 26 (locales -> parametro error .)
-    FUN             reduce using rule 26 (locales -> parametro error .)
+    LCORCH          shift and go to state 45
 
 
 state 33
+
+    (19) locales -> parametro SEMI .
+
+    error           reduce using rule 19 (locales -> parametro SEMI .)
+    ID              reduce using rule 19 (locales -> parametro SEMI .)
+    FUN             reduce using rule 19 (locales -> parametro SEMI .)
+    BEGIN           reduce using rule 19 (locales -> parametro SEMI .)
+
+
+state 34
+
+    (26) locales -> parametro error .
+
+    error           reduce using rule 26 (locales -> parametro error .)
+    ID              reduce using rule 26 (locales -> parametro error .)
+    FUN             reduce using rule 26 (locales -> parametro error .)
+    BEGIN           reduce using rule 26 (locales -> parametro error .)
+
+
+state 35
 
     (6) funcion -> FUN ID LPAREN mparametros RPAREN error BEGIN . declaraciones END
     (64) declaraciones -> . declaraciones SEMI declaracion
@@ -648,44 +658,44 @@ state 33
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    WHILE           shift and go to state 48
-    IF              shift and go to state 61
-    PRINT           shift and go to state 49
-    WRITE           shift and go to state 58
-    READ            shift and go to state 46
-    RETURN          shift and go to state 45
-    BEGIN           shift and go to state 52
-    SKIP            shift and go to state 56
-    BREAK           shift and go to state 64
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 60
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    WHILE           shift and go to state 50
+    IF              shift and go to state 63
+    PRINT           shift and go to state 51
+    WRITE           shift and go to state 60
+    READ            shift and go to state 48
+    RETURN          shift and go to state 47
+    BEGIN           shift and go to state 54
+    SKIP            shift and go to state 58
+    BREAK           shift and go to state 66
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 62
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 62
-    asignacion                     shift and go to state 63
-    numero                         shift and go to state 57
-    declaraciones                  shift and go to state 47
-    declaracion                    shift and go to state 65
+    expresion                      shift and go to state 64
+    asignacion                     shift and go to state 65
+    numero                         shift and go to state 59
+    declaraciones                  shift and go to state 49
+    declaracion                    shift and go to state 67
 
-state 34
+state 36
 
     (24) locales -> error SEMI .
 
-    BEGIN           reduce using rule 24 (locales -> error SEMI .)
     error           reduce using rule 24 (locales -> error SEMI .)
     ID              reduce using rule 24 (locales -> error SEMI .)
     FUN             reduce using rule 24 (locales -> error SEMI .)
+    BEGIN           reduce using rule 24 (locales -> error SEMI .)
 
 
-state 35
+state 37
 
-    (4) funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN . declaraciones END
-    (7) funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN . error END
+    (4) funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN . declaraciones END
+    (7) funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN . error END
     (64) declaraciones -> . declaraciones SEMI declaracion
     (65) declaraciones -> . declaracion
     (35) declaracion -> . WHILE relacion DO declaracion
@@ -743,79 +753,79 @@ state 35
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    error           shift and go to state 67
-    WHILE           shift and go to state 48
-    IF              shift and go to state 61
-    PRINT           shift and go to state 49
-    WRITE           shift and go to state 58
-    READ            shift and go to state 46
-    RETURN          shift and go to state 45
-    BEGIN           shift and go to state 52
-    SKIP            shift and go to state 56
-    BREAK           shift and go to state 64
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 60
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    error           shift and go to state 69
+    WHILE           shift and go to state 50
+    IF              shift and go to state 63
+    PRINT           shift and go to state 51
+    WRITE           shift and go to state 60
+    READ            shift and go to state 48
+    RETURN          shift and go to state 47
+    BEGIN           shift and go to state 54
+    SKIP            shift and go to state 58
+    BREAK           shift and go to state 66
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 62
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 62
-    asignacion                     shift and go to state 63
-    numero                         shift and go to state 57
-    declaraciones                  shift and go to state 66
-    declaracion                    shift and go to state 65
+    expresion                      shift and go to state 64
+    asignacion                     shift and go to state 65
+    numero                         shift and go to state 59
+    declaraciones                  shift and go to state 68
+    declaracion                    shift and go to state 67
 
-state 36
+state 38
 
     (17) locales -> locales parametro . SEMI
     (22) locales -> locales parametro . error
 
-    SEMI            shift and go to state 68
-    error           shift and go to state 69
-
-
-state 37
-
-    (21) locales -> locales error . SEMI
-
     SEMI            shift and go to state 70
-
-
-state 38
-
-    (18) locales -> locales funcion . SEMI
-    (23) locales -> locales funcion . error
-
-    SEMI            shift and go to state 72
     error           shift and go to state 71
 
 
 state 39
 
-    (25) locales -> funcion error .
+    (21) locales -> locales error . SEMI
 
-    BEGIN           reduce using rule 25 (locales -> funcion error .)
-    error           reduce using rule 25 (locales -> funcion error .)
-    ID              reduce using rule 25 (locales -> funcion error .)
-    FUN             reduce using rule 25 (locales -> funcion error .)
+    SEMI            shift and go to state 72
 
 
 state 40
 
-    (20) locales -> funcion SEMI .
+    (18) locales -> locales funcion . SEMI
+    (23) locales -> locales funcion . error
 
-    BEGIN           reduce using rule 20 (locales -> funcion SEMI .)
-    error           reduce using rule 20 (locales -> funcion SEMI .)
-    ID              reduce using rule 20 (locales -> funcion SEMI .)
-    FUN             reduce using rule 20 (locales -> funcion SEMI .)
+    SEMI            shift and go to state 74
+    error           shift and go to state 73
 
 
 state 41
 
-    (5) funcion -> FUN ID LPAREN error RPAREN locales BEGIN . declaraciones END
+    (25) locales -> funcion error .
+
+    error           reduce using rule 25 (locales -> funcion error .)
+    ID              reduce using rule 25 (locales -> funcion error .)
+    FUN             reduce using rule 25 (locales -> funcion error .)
+    BEGIN           reduce using rule 25 (locales -> funcion error .)
+
+
+state 42
+
+    (20) locales -> funcion SEMI .
+
+    error           reduce using rule 20 (locales -> funcion SEMI .)
+    ID              reduce using rule 20 (locales -> funcion SEMI .)
+    FUN             reduce using rule 20 (locales -> funcion SEMI .)
+    BEGIN           reduce using rule 20 (locales -> funcion SEMI .)
+
+
+state 43
+
+    (5) funcion -> FUN ID LPAREN error RPAREN local BEGIN . declaraciones END
     (64) declaraciones -> . declaraciones SEMI declaracion
     (65) declaraciones -> . declaracion
     (35) declaracion -> . WHILE relacion DO declaracion
@@ -873,31 +883,31 @@ state 41
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    WHILE           shift and go to state 48
-    IF              shift and go to state 61
-    PRINT           shift and go to state 49
-    WRITE           shift and go to state 58
-    READ            shift and go to state 46
-    RETURN          shift and go to state 45
-    BEGIN           shift and go to state 52
-    SKIP            shift and go to state 56
-    BREAK           shift and go to state 64
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 60
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    WHILE           shift and go to state 50
+    IF              shift and go to state 63
+    PRINT           shift and go to state 51
+    WRITE           shift and go to state 60
+    READ            shift and go to state 48
+    RETURN          shift and go to state 47
+    BEGIN           shift and go to state 54
+    SKIP            shift and go to state 58
+    BREAK           shift and go to state 66
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 62
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 62
-    asignacion                     shift and go to state 63
-    numero                         shift and go to state 57
-    declaraciones                  shift and go to state 73
-    declaracion                    shift and go to state 65
+    expresion                      shift and go to state 64
+    asignacion                     shift and go to state 65
+    numero                         shift and go to state 59
+    declaraciones                  shift and go to state 75
+    declaracion                    shift and go to state 67
 
-state 42
+state 44
 
     (68) tipo -> NINT LCORCH . expresion RCORCH
     (71) expresion -> . expresion PLUS expresion
@@ -918,19 +928,19 @@ state 42
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 74
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 76
+    numero                         shift and go to state 59
 
-state 43
+state 45
 
     (70) tipo -> NFLOAT LCORCH . expresion RCORCH
     (71) expresion -> . expresion PLUS expresion
@@ -951,22 +961,23 @@ state 43
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 76
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 78
+    numero                         shift and go to state 59
 
-state 44
+state 46
 
     (87) numero -> FLOAT .
 
+    RPAREN          reduce using rule 87 (numero -> FLOAT .)
     PLUS            reduce using rule 87 (numero -> FLOAT .)
     MINUS           reduce using rule 87 (numero -> FLOAT .)
     TIMES           reduce using rule 87 (numero -> FLOAT .)
@@ -974,23 +985,22 @@ state 44
     END             reduce using rule 87 (numero -> FLOAT .)
     SEMI            reduce using rule 87 (numero -> FLOAT .)
     ELSE            reduce using rule 87 (numero -> FLOAT .)
-    DO              reduce using rule 87 (numero -> FLOAT .)
-    AND             reduce using rule 87 (numero -> FLOAT .)
-    OR              reduce using rule 87 (numero -> FLOAT .)
-    THEN            reduce using rule 87 (numero -> FLOAT .)
-    RPAREN          reduce using rule 87 (numero -> FLOAT .)
-    error           reduce using rule 87 (numero -> FLOAT .)
     LT              reduce using rule 87 (numero -> FLOAT .)
     GT              reduce using rule 87 (numero -> FLOAT .)
     LE              reduce using rule 87 (numero -> FLOAT .)
     GE              reduce using rule 87 (numero -> FLOAT .)
     EQUALS          reduce using rule 87 (numero -> FLOAT .)
     NE              reduce using rule 87 (numero -> FLOAT .)
+    error           reduce using rule 87 (numero -> FLOAT .)
     RCORCH          reduce using rule 87 (numero -> FLOAT .)
     COMMA           reduce using rule 87 (numero -> FLOAT .)
+    DO              reduce using rule 87 (numero -> FLOAT .)
+    AND             reduce using rule 87 (numero -> FLOAT .)
+    OR              reduce using rule 87 (numero -> FLOAT .)
+    THEN            reduce using rule 87 (numero -> FLOAT .)
 
 
-state 45
+state 47
 
     (57) declaracion -> RETURN . expresion
     (58) declaracion -> RETURN . error
@@ -1012,40 +1022,40 @@ state 45
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    error           shift and go to state 78
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    error           shift and go to state 80
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 77
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 79
+    numero                         shift and go to state 59
 
-state 46
+state 48
 
     (53) declaracion -> READ . LPAREN ID RPAREN
     (54) declaracion -> READ . LPAREN error RPAREN
     (55) declaracion -> READ . LPAREN ID error
     (56) declaracion -> READ . error ID RPAREN
 
-    LPAREN          shift and go to state 79
-    error           shift and go to state 80
+    LPAREN          shift and go to state 81
+    error           shift and go to state 82
 
 
-state 47
+state 49
 
     (6) funcion -> FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones . END
     (64) declaraciones -> declaraciones . SEMI declaracion
 
-    END             shift and go to state 82
-    SEMI            shift and go to state 81
+    END             shift and go to state 84
+    SEMI            shift and go to state 83
 
 
-state 48
+state 50
 
     (35) declaracion -> WHILE . relacion DO declaracion
     (36) declaracion -> WHILE . error DO declaracion
@@ -1078,22 +1088,22 @@ state 48
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    error           shift and go to state 86
-    NOT             shift and go to state 87
-    LPAREN          shift and go to state 84
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    error           shift and go to state 88
+    NOT             shift and go to state 89
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 85
-    numero                         shift and go to state 57
-    relacion                       shift and go to state 83
+    expresion                      shift and go to state 87
+    numero                         shift and go to state 59
+    relacion                       shift and go to state 85
 
-state 49
+state 51
 
     (43) declaracion -> PRINT . LPAREN STRING RPAREN
     (44) declaracion -> PRINT . LPAREN error RPAREN
@@ -1101,11 +1111,11 @@ state 49
     (46) declaracion -> PRINT . error STRING RPAREN
     (47) declaracion -> PRINT . error STRING error
 
-    LPAREN          shift and go to state 88
-    error           shift and go to state 89
+    LPAREN          shift and go to state 90
+    error           shift and go to state 91
 
 
-state 50
+state 52
 
     (75) expresion -> MINUS . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -1126,26 +1136,26 @@ state 50
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 90
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 92
+    numero                         shift and go to state 59
 
-state 51
+state 53
 
     (85) expresion -> NFLOAT . LPAREN expresion RPAREN
 
-    LPAREN          shift and go to state 91
+    LPAREN          shift and go to state 93
 
 
-state 52
+state 54
 
     (59) declaracion -> BEGIN . declaraciones END
     (64) declaraciones -> . declaraciones SEMI declaracion
@@ -1205,38 +1215,38 @@ state 52
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    WHILE           shift and go to state 48
-    IF              shift and go to state 61
-    PRINT           shift and go to state 49
-    WRITE           shift and go to state 58
-    READ            shift and go to state 46
-    RETURN          shift and go to state 45
-    BEGIN           shift and go to state 52
-    SKIP            shift and go to state 56
-    BREAK           shift and go to state 64
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 60
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    WHILE           shift and go to state 50
+    IF              shift and go to state 63
+    PRINT           shift and go to state 51
+    WRITE           shift and go to state 60
+    READ            shift and go to state 48
+    RETURN          shift and go to state 47
+    BEGIN           shift and go to state 54
+    SKIP            shift and go to state 58
+    BREAK           shift and go to state 66
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 62
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 62
-    asignacion                     shift and go to state 63
-    numero                         shift and go to state 57
-    declaraciones                  shift and go to state 92
-    declaracion                    shift and go to state 65
+    expresion                      shift and go to state 64
+    asignacion                     shift and go to state 65
+    numero                         shift and go to state 59
+    declaraciones                  shift and go to state 94
+    declaracion                    shift and go to state 67
 
-state 53
+state 55
 
     (84) expresion -> NINT . LPAREN expresion RPAREN
 
-    LPAREN          shift and go to state 93
+    LPAREN          shift and go to state 95
 
 
-state 54
+state 56
 
     (76) expresion -> PLUS . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -1257,22 +1267,23 @@ state 54
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 94
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 96
+    numero                         shift and go to state 59
 
-state 55
+state 57
 
     (86) numero -> INTEGER .
 
+    RPAREN          reduce using rule 86 (numero -> INTEGER .)
     PLUS            reduce using rule 86 (numero -> INTEGER .)
     MINUS           reduce using rule 86 (numero -> INTEGER .)
     TIMES           reduce using rule 86 (numero -> INTEGER .)
@@ -1280,23 +1291,22 @@ state 55
     END             reduce using rule 86 (numero -> INTEGER .)
     SEMI            reduce using rule 86 (numero -> INTEGER .)
     ELSE            reduce using rule 86 (numero -> INTEGER .)
-    DO              reduce using rule 86 (numero -> INTEGER .)
-    AND             reduce using rule 86 (numero -> INTEGER .)
-    OR              reduce using rule 86 (numero -> INTEGER .)
-    THEN            reduce using rule 86 (numero -> INTEGER .)
-    RPAREN          reduce using rule 86 (numero -> INTEGER .)
-    error           reduce using rule 86 (numero -> INTEGER .)
     LT              reduce using rule 86 (numero -> INTEGER .)
     GT              reduce using rule 86 (numero -> INTEGER .)
     LE              reduce using rule 86 (numero -> INTEGER .)
     GE              reduce using rule 86 (numero -> INTEGER .)
     EQUALS          reduce using rule 86 (numero -> INTEGER .)
     NE              reduce using rule 86 (numero -> INTEGER .)
+    error           reduce using rule 86 (numero -> INTEGER .)
     RCORCH          reduce using rule 86 (numero -> INTEGER .)
     COMMA           reduce using rule 86 (numero -> INTEGER .)
+    DO              reduce using rule 86 (numero -> INTEGER .)
+    AND             reduce using rule 86 (numero -> INTEGER .)
+    OR              reduce using rule 86 (numero -> INTEGER .)
+    THEN            reduce using rule 86 (numero -> INTEGER .)
 
 
-state 56
+state 58
 
     (61) declaracion -> SKIP .
 
@@ -1305,34 +1315,34 @@ state 56
     ELSE            reduce using rule 61 (declaracion -> SKIP .)
 
 
-state 57
+state 59
 
     (83) expresion -> numero .
 
-    PLUS            reduce using rule 83 (expresion -> numero .)
-    MINUS           reduce using rule 83 (expresion -> numero .)
-    TIMES           reduce using rule 83 (expresion -> numero .)
-    DIVIDE          reduce using rule 83 (expresion -> numero .)
-    END             reduce using rule 83 (expresion -> numero .)
-    SEMI            reduce using rule 83 (expresion -> numero .)
-    RCORCH          reduce using rule 83 (expresion -> numero .)
-    ELSE            reduce using rule 83 (expresion -> numero .)
     LT              reduce using rule 83 (expresion -> numero .)
     GT              reduce using rule 83 (expresion -> numero .)
     LE              reduce using rule 83 (expresion -> numero .)
     GE              reduce using rule 83 (expresion -> numero .)
     EQUALS          reduce using rule 83 (expresion -> numero .)
     NE              reduce using rule 83 (expresion -> numero .)
-    RPAREN          reduce using rule 83 (expresion -> numero .)
+    PLUS            reduce using rule 83 (expresion -> numero .)
+    MINUS           reduce using rule 83 (expresion -> numero .)
+    TIMES           reduce using rule 83 (expresion -> numero .)
+    DIVIDE          reduce using rule 83 (expresion -> numero .)
+    END             reduce using rule 83 (expresion -> numero .)
+    SEMI            reduce using rule 83 (expresion -> numero .)
+    ELSE            reduce using rule 83 (expresion -> numero .)
     error           reduce using rule 83 (expresion -> numero .)
-    COMMA           reduce using rule 83 (expresion -> numero .)
+    RCORCH          reduce using rule 83 (expresion -> numero .)
     DO              reduce using rule 83 (expresion -> numero .)
     AND             reduce using rule 83 (expresion -> numero .)
     OR              reduce using rule 83 (expresion -> numero .)
     THEN            reduce using rule 83 (expresion -> numero .)
+    RPAREN          reduce using rule 83 (expresion -> numero .)
+    COMMA           reduce using rule 83 (expresion -> numero .)
 
 
-state 58
+state 60
 
     (48) declaracion -> WRITE . LPAREN expresion RPAREN
     (49) declaracion -> WRITE . LPAREN error RPAREN
@@ -1340,11 +1350,11 @@ state 58
     (51) declaracion -> WRITE . LPAREN expresion error
     (52) declaracion -> WRITE . error expresion error
 
-    LPAREN          shift and go to state 95
-    error           shift and go to state 96
+    LPAREN          shift and go to state 97
+    error           shift and go to state 98
 
 
-state 59
+state 61
 
     (77) expresion -> LPAREN . expresion RPAREN
     (78) expresion -> LPAREN . RPAREN
@@ -1366,20 +1376,20 @@ state 59
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    RPAREN          shift and go to state 98
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    RPAREN          shift and go to state 100
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 97
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 99
+    numero                         shift and go to state 59
 
-state 60
+state 62
 
     (79) expresion -> ID . LPAREN argumentos RPAREN
     (80) expresion -> ID . LPAREN RPAREN
@@ -1394,7 +1404,7 @@ state 60
     (33) asignacion -> ID . ASSIGN error
     (34) asignacion -> ID . LCORCH index RCORCH ASSIGN expresion
 
-    LPAREN          shift and go to state 101
+    LPAREN          shift and go to state 103
     PLUS            reduce using rule 81 (expresion -> ID .)
     MINUS           reduce using rule 81 (expresion -> ID .)
     TIMES           reduce using rule 81 (expresion -> ID .)
@@ -1402,12 +1412,12 @@ state 60
     END             reduce using rule 81 (expresion -> ID .)
     SEMI            reduce using rule 81 (expresion -> ID .)
     ELSE            reduce using rule 81 (expresion -> ID .)
-    LCORCH          shift and go to state 99
-    ASSIGN          shift and go to state 100
-    error           shift and go to state 102
+    LCORCH          shift and go to state 101
+    ASSIGN          shift and go to state 102
+    error           shift and go to state 104
 
 
-state 61
+state 63
 
     (38) declaracion -> IF . relacion THEN declaracion
     (39) declaracion -> IF . relacion THEN declaracion ELSE declaracion
@@ -1442,22 +1452,22 @@ state 61
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    error           shift and go to state 104
-    NOT             shift and go to state 87
-    LPAREN          shift and go to state 84
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    error           shift and go to state 106
+    NOT             shift and go to state 89
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 85
-    numero                         shift and go to state 57
-    relacion                       shift and go to state 103
+    expresion                      shift and go to state 87
+    numero                         shift and go to state 59
+    relacion                       shift and go to state 105
 
-state 62
+state 64
 
     (60) declaracion -> expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -1468,13 +1478,13 @@ state 62
     END             reduce using rule 60 (declaracion -> expresion .)
     SEMI            reduce using rule 60 (declaracion -> expresion .)
     ELSE            reduce using rule 60 (declaracion -> expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 63
+state 65
 
     (63) declaracion -> asignacion .
 
@@ -1483,7 +1493,7 @@ state 63
     ELSE            reduce using rule 63 (declaracion -> asignacion .)
 
 
-state 64
+state 66
 
     (62) declaracion -> BREAK .
 
@@ -1492,7 +1502,7 @@ state 64
     ELSE            reduce using rule 62 (declaracion -> BREAK .)
 
 
-state 65
+state 67
 
     (65) declaraciones -> declaracion .
 
@@ -1500,82 +1510,82 @@ state 65
     SEMI            reduce using rule 65 (declaraciones -> declaracion .)
 
 
-state 66
-
-    (4) funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones . END
-    (64) declaraciones -> declaraciones . SEMI declaracion
-
-    END             shift and go to state 109
-    SEMI            shift and go to state 81
-
-
-state 67
-
-    (7) funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN error . END
-
-    END             shift and go to state 110
-
-
 state 68
 
-    (17) locales -> locales parametro SEMI .
+    (4) funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN declaraciones . END
+    (64) declaraciones -> declaraciones . SEMI declaracion
 
-    BEGIN           reduce using rule 17 (locales -> locales parametro SEMI .)
-    error           reduce using rule 17 (locales -> locales parametro SEMI .)
-    ID              reduce using rule 17 (locales -> locales parametro SEMI .)
-    FUN             reduce using rule 17 (locales -> locales parametro SEMI .)
+    END             shift and go to state 111
+    SEMI            shift and go to state 83
 
 
 state 69
 
-    (22) locales -> locales parametro error .
+    (7) funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN error . END
 
-    BEGIN           reduce using rule 22 (locales -> locales parametro error .)
-    error           reduce using rule 22 (locales -> locales parametro error .)
-    ID              reduce using rule 22 (locales -> locales parametro error .)
-    FUN             reduce using rule 22 (locales -> locales parametro error .)
+    END             shift and go to state 112
 
 
 state 70
 
-    (21) locales -> locales error SEMI .
+    (17) locales -> locales parametro SEMI .
 
-    BEGIN           reduce using rule 21 (locales -> locales error SEMI .)
-    error           reduce using rule 21 (locales -> locales error SEMI .)
-    ID              reduce using rule 21 (locales -> locales error SEMI .)
-    FUN             reduce using rule 21 (locales -> locales error SEMI .)
+    error           reduce using rule 17 (locales -> locales parametro SEMI .)
+    ID              reduce using rule 17 (locales -> locales parametro SEMI .)
+    FUN             reduce using rule 17 (locales -> locales parametro SEMI .)
+    BEGIN           reduce using rule 17 (locales -> locales parametro SEMI .)
 
 
 state 71
 
-    (23) locales -> locales funcion error .
+    (22) locales -> locales parametro error .
 
-    BEGIN           reduce using rule 23 (locales -> locales funcion error .)
-    error           reduce using rule 23 (locales -> locales funcion error .)
-    ID              reduce using rule 23 (locales -> locales funcion error .)
-    FUN             reduce using rule 23 (locales -> locales funcion error .)
+    error           reduce using rule 22 (locales -> locales parametro error .)
+    ID              reduce using rule 22 (locales -> locales parametro error .)
+    FUN             reduce using rule 22 (locales -> locales parametro error .)
+    BEGIN           reduce using rule 22 (locales -> locales parametro error .)
 
 
 state 72
 
-    (18) locales -> locales funcion SEMI .
+    (21) locales -> locales error SEMI .
 
-    BEGIN           reduce using rule 18 (locales -> locales funcion SEMI .)
-    error           reduce using rule 18 (locales -> locales funcion SEMI .)
-    ID              reduce using rule 18 (locales -> locales funcion SEMI .)
-    FUN             reduce using rule 18 (locales -> locales funcion SEMI .)
+    error           reduce using rule 21 (locales -> locales error SEMI .)
+    ID              reduce using rule 21 (locales -> locales error SEMI .)
+    FUN             reduce using rule 21 (locales -> locales error SEMI .)
+    BEGIN           reduce using rule 21 (locales -> locales error SEMI .)
 
 
 state 73
 
-    (5) funcion -> FUN ID LPAREN error RPAREN locales BEGIN declaraciones . END
-    (64) declaraciones -> declaraciones . SEMI declaracion
+    (23) locales -> locales funcion error .
 
-    END             shift and go to state 111
-    SEMI            shift and go to state 81
+    error           reduce using rule 23 (locales -> locales funcion error .)
+    ID              reduce using rule 23 (locales -> locales funcion error .)
+    FUN             reduce using rule 23 (locales -> locales funcion error .)
+    BEGIN           reduce using rule 23 (locales -> locales funcion error .)
 
 
 state 74
+
+    (18) locales -> locales funcion SEMI .
+
+    error           reduce using rule 18 (locales -> locales funcion SEMI .)
+    ID              reduce using rule 18 (locales -> locales funcion SEMI .)
+    FUN             reduce using rule 18 (locales -> locales funcion SEMI .)
+    BEGIN           reduce using rule 18 (locales -> locales funcion SEMI .)
+
+
+state 75
+
+    (5) funcion -> FUN ID LPAREN error RPAREN local BEGIN declaraciones . END
+    (64) declaraciones -> declaraciones . SEMI declaracion
+
+    END             shift and go to state 113
+    SEMI            shift and go to state 83
+
+
+state 76
 
     (68) tipo -> NINT LCORCH expresion . RCORCH
     (71) expresion -> expresion . PLUS expresion
@@ -1583,46 +1593,46 @@ state 74
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    RCORCH          shift and go to state 112
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    RCORCH          shift and go to state 114
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 75
+state 77
 
     (79) expresion -> ID . LPAREN argumentos RPAREN
     (80) expresion -> ID . LPAREN RPAREN
     (81) expresion -> ID .
     (82) expresion -> ID . LCORCH expresion RCORCH
 
-    LPAREN          shift and go to state 101
-    PLUS            reduce using rule 81 (expresion -> ID .)
-    MINUS           reduce using rule 81 (expresion -> ID .)
-    TIMES           reduce using rule 81 (expresion -> ID .)
-    DIVIDE          reduce using rule 81 (expresion -> ID .)
-    END             reduce using rule 81 (expresion -> ID .)
-    SEMI            reduce using rule 81 (expresion -> ID .)
-    RCORCH          reduce using rule 81 (expresion -> ID .)
-    ELSE            reduce using rule 81 (expresion -> ID .)
+    LPAREN          shift and go to state 103
     LT              reduce using rule 81 (expresion -> ID .)
     GT              reduce using rule 81 (expresion -> ID .)
     LE              reduce using rule 81 (expresion -> ID .)
     GE              reduce using rule 81 (expresion -> ID .)
     EQUALS          reduce using rule 81 (expresion -> ID .)
     NE              reduce using rule 81 (expresion -> ID .)
-    RPAREN          reduce using rule 81 (expresion -> ID .)
+    PLUS            reduce using rule 81 (expresion -> ID .)
+    MINUS           reduce using rule 81 (expresion -> ID .)
+    TIMES           reduce using rule 81 (expresion -> ID .)
+    DIVIDE          reduce using rule 81 (expresion -> ID .)
+    END             reduce using rule 81 (expresion -> ID .)
+    SEMI            reduce using rule 81 (expresion -> ID .)
+    ELSE            reduce using rule 81 (expresion -> ID .)
     error           reduce using rule 81 (expresion -> ID .)
-    COMMA           reduce using rule 81 (expresion -> ID .)
+    RCORCH          reduce using rule 81 (expresion -> ID .)
     DO              reduce using rule 81 (expresion -> ID .)
     AND             reduce using rule 81 (expresion -> ID .)
     OR              reduce using rule 81 (expresion -> ID .)
     THEN            reduce using rule 81 (expresion -> ID .)
-    LCORCH          shift and go to state 113
+    RPAREN          reduce using rule 81 (expresion -> ID .)
+    COMMA           reduce using rule 81 (expresion -> ID .)
+    LCORCH          shift and go to state 115
 
 
-state 76
+state 78
 
     (70) tipo -> NFLOAT LCORCH expresion . RCORCH
     (71) expresion -> expresion . PLUS expresion
@@ -1630,14 +1640,14 @@ state 76
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    RCORCH          shift and go to state 114
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    RCORCH          shift and go to state 116
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 77
+state 79
 
     (57) declaracion -> RETURN expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -1648,13 +1658,13 @@ state 77
     END             reduce using rule 57 (declaracion -> RETURN expresion .)
     SEMI            reduce using rule 57 (declaracion -> RETURN expresion .)
     ELSE            reduce using rule 57 (declaracion -> RETURN expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 78
+state 80
 
     (58) declaracion -> RETURN error .
 
@@ -1663,24 +1673,24 @@ state 78
     ELSE            reduce using rule 58 (declaracion -> RETURN error .)
 
 
-state 79
+state 81
 
     (53) declaracion -> READ LPAREN . ID RPAREN
     (54) declaracion -> READ LPAREN . error RPAREN
     (55) declaracion -> READ LPAREN . ID error
 
-    ID              shift and go to state 115
-    error           shift and go to state 116
+    ID              shift and go to state 117
+    error           shift and go to state 118
 
 
-state 80
+state 82
 
     (56) declaracion -> READ error . ID RPAREN
 
-    ID              shift and go to state 117
+    ID              shift and go to state 119
 
 
-state 81
+state 83
 
     (64) declaraciones -> declaraciones SEMI . declaracion
     (35) declaracion -> . WHILE relacion DO declaracion
@@ -1738,52 +1748,52 @@ state 81
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    WHILE           shift and go to state 48
-    IF              shift and go to state 61
-    PRINT           shift and go to state 49
-    WRITE           shift and go to state 58
-    READ            shift and go to state 46
-    RETURN          shift and go to state 45
-    BEGIN           shift and go to state 52
-    SKIP            shift and go to state 56
-    BREAK           shift and go to state 64
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 60
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    WHILE           shift and go to state 50
+    IF              shift and go to state 63
+    PRINT           shift and go to state 51
+    WRITE           shift and go to state 60
+    READ            shift and go to state 48
+    RETURN          shift and go to state 47
+    BEGIN           shift and go to state 54
+    SKIP            shift and go to state 58
+    BREAK           shift and go to state 66
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 62
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 62
-    asignacion                     shift and go to state 63
-    numero                         shift and go to state 57
-    declaracion                    shift and go to state 118
+    expresion                      shift and go to state 64
+    asignacion                     shift and go to state 65
+    numero                         shift and go to state 59
+    declaracion                    shift and go to state 120
 
-state 82
+state 84
 
     (6) funcion -> FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END .
 
-    SEMI            reduce using rule 6 (funcion -> FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END .)
-    error           reduce using rule 6 (funcion -> FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END .)
     FUN             reduce using rule 6 (funcion -> FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END .)
     $end            reduce using rule 6 (funcion -> FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END .)
+    SEMI            reduce using rule 6 (funcion -> FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END .)
+    error           reduce using rule 6 (funcion -> FUN ID LPAREN mparametros RPAREN error BEGIN declaraciones END .)
 
 
-state 83
+state 85
 
     (35) declaracion -> WHILE relacion . DO declaracion
     (37) declaracion -> WHILE relacion . DO error
     (96) relacion -> relacion . AND relacion
     (97) relacion -> relacion . OR relacion
 
-    DO              shift and go to state 120
-    AND             shift and go to state 119
-    OR              shift and go to state 121
+    DO              shift and go to state 122
+    AND             shift and go to state 121
+    OR              shift and go to state 123
 
 
-state 84
+state 86
 
     (99) relacion -> LPAREN . relacion RPAREN
     (77) expresion -> LPAREN . expresion RPAREN
@@ -1816,22 +1826,22 @@ state 84
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    RPAREN          shift and go to state 98
-    NOT             shift and go to state 87
-    LPAREN          shift and go to state 84
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    RPAREN          shift and go to state 100
+    NOT             shift and go to state 89
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 123
-    relacion                       shift and go to state 122
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 125
+    relacion                       shift and go to state 124
+    numero                         shift and go to state 59
 
-state 85
+state 87
 
     (90) relacion -> expresion . LT expresion
     (91) relacion -> expresion . GT expresion
@@ -1844,26 +1854,26 @@ state 85
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    LT              shift and go to state 128
-    GT              shift and go to state 124
-    LE              shift and go to state 129
-    GE              shift and go to state 126
-    EQUALS          shift and go to state 127
-    NE              shift and go to state 125
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    LT              shift and go to state 130
+    GT              shift and go to state 126
+    LE              shift and go to state 131
+    GE              shift and go to state 128
+    EQUALS          shift and go to state 129
+    NE              shift and go to state 127
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 86
+state 88
 
     (36) declaracion -> WHILE error . DO declaracion
 
-    DO              shift and go to state 130
+    DO              shift and go to state 132
 
 
-state 87
+state 89
 
     (98) relacion -> NOT . relacion
     (90) relacion -> . expresion LT expresion
@@ -1894,39 +1904,39 @@ state 87
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    NOT             shift and go to state 87
-    LPAREN          shift and go to state 84
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    NOT             shift and go to state 89
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 85
-    relacion                       shift and go to state 131
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 87
+    relacion                       shift and go to state 133
+    numero                         shift and go to state 59
 
-state 88
+state 90
 
     (43) declaracion -> PRINT LPAREN . STRING RPAREN
     (44) declaracion -> PRINT LPAREN . error RPAREN
     (45) declaracion -> PRINT LPAREN . STRING error
 
-    STRING          shift and go to state 132
-    error           shift and go to state 133
+    STRING          shift and go to state 134
+    error           shift and go to state 135
 
 
-state 89
+state 91
 
     (46) declaracion -> PRINT error . STRING RPAREN
     (47) declaracion -> PRINT error . STRING error
 
-    STRING          shift and go to state 134
+    STRING          shift and go to state 136
 
 
-state 90
+state 92
 
     (75) expresion -> MINUS expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -1934,35 +1944,35 @@ state 90
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    PLUS            reduce using rule 75 (expresion -> MINUS expresion .)
-    MINUS           reduce using rule 75 (expresion -> MINUS expresion .)
-    TIMES           reduce using rule 75 (expresion -> MINUS expresion .)
-    DIVIDE          reduce using rule 75 (expresion -> MINUS expresion .)
-    END             reduce using rule 75 (expresion -> MINUS expresion .)
-    SEMI            reduce using rule 75 (expresion -> MINUS expresion .)
-    RCORCH          reduce using rule 75 (expresion -> MINUS expresion .)
-    ELSE            reduce using rule 75 (expresion -> MINUS expresion .)
     LT              reduce using rule 75 (expresion -> MINUS expresion .)
     GT              reduce using rule 75 (expresion -> MINUS expresion .)
     LE              reduce using rule 75 (expresion -> MINUS expresion .)
     GE              reduce using rule 75 (expresion -> MINUS expresion .)
     EQUALS          reduce using rule 75 (expresion -> MINUS expresion .)
     NE              reduce using rule 75 (expresion -> MINUS expresion .)
-    RPAREN          reduce using rule 75 (expresion -> MINUS expresion .)
+    PLUS            reduce using rule 75 (expresion -> MINUS expresion .)
+    MINUS           reduce using rule 75 (expresion -> MINUS expresion .)
+    TIMES           reduce using rule 75 (expresion -> MINUS expresion .)
+    DIVIDE          reduce using rule 75 (expresion -> MINUS expresion .)
+    END             reduce using rule 75 (expresion -> MINUS expresion .)
+    SEMI            reduce using rule 75 (expresion -> MINUS expresion .)
+    ELSE            reduce using rule 75 (expresion -> MINUS expresion .)
     error           reduce using rule 75 (expresion -> MINUS expresion .)
-    COMMA           reduce using rule 75 (expresion -> MINUS expresion .)
+    RCORCH          reduce using rule 75 (expresion -> MINUS expresion .)
     DO              reduce using rule 75 (expresion -> MINUS expresion .)
     AND             reduce using rule 75 (expresion -> MINUS expresion .)
     OR              reduce using rule 75 (expresion -> MINUS expresion .)
     THEN            reduce using rule 75 (expresion -> MINUS expresion .)
+    RPAREN          reduce using rule 75 (expresion -> MINUS expresion .)
+    COMMA           reduce using rule 75 (expresion -> MINUS expresion .)
 
-  ! PLUS            [ shift and go to state 106 ]
-  ! MINUS           [ shift and go to state 107 ]
-  ! TIMES           [ shift and go to state 108 ]
-  ! DIVIDE          [ shift and go to state 105 ]
+  ! PLUS            [ shift and go to state 108 ]
+  ! MINUS           [ shift and go to state 109 ]
+  ! TIMES           [ shift and go to state 110 ]
+  ! DIVIDE          [ shift and go to state 107 ]
 
 
-state 91
+state 93
 
     (85) expresion -> NFLOAT LPAREN . expresion RPAREN
     (71) expresion -> . expresion PLUS expresion
@@ -1983,28 +1993,28 @@ state 91
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 135
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 137
+    numero                         shift and go to state 59
 
-state 92
+state 94
 
     (59) declaracion -> BEGIN declaraciones . END
     (64) declaraciones -> declaraciones . SEMI declaracion
 
-    END             shift and go to state 136
-    SEMI            shift and go to state 81
+    END             shift and go to state 138
+    SEMI            shift and go to state 83
 
 
-state 93
+state 95
 
     (84) expresion -> NINT LPAREN . expresion RPAREN
     (71) expresion -> . expresion PLUS expresion
@@ -2025,19 +2035,19 @@ state 93
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 137
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 139
+    numero                         shift and go to state 59
 
-state 94
+state 96
 
     (76) expresion -> PLUS expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -2045,35 +2055,35 @@ state 94
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    PLUS            reduce using rule 76 (expresion -> PLUS expresion .)
-    MINUS           reduce using rule 76 (expresion -> PLUS expresion .)
-    TIMES           reduce using rule 76 (expresion -> PLUS expresion .)
-    DIVIDE          reduce using rule 76 (expresion -> PLUS expresion .)
-    END             reduce using rule 76 (expresion -> PLUS expresion .)
-    SEMI            reduce using rule 76 (expresion -> PLUS expresion .)
-    RCORCH          reduce using rule 76 (expresion -> PLUS expresion .)
-    ELSE            reduce using rule 76 (expresion -> PLUS expresion .)
     LT              reduce using rule 76 (expresion -> PLUS expresion .)
     GT              reduce using rule 76 (expresion -> PLUS expresion .)
     LE              reduce using rule 76 (expresion -> PLUS expresion .)
     GE              reduce using rule 76 (expresion -> PLUS expresion .)
     EQUALS          reduce using rule 76 (expresion -> PLUS expresion .)
     NE              reduce using rule 76 (expresion -> PLUS expresion .)
-    RPAREN          reduce using rule 76 (expresion -> PLUS expresion .)
+    PLUS            reduce using rule 76 (expresion -> PLUS expresion .)
+    MINUS           reduce using rule 76 (expresion -> PLUS expresion .)
+    TIMES           reduce using rule 76 (expresion -> PLUS expresion .)
+    DIVIDE          reduce using rule 76 (expresion -> PLUS expresion .)
+    END             reduce using rule 76 (expresion -> PLUS expresion .)
+    SEMI            reduce using rule 76 (expresion -> PLUS expresion .)
+    ELSE            reduce using rule 76 (expresion -> PLUS expresion .)
     error           reduce using rule 76 (expresion -> PLUS expresion .)
-    COMMA           reduce using rule 76 (expresion -> PLUS expresion .)
+    RCORCH          reduce using rule 76 (expresion -> PLUS expresion .)
     DO              reduce using rule 76 (expresion -> PLUS expresion .)
     AND             reduce using rule 76 (expresion -> PLUS expresion .)
     OR              reduce using rule 76 (expresion -> PLUS expresion .)
     THEN            reduce using rule 76 (expresion -> PLUS expresion .)
+    RPAREN          reduce using rule 76 (expresion -> PLUS expresion .)
+    COMMA           reduce using rule 76 (expresion -> PLUS expresion .)
 
-  ! PLUS            [ shift and go to state 106 ]
-  ! MINUS           [ shift and go to state 107 ]
-  ! TIMES           [ shift and go to state 108 ]
-  ! DIVIDE          [ shift and go to state 105 ]
+  ! PLUS            [ shift and go to state 108 ]
+  ! MINUS           [ shift and go to state 109 ]
+  ! TIMES           [ shift and go to state 110 ]
+  ! DIVIDE          [ shift and go to state 107 ]
 
 
-state 95
+state 97
 
     (48) declaracion -> WRITE LPAREN . expresion RPAREN
     (49) declaracion -> WRITE LPAREN . error RPAREN
@@ -2096,20 +2106,20 @@ state 95
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    error           shift and go to state 139
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    error           shift and go to state 141
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 138
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 140
+    numero                         shift and go to state 59
 
-state 96
+state 98
 
     (50) declaracion -> WRITE error . expresion RPAREN
     (52) declaracion -> WRITE error . expresion error
@@ -2131,19 +2141,19 @@ state 96
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 140
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 142
+    numero                         shift and go to state 59
 
-state 97
+state 99
 
     (77) expresion -> LPAREN expresion . RPAREN
     (71) expresion -> expresion . PLUS expresion
@@ -2151,41 +2161,41 @@ state 97
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    RPAREN          shift and go to state 141
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    RPAREN          shift and go to state 143
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 98
+state 100
 
     (78) expresion -> LPAREN RPAREN .
 
-    PLUS            reduce using rule 78 (expresion -> LPAREN RPAREN .)
-    MINUS           reduce using rule 78 (expresion -> LPAREN RPAREN .)
-    TIMES           reduce using rule 78 (expresion -> LPAREN RPAREN .)
-    DIVIDE          reduce using rule 78 (expresion -> LPAREN RPAREN .)
-    END             reduce using rule 78 (expresion -> LPAREN RPAREN .)
-    SEMI            reduce using rule 78 (expresion -> LPAREN RPAREN .)
-    RCORCH          reduce using rule 78 (expresion -> LPAREN RPAREN .)
-    ELSE            reduce using rule 78 (expresion -> LPAREN RPAREN .)
     LT              reduce using rule 78 (expresion -> LPAREN RPAREN .)
     GT              reduce using rule 78 (expresion -> LPAREN RPAREN .)
     LE              reduce using rule 78 (expresion -> LPAREN RPAREN .)
     GE              reduce using rule 78 (expresion -> LPAREN RPAREN .)
     EQUALS          reduce using rule 78 (expresion -> LPAREN RPAREN .)
     NE              reduce using rule 78 (expresion -> LPAREN RPAREN .)
-    RPAREN          reduce using rule 78 (expresion -> LPAREN RPAREN .)
+    PLUS            reduce using rule 78 (expresion -> LPAREN RPAREN .)
+    MINUS           reduce using rule 78 (expresion -> LPAREN RPAREN .)
+    TIMES           reduce using rule 78 (expresion -> LPAREN RPAREN .)
+    DIVIDE          reduce using rule 78 (expresion -> LPAREN RPAREN .)
+    END             reduce using rule 78 (expresion -> LPAREN RPAREN .)
+    SEMI            reduce using rule 78 (expresion -> LPAREN RPAREN .)
+    ELSE            reduce using rule 78 (expresion -> LPAREN RPAREN .)
     error           reduce using rule 78 (expresion -> LPAREN RPAREN .)
-    COMMA           reduce using rule 78 (expresion -> LPAREN RPAREN .)
+    RCORCH          reduce using rule 78 (expresion -> LPAREN RPAREN .)
     DO              reduce using rule 78 (expresion -> LPAREN RPAREN .)
     AND             reduce using rule 78 (expresion -> LPAREN RPAREN .)
     OR              reduce using rule 78 (expresion -> LPAREN RPAREN .)
     THEN            reduce using rule 78 (expresion -> LPAREN RPAREN .)
+    RPAREN          reduce using rule 78 (expresion -> LPAREN RPAREN .)
+    COMMA           reduce using rule 78 (expresion -> LPAREN RPAREN .)
 
 
-state 99
+state 101
 
     (82) expresion -> ID LCORCH . expresion RCORCH
     (29) asignacion -> ID LCORCH . index RCORCH ASSIGN error
@@ -2211,21 +2221,21 @@ state 99
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    error           shift and go to state 144
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    error           shift and go to state 146
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 142
-    index                          shift and go to state 143
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 144
+    index                          shift and go to state 145
+    numero                         shift and go to state 59
 
-state 100
+state 102
 
     (27) asignacion -> ID ASSIGN . expresion
     (33) asignacion -> ID ASSIGN . error
@@ -2247,20 +2257,20 @@ state 100
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    error           shift and go to state 146
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    error           shift and go to state 148
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 145
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 147
+    numero                         shift and go to state 59
 
-state 101
+state 103
 
     (79) expresion -> ID LPAREN . argumentos RPAREN
     (80) expresion -> ID LPAREN . RPAREN
@@ -2284,21 +2294,21 @@ state 101
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    RPAREN          shift and go to state 148
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    RPAREN          shift and go to state 150
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 147
-    argumentos                     shift and go to state 149
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 149
+    argumentos                     shift and go to state 151
+    numero                         shift and go to state 59
 
-state 102
+state 104
 
     (28) asignacion -> ID error . index error ASSIGN expresion
     (31) asignacion -> ID error . index RCORCH ASSIGN expresion
@@ -2321,20 +2331,20 @@ state 102
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 150
-    index                          shift and go to state 151
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 152
+    index                          shift and go to state 153
+    numero                         shift and go to state 59
 
-state 103
+state 105
 
     (38) declaracion -> IF relacion . THEN declaracion
     (39) declaracion -> IF relacion . THEN declaracion ELSE declaracion
@@ -2343,19 +2353,19 @@ state 103
     (96) relacion -> relacion . AND relacion
     (97) relacion -> relacion . OR relacion
 
-    THEN            shift and go to state 152
-    AND             shift and go to state 119
-    OR              shift and go to state 121
+    THEN            shift and go to state 154
+    AND             shift and go to state 121
+    OR              shift and go to state 123
 
 
-state 104
+state 106
 
     (40) declaracion -> IF error . THEN declaracion
 
-    THEN            shift and go to state 153
+    THEN            shift and go to state 155
 
 
-state 105
+state 107
 
     (74) expresion -> expresion DIVIDE . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -2376,19 +2386,19 @@ state 105
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 154
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 156
+    numero                         shift and go to state 59
 
-state 106
+state 108
 
     (71) expresion -> expresion PLUS . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -2409,19 +2419,19 @@ state 106
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 155
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 157
+    numero                         shift and go to state 59
 
-state 107
+state 109
 
     (72) expresion -> expresion MINUS . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -2442,19 +2452,19 @@ state 107
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 156
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 158
+    numero                         shift and go to state 59
 
-state 108
+state 110
 
     (73) expresion -> expresion TIMES . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -2475,49 +2485,49 @@ state 108
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 157
-    numero                         shift and go to state 57
-
-state 109
-
-    (4) funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END .
-
-    SEMI            reduce using rule 4 (funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END .)
-    error           reduce using rule 4 (funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END .)
-    FUN             reduce using rule 4 (funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END .)
-    $end            reduce using rule 4 (funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END .)
-
-
-state 110
-
-    (7) funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN error END .
-
-    SEMI            reduce using rule 7 (funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN error END .)
-    error           reduce using rule 7 (funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN error END .)
-    FUN             reduce using rule 7 (funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN error END .)
-    $end            reduce using rule 7 (funcion -> FUN ID LPAREN mparametros RPAREN locales BEGIN error END .)
-
+    expresion                      shift and go to state 159
+    numero                         shift and go to state 59
 
 state 111
 
-    (5) funcion -> FUN ID LPAREN error RPAREN locales BEGIN declaraciones END .
+    (4) funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN declaraciones END .
 
-    SEMI            reduce using rule 5 (funcion -> FUN ID LPAREN error RPAREN locales BEGIN declaraciones END .)
-    error           reduce using rule 5 (funcion -> FUN ID LPAREN error RPAREN locales BEGIN declaraciones END .)
-    FUN             reduce using rule 5 (funcion -> FUN ID LPAREN error RPAREN locales BEGIN declaraciones END .)
-    $end            reduce using rule 5 (funcion -> FUN ID LPAREN error RPAREN locales BEGIN declaraciones END .)
+    FUN             reduce using rule 4 (funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN declaraciones END .)
+    $end            reduce using rule 4 (funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN declaraciones END .)
+    SEMI            reduce using rule 4 (funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN declaraciones END .)
+    error           reduce using rule 4 (funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN declaraciones END .)
 
 
 state 112
+
+    (7) funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN error END .
+
+    FUN             reduce using rule 7 (funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN error END .)
+    $end            reduce using rule 7 (funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN error END .)
+    SEMI            reduce using rule 7 (funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN error END .)
+    error           reduce using rule 7 (funcion -> FUN ID LPAREN mparametros RPAREN local BEGIN error END .)
+
+
+state 113
+
+    (5) funcion -> FUN ID LPAREN error RPAREN local BEGIN declaraciones END .
+
+    FUN             reduce using rule 5 (funcion -> FUN ID LPAREN error RPAREN local BEGIN declaraciones END .)
+    $end            reduce using rule 5 (funcion -> FUN ID LPAREN error RPAREN local BEGIN declaraciones END .)
+    SEMI            reduce using rule 5 (funcion -> FUN ID LPAREN error RPAREN local BEGIN declaraciones END .)
+    error           reduce using rule 5 (funcion -> FUN ID LPAREN error RPAREN local BEGIN declaraciones END .)
+
+
+state 114
 
     (68) tipo -> NINT LCORCH expresion RCORCH .
 
@@ -2527,7 +2537,7 @@ state 112
     error           reduce using rule 68 (tipo -> NINT LCORCH expresion RCORCH .)
 
 
-state 113
+state 115
 
     (82) expresion -> ID LCORCH . expresion RCORCH
     (71) expresion -> . expresion PLUS expresion
@@ -2548,19 +2558,19 @@ state 113
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 158
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 160
+    numero                         shift and go to state 59
 
-state 114
+state 116
 
     (70) tipo -> NFLOAT LCORCH expresion RCORCH .
 
@@ -2570,30 +2580,30 @@ state 114
     error           reduce using rule 70 (tipo -> NFLOAT LCORCH expresion RCORCH .)
 
 
-state 115
+state 117
 
     (53) declaracion -> READ LPAREN ID . RPAREN
     (55) declaracion -> READ LPAREN ID . error
 
-    RPAREN          shift and go to state 159
-    error           shift and go to state 160
-
-
-state 116
-
-    (54) declaracion -> READ LPAREN error . RPAREN
-
     RPAREN          shift and go to state 161
-
-
-state 117
-
-    (56) declaracion -> READ error ID . RPAREN
-
-    RPAREN          shift and go to state 162
+    error           shift and go to state 162
 
 
 state 118
+
+    (54) declaracion -> READ LPAREN error . RPAREN
+
+    RPAREN          shift and go to state 163
+
+
+state 119
+
+    (56) declaracion -> READ error ID . RPAREN
+
+    RPAREN          shift and go to state 164
+
+
+state 120
 
     (64) declaraciones -> declaraciones SEMI declaracion .
 
@@ -2601,7 +2611,7 @@ state 118
     SEMI            reduce using rule 64 (declaraciones -> declaraciones SEMI declaracion .)
 
 
-state 119
+state 121
 
     (96) relacion -> relacion AND . relacion
     (90) relacion -> . expresion LT expresion
@@ -2632,21 +2642,21 @@ state 119
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    NOT             shift and go to state 87
-    LPAREN          shift and go to state 84
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    NOT             shift and go to state 89
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 85
-    relacion                       shift and go to state 163
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 87
+    relacion                       shift and go to state 165
+    numero                         shift and go to state 59
 
-state 120
+state 122
 
     (35) declaracion -> WHILE relacion DO . declaracion
     (37) declaracion -> WHILE relacion DO . error
@@ -2705,31 +2715,31 @@ state 120
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    error           shift and go to state 164
-    WHILE           shift and go to state 48
-    IF              shift and go to state 61
-    PRINT           shift and go to state 49
-    WRITE           shift and go to state 58
-    READ            shift and go to state 46
-    RETURN          shift and go to state 45
-    BEGIN           shift and go to state 52
-    SKIP            shift and go to state 56
-    BREAK           shift and go to state 64
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 60
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    error           shift and go to state 166
+    WHILE           shift and go to state 50
+    IF              shift and go to state 63
+    PRINT           shift and go to state 51
+    WRITE           shift and go to state 60
+    READ            shift and go to state 48
+    RETURN          shift and go to state 47
+    BEGIN           shift and go to state 54
+    SKIP            shift and go to state 58
+    BREAK           shift and go to state 66
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 62
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 62
-    asignacion                     shift and go to state 63
-    numero                         shift and go to state 57
-    declaracion                    shift and go to state 165
+    expresion                      shift and go to state 64
+    asignacion                     shift and go to state 65
+    numero                         shift and go to state 59
+    declaracion                    shift and go to state 167
 
-state 121
+state 123
 
     (97) relacion -> relacion OR . relacion
     (90) relacion -> . expresion LT expresion
@@ -2760,32 +2770,32 @@ state 121
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    NOT             shift and go to state 87
-    LPAREN          shift and go to state 84
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    NOT             shift and go to state 89
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 85
-    relacion                       shift and go to state 166
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 87
+    relacion                       shift and go to state 168
+    numero                         shift and go to state 59
 
-state 122
+state 124
 
     (99) relacion -> LPAREN relacion . RPAREN
     (96) relacion -> relacion . AND relacion
     (97) relacion -> relacion . OR relacion
 
-    RPAREN          shift and go to state 167
-    AND             shift and go to state 119
-    OR              shift and go to state 121
+    RPAREN          shift and go to state 169
+    AND             shift and go to state 121
+    OR              shift and go to state 123
 
 
-state 123
+state 125
 
     (77) expresion -> LPAREN expresion . RPAREN
     (90) relacion -> expresion . LT expresion
@@ -2799,20 +2809,20 @@ state 123
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    RPAREN          shift and go to state 141
-    LT              shift and go to state 128
-    GT              shift and go to state 124
-    LE              shift and go to state 129
-    GE              shift and go to state 126
-    EQUALS          shift and go to state 127
-    NE              shift and go to state 125
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    RPAREN          shift and go to state 143
+    LT              shift and go to state 130
+    GT              shift and go to state 126
+    LE              shift and go to state 131
+    GE              shift and go to state 128
+    EQUALS          shift and go to state 129
+    NE              shift and go to state 127
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 124
+state 126
 
     (91) relacion -> expresion GT . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -2833,19 +2843,19 @@ state 124
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 168
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 170
+    numero                         shift and go to state 59
 
-state 125
+state 127
 
     (95) relacion -> expresion NE . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -2866,19 +2876,19 @@ state 125
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 169
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 171
+    numero                         shift and go to state 59
 
-state 126
+state 128
 
     (93) relacion -> expresion GE . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -2899,19 +2909,19 @@ state 126
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 170
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 172
+    numero                         shift and go to state 59
 
-state 127
+state 129
 
     (94) relacion -> expresion EQUALS . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -2932,19 +2942,19 @@ state 127
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 171
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 173
+    numero                         shift and go to state 59
 
-state 128
+state 130
 
     (90) relacion -> expresion LT . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -2965,19 +2975,19 @@ state 128
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 172
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 174
+    numero                         shift and go to state 59
 
-state 129
+state 131
 
     (92) relacion -> expresion LE . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -2998,19 +3008,19 @@ state 129
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 173
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 175
+    numero                         shift and go to state 59
 
-state 130
+state 132
 
     (36) declaracion -> WHILE error DO . declaracion
     (35) declaracion -> . WHILE relacion DO declaracion
@@ -3068,30 +3078,30 @@ state 130
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    WHILE           shift and go to state 48
-    IF              shift and go to state 61
-    PRINT           shift and go to state 49
-    WRITE           shift and go to state 58
-    READ            shift and go to state 46
-    RETURN          shift and go to state 45
-    BEGIN           shift and go to state 52
-    SKIP            shift and go to state 56
-    BREAK           shift and go to state 64
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 60
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    WHILE           shift and go to state 50
+    IF              shift and go to state 63
+    PRINT           shift and go to state 51
+    WRITE           shift and go to state 60
+    READ            shift and go to state 48
+    RETURN          shift and go to state 47
+    BEGIN           shift and go to state 54
+    SKIP            shift and go to state 58
+    BREAK           shift and go to state 66
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 62
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 62
-    asignacion                     shift and go to state 63
-    numero                         shift and go to state 57
-    declaracion                    shift and go to state 174
+    expresion                      shift and go to state 64
+    asignacion                     shift and go to state 65
+    numero                         shift and go to state 59
+    declaracion                    shift and go to state 176
 
-state 131
+state 133
 
     (98) relacion -> NOT relacion .
     (96) relacion -> relacion . AND relacion
@@ -3100,41 +3110,41 @@ state 131
   ! shift/reduce conflict for AND resolved as shift
   ! shift/reduce conflict for OR resolved as shift
     DO              reduce using rule 98 (relacion -> NOT relacion .)
-    THEN            reduce using rule 98 (relacion -> NOT relacion .)
     RPAREN          reduce using rule 98 (relacion -> NOT relacion .)
-    AND             shift and go to state 119
-    OR              shift and go to state 121
+    THEN            reduce using rule 98 (relacion -> NOT relacion .)
+    AND             shift and go to state 121
+    OR              shift and go to state 123
 
   ! AND             [ reduce using rule 98 (relacion -> NOT relacion .) ]
   ! OR              [ reduce using rule 98 (relacion -> NOT relacion .) ]
 
 
-state 132
+state 134
 
     (43) declaracion -> PRINT LPAREN STRING . RPAREN
     (45) declaracion -> PRINT LPAREN STRING . error
 
-    RPAREN          shift and go to state 175
-    error           shift and go to state 176
+    RPAREN          shift and go to state 177
+    error           shift and go to state 178
 
 
-state 133
+state 135
 
     (44) declaracion -> PRINT LPAREN error . RPAREN
 
-    RPAREN          shift and go to state 177
+    RPAREN          shift and go to state 179
 
 
-state 134
+state 136
 
     (46) declaracion -> PRINT error STRING . RPAREN
     (47) declaracion -> PRINT error STRING . error
 
-    RPAREN          shift and go to state 178
-    error           shift and go to state 179
+    RPAREN          shift and go to state 180
+    error           shift and go to state 181
 
 
-state 135
+state 137
 
     (85) expresion -> NFLOAT LPAREN expresion . RPAREN
     (71) expresion -> expresion . PLUS expresion
@@ -3142,14 +3152,14 @@ state 135
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    RPAREN          shift and go to state 180
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    RPAREN          shift and go to state 182
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 136
+state 138
 
     (59) declaracion -> BEGIN declaraciones END .
 
@@ -3158,7 +3168,7 @@ state 136
     ELSE            reduce using rule 59 (declaracion -> BEGIN declaraciones END .)
 
 
-state 137
+state 139
 
     (84) expresion -> NINT LPAREN expresion . RPAREN
     (71) expresion -> expresion . PLUS expresion
@@ -3166,14 +3176,14 @@ state 137
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    RPAREN          shift and go to state 181
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    RPAREN          shift and go to state 183
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 138
+state 140
 
     (48) declaracion -> WRITE LPAREN expresion . RPAREN
     (51) declaracion -> WRITE LPAREN expresion . error
@@ -3182,22 +3192,22 @@ state 138
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    RPAREN          shift and go to state 182
-    error           shift and go to state 183
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    RPAREN          shift and go to state 184
+    error           shift and go to state 185
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 139
+state 141
 
     (49) declaracion -> WRITE LPAREN error . RPAREN
 
-    RPAREN          shift and go to state 184
+    RPAREN          shift and go to state 186
 
 
-state 140
+state 142
 
     (50) declaracion -> WRITE error expresion . RPAREN
     (52) declaracion -> WRITE error expresion . error
@@ -3206,42 +3216,42 @@ state 140
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    RPAREN          shift and go to state 185
-    error           shift and go to state 186
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    RPAREN          shift and go to state 187
+    error           shift and go to state 188
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 141
+state 143
 
     (77) expresion -> LPAREN expresion RPAREN .
 
-    PLUS            reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
-    MINUS           reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
-    TIMES           reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
-    DIVIDE          reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
-    END             reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
-    SEMI            reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
-    RCORCH          reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
-    ELSE            reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
     LT              reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
     GT              reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
     LE              reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
     GE              reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
     EQUALS          reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
     NE              reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
-    RPAREN          reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
+    PLUS            reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
+    MINUS           reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
+    TIMES           reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
+    DIVIDE          reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
+    END             reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
+    SEMI            reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
+    ELSE            reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
     error           reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
-    COMMA           reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
+    RCORCH          reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
     DO              reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
     AND             reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
     OR              reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
     THEN            reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
+    RPAREN          reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
+    COMMA           reduce using rule 77 (expresion -> LPAREN expresion RPAREN .)
 
 
-state 142
+state 144
 
     (82) expresion -> ID LCORCH expresion . RCORCH
     (71) expresion -> expresion . PLUS expresion
@@ -3250,34 +3260,34 @@ state 142
     (74) expresion -> expresion . DIVIDE expresion
     (66) index -> expresion .
 
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
     RCORCH          reduce using rule 66 (index -> expresion .)
     error           reduce using rule 66 (index -> expresion .)
 
-  ! RCORCH          [ shift and go to state 187 ]
+  ! RCORCH          [ shift and go to state 189 ]
 
 
-state 143
+state 145
 
     (29) asignacion -> ID LCORCH index . RCORCH ASSIGN error
     (32) asignacion -> ID LCORCH index . error ASSIGN expresion
     (34) asignacion -> ID LCORCH index . RCORCH ASSIGN expresion
 
-    RCORCH          shift and go to state 188
-    error           shift and go to state 189
+    RCORCH          shift and go to state 190
+    error           shift and go to state 191
 
 
-state 144
+state 146
 
     (30) asignacion -> ID LCORCH error . RCORCH ASSIGN expresion
 
-    RCORCH          shift and go to state 190
+    RCORCH          shift and go to state 192
 
 
-state 145
+state 147
 
     (27) asignacion -> ID ASSIGN expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -3288,13 +3298,13 @@ state 145
     END             reduce using rule 27 (asignacion -> ID ASSIGN expresion .)
     SEMI            reduce using rule 27 (asignacion -> ID ASSIGN expresion .)
     ELSE            reduce using rule 27 (asignacion -> ID ASSIGN expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 146
+state 148
 
     (33) asignacion -> ID ASSIGN error .
 
@@ -3303,7 +3313,7 @@ state 146
     ELSE            reduce using rule 33 (asignacion -> ID ASSIGN error .)
 
 
-state 147
+state 149
 
     (89) argumentos -> expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -3313,49 +3323,49 @@ state 147
 
     RPAREN          reduce using rule 89 (argumentos -> expresion .)
     COMMA           reduce using rule 89 (argumentos -> expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 148
+state 150
 
     (80) expresion -> ID LPAREN RPAREN .
 
-    PLUS            reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
-    MINUS           reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
-    TIMES           reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
-    DIVIDE          reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
-    END             reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
-    SEMI            reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
-    RCORCH          reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
-    ELSE            reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
     LT              reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
     GT              reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
     LE              reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
     GE              reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
     EQUALS          reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
     NE              reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
-    RPAREN          reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
+    PLUS            reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
+    MINUS           reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
+    TIMES           reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
+    DIVIDE          reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
+    END             reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
+    SEMI            reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
+    ELSE            reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
     error           reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
-    COMMA           reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
+    RCORCH          reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
     DO              reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
     AND             reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
     OR              reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
     THEN            reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
+    RPAREN          reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
+    COMMA           reduce using rule 80 (expresion -> ID LPAREN RPAREN .)
 
 
-state 149
+state 151
 
     (79) expresion -> ID LPAREN argumentos . RPAREN
     (88) argumentos -> argumentos . COMMA expresion
 
-    RPAREN          shift and go to state 191
-    COMMA           shift and go to state 192
+    RPAREN          shift and go to state 193
+    COMMA           shift and go to state 194
 
 
-state 150
+state 152
 
     (66) index -> expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -3365,22 +3375,22 @@ state 150
 
     error           reduce using rule 66 (index -> expresion .)
     RCORCH          reduce using rule 66 (index -> expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 151
+state 153
 
     (28) asignacion -> ID error index . error ASSIGN expresion
     (31) asignacion -> ID error index . RCORCH ASSIGN expresion
 
-    error           shift and go to state 194
-    RCORCH          shift and go to state 193
+    error           shift and go to state 196
+    RCORCH          shift and go to state 195
 
 
-state 152
+state 154
 
     (38) declaracion -> IF relacion THEN . declaracion
     (39) declaracion -> IF relacion THEN . declaracion ELSE declaracion
@@ -3441,31 +3451,31 @@ state 152
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    error           shift and go to state 195
-    WHILE           shift and go to state 48
-    IF              shift and go to state 61
-    PRINT           shift and go to state 49
-    WRITE           shift and go to state 58
-    READ            shift and go to state 46
-    RETURN          shift and go to state 45
-    BEGIN           shift and go to state 52
-    SKIP            shift and go to state 56
-    BREAK           shift and go to state 64
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 60
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    error           shift and go to state 197
+    WHILE           shift and go to state 50
+    IF              shift and go to state 63
+    PRINT           shift and go to state 51
+    WRITE           shift and go to state 60
+    READ            shift and go to state 48
+    RETURN          shift and go to state 47
+    BEGIN           shift and go to state 54
+    SKIP            shift and go to state 58
+    BREAK           shift and go to state 66
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 62
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 62
-    asignacion                     shift and go to state 63
-    numero                         shift and go to state 57
-    declaracion                    shift and go to state 196
+    expresion                      shift and go to state 64
+    asignacion                     shift and go to state 65
+    numero                         shift and go to state 59
+    declaracion                    shift and go to state 198
 
-state 153
+state 155
 
     (40) declaracion -> IF error THEN . declaracion
     (35) declaracion -> . WHILE relacion DO declaracion
@@ -3523,30 +3533,30 @@ state 153
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    WHILE           shift and go to state 48
-    IF              shift and go to state 61
-    PRINT           shift and go to state 49
-    WRITE           shift and go to state 58
-    READ            shift and go to state 46
-    RETURN          shift and go to state 45
-    BEGIN           shift and go to state 52
-    SKIP            shift and go to state 56
-    BREAK           shift and go to state 64
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 60
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    WHILE           shift and go to state 50
+    IF              shift and go to state 63
+    PRINT           shift and go to state 51
+    WRITE           shift and go to state 60
+    READ            shift and go to state 48
+    RETURN          shift and go to state 47
+    BEGIN           shift and go to state 54
+    SKIP            shift and go to state 58
+    BREAK           shift and go to state 66
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 62
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 62
-    asignacion                     shift and go to state 63
-    numero                         shift and go to state 57
-    declaracion                    shift and go to state 197
+    expresion                      shift and go to state 64
+    asignacion                     shift and go to state 65
+    numero                         shift and go to state 59
+    declaracion                    shift and go to state 199
 
-state 154
+state 156
 
     (74) expresion -> expresion DIVIDE expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -3554,35 +3564,35 @@ state 154
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    PLUS            reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
-    MINUS           reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
-    TIMES           reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
-    DIVIDE          reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
-    END             reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
-    SEMI            reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
-    RCORCH          reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
-    ELSE            reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
     LT              reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
     GT              reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
     LE              reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
     GE              reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
     EQUALS          reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
     NE              reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
-    RPAREN          reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
+    PLUS            reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
+    MINUS           reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
+    TIMES           reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
+    DIVIDE          reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
+    END             reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
+    SEMI            reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
+    ELSE            reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
     error           reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
-    COMMA           reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
+    RCORCH          reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
     DO              reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
     AND             reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
     OR              reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
     THEN            reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
+    RPAREN          reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
+    COMMA           reduce using rule 74 (expresion -> expresion DIVIDE expresion .)
 
-  ! PLUS            [ shift and go to state 106 ]
-  ! MINUS           [ shift and go to state 107 ]
-  ! TIMES           [ shift and go to state 108 ]
-  ! DIVIDE          [ shift and go to state 105 ]
+  ! PLUS            [ shift and go to state 108 ]
+  ! MINUS           [ shift and go to state 109 ]
+  ! TIMES           [ shift and go to state 110 ]
+  ! DIVIDE          [ shift and go to state 107 ]
 
 
-state 155
+state 157
 
     (71) expresion -> expresion PLUS expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -3590,35 +3600,35 @@ state 155
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    PLUS            reduce using rule 71 (expresion -> expresion PLUS expresion .)
-    MINUS           reduce using rule 71 (expresion -> expresion PLUS expresion .)
-    END             reduce using rule 71 (expresion -> expresion PLUS expresion .)
-    SEMI            reduce using rule 71 (expresion -> expresion PLUS expresion .)
-    RCORCH          reduce using rule 71 (expresion -> expresion PLUS expresion .)
-    ELSE            reduce using rule 71 (expresion -> expresion PLUS expresion .)
     LT              reduce using rule 71 (expresion -> expresion PLUS expresion .)
     GT              reduce using rule 71 (expresion -> expresion PLUS expresion .)
     LE              reduce using rule 71 (expresion -> expresion PLUS expresion .)
     GE              reduce using rule 71 (expresion -> expresion PLUS expresion .)
     EQUALS          reduce using rule 71 (expresion -> expresion PLUS expresion .)
     NE              reduce using rule 71 (expresion -> expresion PLUS expresion .)
-    RPAREN          reduce using rule 71 (expresion -> expresion PLUS expresion .)
+    PLUS            reduce using rule 71 (expresion -> expresion PLUS expresion .)
+    MINUS           reduce using rule 71 (expresion -> expresion PLUS expresion .)
+    END             reduce using rule 71 (expresion -> expresion PLUS expresion .)
+    SEMI            reduce using rule 71 (expresion -> expresion PLUS expresion .)
+    ELSE            reduce using rule 71 (expresion -> expresion PLUS expresion .)
     error           reduce using rule 71 (expresion -> expresion PLUS expresion .)
-    COMMA           reduce using rule 71 (expresion -> expresion PLUS expresion .)
+    RCORCH          reduce using rule 71 (expresion -> expresion PLUS expresion .)
     DO              reduce using rule 71 (expresion -> expresion PLUS expresion .)
     AND             reduce using rule 71 (expresion -> expresion PLUS expresion .)
     OR              reduce using rule 71 (expresion -> expresion PLUS expresion .)
     THEN            reduce using rule 71 (expresion -> expresion PLUS expresion .)
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    RPAREN          reduce using rule 71 (expresion -> expresion PLUS expresion .)
+    COMMA           reduce using rule 71 (expresion -> expresion PLUS expresion .)
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
   ! TIMES           [ reduce using rule 71 (expresion -> expresion PLUS expresion .) ]
   ! DIVIDE          [ reduce using rule 71 (expresion -> expresion PLUS expresion .) ]
-  ! PLUS            [ shift and go to state 106 ]
-  ! MINUS           [ shift and go to state 107 ]
+  ! PLUS            [ shift and go to state 108 ]
+  ! MINUS           [ shift and go to state 109 ]
 
 
-state 156
+state 158
 
     (72) expresion -> expresion MINUS expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -3626,35 +3636,35 @@ state 156
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    PLUS            reduce using rule 72 (expresion -> expresion MINUS expresion .)
-    MINUS           reduce using rule 72 (expresion -> expresion MINUS expresion .)
-    END             reduce using rule 72 (expresion -> expresion MINUS expresion .)
-    SEMI            reduce using rule 72 (expresion -> expresion MINUS expresion .)
-    RCORCH          reduce using rule 72 (expresion -> expresion MINUS expresion .)
-    ELSE            reduce using rule 72 (expresion -> expresion MINUS expresion .)
     LT              reduce using rule 72 (expresion -> expresion MINUS expresion .)
     GT              reduce using rule 72 (expresion -> expresion MINUS expresion .)
     LE              reduce using rule 72 (expresion -> expresion MINUS expresion .)
     GE              reduce using rule 72 (expresion -> expresion MINUS expresion .)
     EQUALS          reduce using rule 72 (expresion -> expresion MINUS expresion .)
     NE              reduce using rule 72 (expresion -> expresion MINUS expresion .)
-    RPAREN          reduce using rule 72 (expresion -> expresion MINUS expresion .)
+    PLUS            reduce using rule 72 (expresion -> expresion MINUS expresion .)
+    MINUS           reduce using rule 72 (expresion -> expresion MINUS expresion .)
+    END             reduce using rule 72 (expresion -> expresion MINUS expresion .)
+    SEMI            reduce using rule 72 (expresion -> expresion MINUS expresion .)
+    ELSE            reduce using rule 72 (expresion -> expresion MINUS expresion .)
     error           reduce using rule 72 (expresion -> expresion MINUS expresion .)
-    COMMA           reduce using rule 72 (expresion -> expresion MINUS expresion .)
+    RCORCH          reduce using rule 72 (expresion -> expresion MINUS expresion .)
     DO              reduce using rule 72 (expresion -> expresion MINUS expresion .)
     AND             reduce using rule 72 (expresion -> expresion MINUS expresion .)
     OR              reduce using rule 72 (expresion -> expresion MINUS expresion .)
     THEN            reduce using rule 72 (expresion -> expresion MINUS expresion .)
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    RPAREN          reduce using rule 72 (expresion -> expresion MINUS expresion .)
+    COMMA           reduce using rule 72 (expresion -> expresion MINUS expresion .)
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
   ! TIMES           [ reduce using rule 72 (expresion -> expresion MINUS expresion .) ]
   ! DIVIDE          [ reduce using rule 72 (expresion -> expresion MINUS expresion .) ]
-  ! PLUS            [ shift and go to state 106 ]
-  ! MINUS           [ shift and go to state 107 ]
+  ! PLUS            [ shift and go to state 108 ]
+  ! MINUS           [ shift and go to state 109 ]
 
 
-state 157
+state 159
 
     (73) expresion -> expresion TIMES expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -3662,35 +3672,35 @@ state 157
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    PLUS            reduce using rule 73 (expresion -> expresion TIMES expresion .)
-    MINUS           reduce using rule 73 (expresion -> expresion TIMES expresion .)
-    TIMES           reduce using rule 73 (expresion -> expresion TIMES expresion .)
-    DIVIDE          reduce using rule 73 (expresion -> expresion TIMES expresion .)
-    END             reduce using rule 73 (expresion -> expresion TIMES expresion .)
-    SEMI            reduce using rule 73 (expresion -> expresion TIMES expresion .)
-    RCORCH          reduce using rule 73 (expresion -> expresion TIMES expresion .)
-    ELSE            reduce using rule 73 (expresion -> expresion TIMES expresion .)
     LT              reduce using rule 73 (expresion -> expresion TIMES expresion .)
     GT              reduce using rule 73 (expresion -> expresion TIMES expresion .)
     LE              reduce using rule 73 (expresion -> expresion TIMES expresion .)
     GE              reduce using rule 73 (expresion -> expresion TIMES expresion .)
     EQUALS          reduce using rule 73 (expresion -> expresion TIMES expresion .)
     NE              reduce using rule 73 (expresion -> expresion TIMES expresion .)
-    RPAREN          reduce using rule 73 (expresion -> expresion TIMES expresion .)
+    PLUS            reduce using rule 73 (expresion -> expresion TIMES expresion .)
+    MINUS           reduce using rule 73 (expresion -> expresion TIMES expresion .)
+    TIMES           reduce using rule 73 (expresion -> expresion TIMES expresion .)
+    DIVIDE          reduce using rule 73 (expresion -> expresion TIMES expresion .)
+    END             reduce using rule 73 (expresion -> expresion TIMES expresion .)
+    SEMI            reduce using rule 73 (expresion -> expresion TIMES expresion .)
+    ELSE            reduce using rule 73 (expresion -> expresion TIMES expresion .)
     error           reduce using rule 73 (expresion -> expresion TIMES expresion .)
-    COMMA           reduce using rule 73 (expresion -> expresion TIMES expresion .)
+    RCORCH          reduce using rule 73 (expresion -> expresion TIMES expresion .)
     DO              reduce using rule 73 (expresion -> expresion TIMES expresion .)
     AND             reduce using rule 73 (expresion -> expresion TIMES expresion .)
     OR              reduce using rule 73 (expresion -> expresion TIMES expresion .)
     THEN            reduce using rule 73 (expresion -> expresion TIMES expresion .)
+    RPAREN          reduce using rule 73 (expresion -> expresion TIMES expresion .)
+    COMMA           reduce using rule 73 (expresion -> expresion TIMES expresion .)
 
-  ! PLUS            [ shift and go to state 106 ]
-  ! MINUS           [ shift and go to state 107 ]
-  ! TIMES           [ shift and go to state 108 ]
-  ! DIVIDE          [ shift and go to state 105 ]
+  ! PLUS            [ shift and go to state 108 ]
+  ! MINUS           [ shift and go to state 109 ]
+  ! TIMES           [ shift and go to state 110 ]
+  ! DIVIDE          [ shift and go to state 107 ]
 
 
-state 158
+state 160
 
     (82) expresion -> ID LCORCH expresion . RCORCH
     (71) expresion -> expresion . PLUS expresion
@@ -3698,14 +3708,14 @@ state 158
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
-    RCORCH          shift and go to state 187
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    RCORCH          shift and go to state 189
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 159
+state 161
 
     (53) declaracion -> READ LPAREN ID RPAREN .
 
@@ -3714,7 +3724,7 @@ state 159
     ELSE            reduce using rule 53 (declaracion -> READ LPAREN ID RPAREN .)
 
 
-state 160
+state 162
 
     (55) declaracion -> READ LPAREN ID error .
 
@@ -3723,7 +3733,7 @@ state 160
     ELSE            reduce using rule 55 (declaracion -> READ LPAREN ID error .)
 
 
-state 161
+state 163
 
     (54) declaracion -> READ LPAREN error RPAREN .
 
@@ -3732,7 +3742,7 @@ state 161
     ELSE            reduce using rule 54 (declaracion -> READ LPAREN error RPAREN .)
 
 
-state 162
+state 164
 
     (56) declaracion -> READ error ID RPAREN .
 
@@ -3741,23 +3751,23 @@ state 162
     ELSE            reduce using rule 56 (declaracion -> READ error ID RPAREN .)
 
 
-state 163
+state 165
 
     (96) relacion -> relacion AND relacion .
     (96) relacion -> relacion . AND relacion
     (97) relacion -> relacion . OR relacion
 
+    DO              reduce using rule 96 (relacion -> relacion AND relacion .)
     AND             reduce using rule 96 (relacion -> relacion AND relacion .)
     OR              reduce using rule 96 (relacion -> relacion AND relacion .)
-    DO              reduce using rule 96 (relacion -> relacion AND relacion .)
-    THEN            reduce using rule 96 (relacion -> relacion AND relacion .)
     RPAREN          reduce using rule 96 (relacion -> relacion AND relacion .)
+    THEN            reduce using rule 96 (relacion -> relacion AND relacion .)
 
-  ! AND             [ shift and go to state 119 ]
-  ! OR              [ shift and go to state 121 ]
+  ! AND             [ shift and go to state 121 ]
+  ! OR              [ shift and go to state 123 ]
 
 
-state 164
+state 166
 
     (37) declaracion -> WHILE relacion DO error .
 
@@ -3766,7 +3776,7 @@ state 164
     ELSE            reduce using rule 37 (declaracion -> WHILE relacion DO error .)
 
 
-state 165
+state 167
 
     (35) declaracion -> WHILE relacion DO declaracion .
 
@@ -3775,34 +3785,34 @@ state 165
     ELSE            reduce using rule 35 (declaracion -> WHILE relacion DO declaracion .)
 
 
-state 166
+state 168
 
     (97) relacion -> relacion OR relacion .
     (96) relacion -> relacion . AND relacion
     (97) relacion -> relacion . OR relacion
 
-    OR              reduce using rule 97 (relacion -> relacion OR relacion .)
     DO              reduce using rule 97 (relacion -> relacion OR relacion .)
-    THEN            reduce using rule 97 (relacion -> relacion OR relacion .)
+    OR              reduce using rule 97 (relacion -> relacion OR relacion .)
     RPAREN          reduce using rule 97 (relacion -> relacion OR relacion .)
-    AND             shift and go to state 119
+    THEN            reduce using rule 97 (relacion -> relacion OR relacion .)
+    AND             shift and go to state 121
 
   ! AND             [ reduce using rule 97 (relacion -> relacion OR relacion .) ]
-  ! OR              [ shift and go to state 121 ]
+  ! OR              [ shift and go to state 123 ]
 
 
-state 167
+state 169
 
     (99) relacion -> LPAREN relacion RPAREN .
 
+    DO              reduce using rule 99 (relacion -> LPAREN relacion RPAREN .)
     AND             reduce using rule 99 (relacion -> LPAREN relacion RPAREN .)
     OR              reduce using rule 99 (relacion -> LPAREN relacion RPAREN .)
-    DO              reduce using rule 99 (relacion -> LPAREN relacion RPAREN .)
-    THEN            reduce using rule 99 (relacion -> LPAREN relacion RPAREN .)
     RPAREN          reduce using rule 99 (relacion -> LPAREN relacion RPAREN .)
+    THEN            reduce using rule 99 (relacion -> LPAREN relacion RPAREN .)
 
 
-state 168
+state 170
 
     (91) relacion -> expresion GT expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -3810,18 +3820,18 @@ state 168
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
+    DO              reduce using rule 91 (relacion -> expresion GT expresion .)
     AND             reduce using rule 91 (relacion -> expresion GT expresion .)
     OR              reduce using rule 91 (relacion -> expresion GT expresion .)
-    DO              reduce using rule 91 (relacion -> expresion GT expresion .)
-    THEN            reduce using rule 91 (relacion -> expresion GT expresion .)
     RPAREN          reduce using rule 91 (relacion -> expresion GT expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    THEN            reduce using rule 91 (relacion -> expresion GT expresion .)
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 169
+state 171
 
     (95) relacion -> expresion NE expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -3829,18 +3839,18 @@ state 169
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
+    DO              reduce using rule 95 (relacion -> expresion NE expresion .)
     AND             reduce using rule 95 (relacion -> expresion NE expresion .)
     OR              reduce using rule 95 (relacion -> expresion NE expresion .)
-    DO              reduce using rule 95 (relacion -> expresion NE expresion .)
-    THEN            reduce using rule 95 (relacion -> expresion NE expresion .)
     RPAREN          reduce using rule 95 (relacion -> expresion NE expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    THEN            reduce using rule 95 (relacion -> expresion NE expresion .)
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 170
+state 172
 
     (93) relacion -> expresion GE expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -3848,18 +3858,18 @@ state 170
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
+    DO              reduce using rule 93 (relacion -> expresion GE expresion .)
     AND             reduce using rule 93 (relacion -> expresion GE expresion .)
     OR              reduce using rule 93 (relacion -> expresion GE expresion .)
-    DO              reduce using rule 93 (relacion -> expresion GE expresion .)
-    THEN            reduce using rule 93 (relacion -> expresion GE expresion .)
     RPAREN          reduce using rule 93 (relacion -> expresion GE expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    THEN            reduce using rule 93 (relacion -> expresion GE expresion .)
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 171
+state 173
 
     (94) relacion -> expresion EQUALS expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -3867,18 +3877,18 @@ state 171
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
+    DO              reduce using rule 94 (relacion -> expresion EQUALS expresion .)
     AND             reduce using rule 94 (relacion -> expresion EQUALS expresion .)
     OR              reduce using rule 94 (relacion -> expresion EQUALS expresion .)
-    DO              reduce using rule 94 (relacion -> expresion EQUALS expresion .)
-    THEN            reduce using rule 94 (relacion -> expresion EQUALS expresion .)
     RPAREN          reduce using rule 94 (relacion -> expresion EQUALS expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    THEN            reduce using rule 94 (relacion -> expresion EQUALS expresion .)
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 172
+state 174
 
     (90) relacion -> expresion LT expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -3886,18 +3896,18 @@ state 172
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
+    DO              reduce using rule 90 (relacion -> expresion LT expresion .)
     AND             reduce using rule 90 (relacion -> expresion LT expresion .)
     OR              reduce using rule 90 (relacion -> expresion LT expresion .)
-    DO              reduce using rule 90 (relacion -> expresion LT expresion .)
-    THEN            reduce using rule 90 (relacion -> expresion LT expresion .)
     RPAREN          reduce using rule 90 (relacion -> expresion LT expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    THEN            reduce using rule 90 (relacion -> expresion LT expresion .)
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 173
+state 175
 
     (92) relacion -> expresion LE expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -3905,18 +3915,18 @@ state 173
     (73) expresion -> expresion . TIMES expresion
     (74) expresion -> expresion . DIVIDE expresion
 
+    DO              reduce using rule 92 (relacion -> expresion LE expresion .)
     AND             reduce using rule 92 (relacion -> expresion LE expresion .)
     OR              reduce using rule 92 (relacion -> expresion LE expresion .)
-    DO              reduce using rule 92 (relacion -> expresion LE expresion .)
-    THEN            reduce using rule 92 (relacion -> expresion LE expresion .)
     RPAREN          reduce using rule 92 (relacion -> expresion LE expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    THEN            reduce using rule 92 (relacion -> expresion LE expresion .)
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 174
+state 176
 
     (36) declaracion -> WHILE error DO declaracion .
 
@@ -3925,7 +3935,7 @@ state 174
     ELSE            reduce using rule 36 (declaracion -> WHILE error DO declaracion .)
 
 
-state 175
+state 177
 
     (43) declaracion -> PRINT LPAREN STRING RPAREN .
 
@@ -3934,7 +3944,7 @@ state 175
     ELSE            reduce using rule 43 (declaracion -> PRINT LPAREN STRING RPAREN .)
 
 
-state 176
+state 178
 
     (45) declaracion -> PRINT LPAREN STRING error .
 
@@ -3943,7 +3953,7 @@ state 176
     ELSE            reduce using rule 45 (declaracion -> PRINT LPAREN STRING error .)
 
 
-state 177
+state 179
 
     (44) declaracion -> PRINT LPAREN error RPAREN .
 
@@ -3952,7 +3962,7 @@ state 177
     ELSE            reduce using rule 44 (declaracion -> PRINT LPAREN error RPAREN .)
 
 
-state 178
+state 180
 
     (46) declaracion -> PRINT error STRING RPAREN .
 
@@ -3961,7 +3971,7 @@ state 178
     ELSE            reduce using rule 46 (declaracion -> PRINT error STRING RPAREN .)
 
 
-state 179
+state 181
 
     (47) declaracion -> PRINT error STRING error .
 
@@ -3970,61 +3980,61 @@ state 179
     ELSE            reduce using rule 47 (declaracion -> PRINT error STRING error .)
 
 
-state 180
+state 182
 
     (85) expresion -> NFLOAT LPAREN expresion RPAREN .
 
-    PLUS            reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
-    MINUS           reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
-    TIMES           reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
-    DIVIDE          reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
-    END             reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
-    SEMI            reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
-    RCORCH          reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
-    ELSE            reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
     LT              reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
     GT              reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
     LE              reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
     GE              reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
     EQUALS          reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
     NE              reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
-    RPAREN          reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
+    PLUS            reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
+    MINUS           reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
+    TIMES           reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
+    DIVIDE          reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
+    END             reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
+    SEMI            reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
+    ELSE            reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
     error           reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
-    COMMA           reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
+    RCORCH          reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
     DO              reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
     AND             reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
     OR              reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
     THEN            reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
+    RPAREN          reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
+    COMMA           reduce using rule 85 (expresion -> NFLOAT LPAREN expresion RPAREN .)
 
 
-state 181
+state 183
 
     (84) expresion -> NINT LPAREN expresion RPAREN .
 
-    PLUS            reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
-    MINUS           reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
-    TIMES           reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
-    DIVIDE          reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
-    END             reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
-    SEMI            reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
-    RCORCH          reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
-    ELSE            reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
     LT              reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
     GT              reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
     LE              reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
     GE              reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
     EQUALS          reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
     NE              reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
-    RPAREN          reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
+    PLUS            reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
+    MINUS           reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
+    TIMES           reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
+    DIVIDE          reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
+    END             reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
+    SEMI            reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
+    ELSE            reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
     error           reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
-    COMMA           reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
+    RCORCH          reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
     DO              reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
     AND             reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
     OR              reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
     THEN            reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
+    RPAREN          reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
+    COMMA           reduce using rule 84 (expresion -> NINT LPAREN expresion RPAREN .)
 
 
-state 182
+state 184
 
     (48) declaracion -> WRITE LPAREN expresion RPAREN .
 
@@ -4033,7 +4043,7 @@ state 182
     ELSE            reduce using rule 48 (declaracion -> WRITE LPAREN expresion RPAREN .)
 
 
-state 183
+state 185
 
     (51) declaracion -> WRITE LPAREN expresion error .
 
@@ -4042,7 +4052,7 @@ state 183
     ELSE            reduce using rule 51 (declaracion -> WRITE LPAREN expresion error .)
 
 
-state 184
+state 186
 
     (49) declaracion -> WRITE LPAREN error RPAREN .
 
@@ -4051,7 +4061,7 @@ state 184
     ELSE            reduce using rule 49 (declaracion -> WRITE LPAREN error RPAREN .)
 
 
-state 185
+state 187
 
     (50) declaracion -> WRITE error expresion RPAREN .
 
@@ -4060,7 +4070,7 @@ state 185
     ELSE            reduce using rule 50 (declaracion -> WRITE error expresion RPAREN .)
 
 
-state 186
+state 188
 
     (52) declaracion -> WRITE error expresion error .
 
@@ -4069,83 +4079,83 @@ state 186
     ELSE            reduce using rule 52 (declaracion -> WRITE error expresion error .)
 
 
-state 187
+state 189
 
     (82) expresion -> ID LCORCH expresion RCORCH .
 
-    PLUS            reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
-    MINUS           reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
-    TIMES           reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
-    DIVIDE          reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
-    END             reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
-    SEMI            reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
-    RCORCH          reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
-    ELSE            reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
     LT              reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
     GT              reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
     LE              reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
     GE              reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
     EQUALS          reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
     NE              reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
-    RPAREN          reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
+    PLUS            reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
+    MINUS           reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
+    TIMES           reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
+    DIVIDE          reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
+    END             reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
+    SEMI            reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
+    ELSE            reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
     error           reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
-    COMMA           reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
+    RCORCH          reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
     DO              reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
     AND             reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
     OR              reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
     THEN            reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
-
-
-state 188
-
-    (29) asignacion -> ID LCORCH index RCORCH . ASSIGN error
-    (34) asignacion -> ID LCORCH index RCORCH . ASSIGN expresion
-
-    ASSIGN          shift and go to state 198
-
-
-state 189
-
-    (32) asignacion -> ID LCORCH index error . ASSIGN expresion
-
-    ASSIGN          shift and go to state 199
+    RPAREN          reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
+    COMMA           reduce using rule 82 (expresion -> ID LCORCH expresion RCORCH .)
 
 
 state 190
 
-    (30) asignacion -> ID LCORCH error RCORCH . ASSIGN expresion
+    (29) asignacion -> ID LCORCH index RCORCH . ASSIGN error
+    (34) asignacion -> ID LCORCH index RCORCH . ASSIGN expresion
 
     ASSIGN          shift and go to state 200
 
 
 state 191
 
+    (32) asignacion -> ID LCORCH index error . ASSIGN expresion
+
+    ASSIGN          shift and go to state 201
+
+
+state 192
+
+    (30) asignacion -> ID LCORCH error RCORCH . ASSIGN expresion
+
+    ASSIGN          shift and go to state 202
+
+
+state 193
+
     (79) expresion -> ID LPAREN argumentos RPAREN .
 
-    PLUS            reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
-    MINUS           reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
-    TIMES           reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
-    DIVIDE          reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
-    END             reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
-    SEMI            reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
-    RCORCH          reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
-    ELSE            reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
     LT              reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
     GT              reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
     LE              reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
     GE              reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
     EQUALS          reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
     NE              reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
-    RPAREN          reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
+    PLUS            reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
+    MINUS           reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
+    TIMES           reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
+    DIVIDE          reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
+    END             reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
+    SEMI            reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
+    ELSE            reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
     error           reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
-    COMMA           reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
+    RCORCH          reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
     DO              reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
     AND             reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
     OR              reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
     THEN            reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
+    RPAREN          reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
+    COMMA           reduce using rule 79 (expresion -> ID LPAREN argumentos RPAREN .)
 
 
-state 192
+state 194
 
     (88) argumentos -> argumentos COMMA . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -4166,33 +4176,33 @@ state 192
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 201
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 203
+    numero                         shift and go to state 59
 
-state 193
+state 195
 
     (31) asignacion -> ID error index RCORCH . ASSIGN expresion
 
-    ASSIGN          shift and go to state 202
+    ASSIGN          shift and go to state 204
 
 
-state 194
+state 196
 
     (28) asignacion -> ID error index error . ASSIGN expresion
 
-    ASSIGN          shift and go to state 203
+    ASSIGN          shift and go to state 205
 
 
-state 195
+state 197
 
     (41) declaracion -> IF relacion THEN error .
 
@@ -4201,7 +4211,7 @@ state 195
     ELSE            reduce using rule 41 (declaracion -> IF relacion THEN error .)
 
 
-state 196
+state 198
 
     (38) declaracion -> IF relacion THEN declaracion .
     (39) declaracion -> IF relacion THEN declaracion . ELSE declaracion
@@ -4210,12 +4220,12 @@ state 196
   ! shift/reduce conflict for ELSE resolved as shift
     END             reduce using rule 38 (declaracion -> IF relacion THEN declaracion .)
     SEMI            reduce using rule 38 (declaracion -> IF relacion THEN declaracion .)
-    ELSE            shift and go to state 204
+    ELSE            shift and go to state 206
 
   ! ELSE            [ reduce using rule 38 (declaracion -> IF relacion THEN declaracion .) ]
 
 
-state 197
+state 199
 
     (40) declaracion -> IF error THEN declaracion .
 
@@ -4224,7 +4234,7 @@ state 197
     ELSE            reduce using rule 40 (declaracion -> IF error THEN declaracion .)
 
 
-state 198
+state 200
 
     (29) asignacion -> ID LCORCH index RCORCH ASSIGN . error
     (34) asignacion -> ID LCORCH index RCORCH ASSIGN . expresion
@@ -4246,20 +4256,20 @@ state 198
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    error           shift and go to state 206
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    error           shift and go to state 208
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 205
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 207
+    numero                         shift and go to state 59
 
-state 199
+state 201
 
     (32) asignacion -> ID LCORCH index error ASSIGN . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -4280,19 +4290,19 @@ state 199
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 207
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 209
+    numero                         shift and go to state 59
 
-state 200
+state 202
 
     (30) asignacion -> ID LCORCH error RCORCH ASSIGN . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -4313,19 +4323,19 @@ state 200
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 208
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 210
+    numero                         shift and go to state 59
 
-state 201
+state 203
 
     (88) argumentos -> argumentos COMMA expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -4335,13 +4345,13 @@ state 201
 
     RPAREN          reduce using rule 88 (argumentos -> argumentos COMMA expresion .)
     COMMA           reduce using rule 88 (argumentos -> argumentos COMMA expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 202
+state 204
 
     (31) asignacion -> ID error index RCORCH ASSIGN . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -4362,19 +4372,19 @@ state 202
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 209
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 211
+    numero                         shift and go to state 59
 
-state 203
+state 205
 
     (28) asignacion -> ID error index error ASSIGN . expresion
     (71) expresion -> . expresion PLUS expresion
@@ -4395,19 +4405,19 @@ state 203
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 75
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 77
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 210
-    numero                         shift and go to state 57
+    expresion                      shift and go to state 212
+    numero                         shift and go to state 59
 
-state 204
+state 206
 
     (39) declaracion -> IF relacion THEN declaracion ELSE . declaracion
     (42) declaracion -> IF relacion THEN declaracion ELSE . error
@@ -4466,31 +4476,31 @@ state 204
     (86) numero -> . INTEGER
     (87) numero -> . FLOAT
 
-    error           shift and go to state 211
-    WHILE           shift and go to state 48
-    IF              shift and go to state 61
-    PRINT           shift and go to state 49
-    WRITE           shift and go to state 58
-    READ            shift and go to state 46
-    RETURN          shift and go to state 45
-    BEGIN           shift and go to state 52
-    SKIP            shift and go to state 56
-    BREAK           shift and go to state 64
-    MINUS           shift and go to state 50
-    PLUS            shift and go to state 54
-    LPAREN          shift and go to state 59
-    ID              shift and go to state 60
-    NINT            shift and go to state 53
-    NFLOAT          shift and go to state 51
-    INTEGER         shift and go to state 55
-    FLOAT           shift and go to state 44
+    error           shift and go to state 213
+    WHILE           shift and go to state 50
+    IF              shift and go to state 63
+    PRINT           shift and go to state 51
+    WRITE           shift and go to state 60
+    READ            shift and go to state 48
+    RETURN          shift and go to state 47
+    BEGIN           shift and go to state 54
+    SKIP            shift and go to state 58
+    BREAK           shift and go to state 66
+    MINUS           shift and go to state 52
+    PLUS            shift and go to state 56
+    LPAREN          shift and go to state 61
+    ID              shift and go to state 62
+    NINT            shift and go to state 55
+    NFLOAT          shift and go to state 53
+    INTEGER         shift and go to state 57
+    FLOAT           shift and go to state 46
 
-    expresion                      shift and go to state 62
-    asignacion                     shift and go to state 63
-    numero                         shift and go to state 57
-    declaracion                    shift and go to state 212
+    expresion                      shift and go to state 64
+    asignacion                     shift and go to state 65
+    numero                         shift and go to state 59
+    declaracion                    shift and go to state 214
 
-state 205
+state 207
 
     (34) asignacion -> ID LCORCH index RCORCH ASSIGN expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -4501,13 +4511,13 @@ state 205
     END             reduce using rule 34 (asignacion -> ID LCORCH index RCORCH ASSIGN expresion .)
     SEMI            reduce using rule 34 (asignacion -> ID LCORCH index RCORCH ASSIGN expresion .)
     ELSE            reduce using rule 34 (asignacion -> ID LCORCH index RCORCH ASSIGN expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 206
+state 208
 
     (29) asignacion -> ID LCORCH index RCORCH ASSIGN error .
 
@@ -4516,7 +4526,7 @@ state 206
     ELSE            reduce using rule 29 (asignacion -> ID LCORCH index RCORCH ASSIGN error .)
 
 
-state 207
+state 209
 
     (32) asignacion -> ID LCORCH index error ASSIGN expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -4527,13 +4537,13 @@ state 207
     END             reduce using rule 32 (asignacion -> ID LCORCH index error ASSIGN expresion .)
     SEMI            reduce using rule 32 (asignacion -> ID LCORCH index error ASSIGN expresion .)
     ELSE            reduce using rule 32 (asignacion -> ID LCORCH index error ASSIGN expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 208
+state 210
 
     (30) asignacion -> ID LCORCH error RCORCH ASSIGN expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -4544,13 +4554,13 @@ state 208
     END             reduce using rule 30 (asignacion -> ID LCORCH error RCORCH ASSIGN expresion .)
     SEMI            reduce using rule 30 (asignacion -> ID LCORCH error RCORCH ASSIGN expresion .)
     ELSE            reduce using rule 30 (asignacion -> ID LCORCH error RCORCH ASSIGN expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 209
+state 211
 
     (31) asignacion -> ID error index RCORCH ASSIGN expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -4561,13 +4571,13 @@ state 209
     END             reduce using rule 31 (asignacion -> ID error index RCORCH ASSIGN expresion .)
     SEMI            reduce using rule 31 (asignacion -> ID error index RCORCH ASSIGN expresion .)
     ELSE            reduce using rule 31 (asignacion -> ID error index RCORCH ASSIGN expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 210
+state 212
 
     (28) asignacion -> ID error index error ASSIGN expresion .
     (71) expresion -> expresion . PLUS expresion
@@ -4578,13 +4588,13 @@ state 210
     END             reduce using rule 28 (asignacion -> ID error index error ASSIGN expresion .)
     SEMI            reduce using rule 28 (asignacion -> ID error index error ASSIGN expresion .)
     ELSE            reduce using rule 28 (asignacion -> ID error index error ASSIGN expresion .)
-    PLUS            shift and go to state 106
-    MINUS           shift and go to state 107
-    TIMES           shift and go to state 108
-    DIVIDE          shift and go to state 105
+    PLUS            shift and go to state 108
+    MINUS           shift and go to state 109
+    TIMES           shift and go to state 110
+    DIVIDE          shift and go to state 107
 
 
-state 211
+state 213
 
     (42) declaracion -> IF relacion THEN declaracion ELSE error .
 
@@ -4593,7 +4603,7 @@ state 211
     ELSE            reduce using rule 42 (declaracion -> IF relacion THEN declaracion ELSE error .)
 
 
-state 212
+state 214
 
     (39) declaracion -> IF relacion THEN declaracion ELSE declaracion .
 
@@ -4604,6 +4614,6 @@ state 212
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for AND in state 131 resolved as shift
-WARNING: shift/reduce conflict for OR in state 131 resolved as shift
-WARNING: shift/reduce conflict for ELSE in state 196 resolved as shift
+WARNING: shift/reduce conflict for AND in state 133 resolved as shift
+WARNING: shift/reduce conflict for OR in state 133 resolved as shift
+WARNING: shift/reduce conflict for ELSE in state 198 resolved as shift

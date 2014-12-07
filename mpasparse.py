@@ -39,12 +39,12 @@ def p_programa_funcion(p):
 
 def p_funcion(p):
     '''
-        funcion : FUN ID LPAREN mparametros RPAREN locales BEGIN declaraciones END
+        funcion : FUN ID LPAREN mparametros RPAREN local BEGIN declaraciones END
     '''
     p[0] = Funcion(p.slice[2], p[4], p[6], p[8])
 
 def p_funcion_error1(p):
-    "funcion : FUN ID LPAREN error RPAREN locales BEGIN declaraciones END"
+    "funcion : FUN ID LPAREN error RPAREN local BEGIN declaraciones END"
     print("Funcion con parametros invalidos ")
     p[0] = None
     p.parser.error = 1
@@ -57,7 +57,7 @@ def p_funcion_error2(p):
 
 
 def p_funcion_error3(p):
-    "funcion : FUN ID LPAREN mparametros RPAREN locales BEGIN error END"
+    "funcion : FUN ID LPAREN mparametros RPAREN local BEGIN error END"
     print("Se esperaba un END al final de la funcion")
     p[0] = None
 
@@ -118,6 +118,7 @@ def p_locales(p):
 # def p_locales_empty(p):
 #     '''locales : empty '''
 #     p[0] = p[1]
+
 
 def p_locales_error(p):
     '''locales : locales error SEMI
@@ -343,7 +344,7 @@ def p_tipo_FLOAT(p):
     if len(p) == 5:
         p[0] = ArrayFloat(p[1],p.slice[3])
     else:
-        p[0] = ArrayFloat(p[1], None)
+        p[0] = Nfloat(p[1], None)
 
 def p_expresion_operadores_bin(p):
     '''  expresion : expresion PLUS expresion
@@ -483,3 +484,4 @@ def sintactico():
     print "Succeded"
     return program
     # Output the resulting parse tree structure
+sintactico()
