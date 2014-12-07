@@ -57,77 +57,96 @@ def emit_write(out,s):
 
 def emit_while(out,s):
     print >>out, "\n! while (start)"
+    print >>out, "! test:"
+
+
     statement = s.body
     emit_statement(out,statement)
     expr = s.condition
     eval_expression(out,expr)
+    print >>out, "! expr := pop"
+    print >>out, "! if not relop: goto done"
     expr1 = s.body.declaraciones[0].declaraciones
     emit_statements(out,expr1)
-    print >>out, "! expr := pop"
+
+    print >>out, "! goto test"
+    print >>out, "! done:"
     print >>out, "!   while(expr)"
     print >>out, "! while (End)"
 
 def emit_if(out,s):
     print >>out, "\n! if (start)"
+    print >>out, "! test:"
+
     expr = s.condition
     eval_expression(out,expr)
-    expr1 = s.then_b.declaraciones[0].declaraciones
-    print expr1.__class__
-    emit_statements(out,expr1)
+
     print >>out, "! expr := pop"
     print >>out, "!   if(expr)"
+
+    expr1 = s.then_b.declaraciones[0].declaraciones
+    emit_statements(out,expr1)
+
+    print >>out, "! goto test"
+    print >>out, "! done:"
     print >>out, "! if (End)"
 
 def emit_ifelse(out,s):
     print >>out, "\n! ifelse (start)"
     expr = s.condition
     eval_expression(out,expr)
-    expr1 = s.then_b
-    emit_statements(out,expr1)
-    expr2 = s.else_b
-    emit_statements(out,expr2)
     print >>out, "! expr := pop"
     print >>out, "!   if(expr)"
-    print >>out, "! if (End)"
+
+    expr1 = s.then_b.declaraciones[0].declaraciones
+    emit_statements(out,expr1)
+
+    expr2 = s.else_b.declaraciones[0].declaraciones
+    emit_statements(out,expr2)
+
+
+    print >>out, "! goto test"
+    print >>out, "! done:"
+    print >>out, "! ifelse (End)"
 
 def emit_assign(out,s):
     print >>out, "\n! assign (start)"
     expr = s.expresion
     eval_expression(out,expr)
     print >>out, "! expr := pop"
-    print >>out, "!   assign(expr)"
+    print >>out, "! assign(expr)"
     print >>out, "! assign (End)"
 
 
 
 def eval_expression(out, expr):
     if isinstance(expr, NumeroFloat):
-        print >>out, "! push", expr
+        print >>out, "!  push", expr
     if isinstance(expr, NumeroInt):
-        print >>out, "! push", expr
+        print >>out, "!  push", expr
     if isinstance(expr, ExpresionID):
-        print >>out, "! push", expr
+        print >>out, "!  push", expr
     if isinstance(expr, ExpresionIdArray):
-        print >>out, "! push", expr
+        print >>out, "!  push", expr
     if isinstance(expr, RelOp):
         left = expr.left
         right = expr.right
         if expr.op == '<':
             eval_expression(out, left)
             eval_expression(out, right)
-            print >>out, "! LT"
+            print >>out, "!  LT"
         elif expr.op == '<=':
             eval_expression(out, left)
             eval_expression(out, right)
-            print >>out, "! LE"
+            print >>out, "!  LE"
         elif expr.op == '>':
             eval_expression(out, left)
             eval_expression(out, right)
-            print >>out, "! GT"
+            print >>out, "!  GT"
         elif expr.op == '!=':
             eval_expression(out, left)
             eval_expression(out, right)
-            print >>out, "! NE"
+            print >>out, "!  NE"
     if (isinstance(expr, BinaryOp)):
         left = expr.left
         right = expr.right
@@ -149,10 +168,10 @@ def eval_expression(out, expr):
             print >>out, "! Div"
     if isinstance(expr,UnaryOp):
         left = expr.left
-        if expr.op == '+':
+        if expr.op == '-':
             eval_expression(out,left)
-        elif expr.op == '-':
-            eval_expression(out,left)
+            print >>out, "! pop", expr.left
+            print >>out, "! push uminus",expr.left
 
 
 

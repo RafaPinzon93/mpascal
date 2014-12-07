@@ -1,13 +1,16 @@
 fun fact(n:int):int
-    p:int;
+  a:int;
+  b:=int
   begin
-     if n == 1 then return 1
-     else return n * fact(n-1)
+    a:=1;
+   if n == 1
+   then
+   return 1
   end
 
-fun mai()
+fun main():
    x:int;
-   r:int;
+   r:int
    begin
       print("Entre un numero\n");
       read(x);

@@ -2,7 +2,9 @@
 
 fun foo(x:int)
     y : int[1000];
+    z : int
     begin
+       z := -1;
        write(x);
        write(y[0]);
        write(y[2*x+10*y] + 45);
