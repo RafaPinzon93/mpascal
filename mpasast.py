@@ -251,7 +251,7 @@ class Funcion(AST):
         if self.locales:
             self.locales.semantico()
         self.declaraciones.semantico()
-        m = get_symbol("%return")
+        m = get_symbol("Freturn")
         if m:
             a = get_symbol(self.ID.value)
             self.type = m.type

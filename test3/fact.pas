@@ -1,12 +1,11 @@
 fun fact(n:int):int
+    p:int;
   begin
-    a:=1;
-   if n == 1
-   then
-   return 1
+     if n == 1 then return 1
+     else return n * fact(n-1)
   end
 
-fun main()
+fun mai()
    x:int;
    r:int;
    begin
