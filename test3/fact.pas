@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 fun fact(n:int):int
   a:int;
   b:=int
+=======
+fun fact(n:int)
+>>>>>>> origin/master
   begin
     a:=1;
    if n == 1
@@ -14,7 +18,7 @@ fun main():
    begin
       print("Entre un numero\n");
       read(x);
-      r := fact(x);
+      r := fact(x+1*2/8,45);
       write(r)
    end
 

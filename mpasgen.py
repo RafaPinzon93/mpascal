@@ -15,6 +15,7 @@ def emit_function(out,func):
     print >>out,"\n! function: %s (start) " % func.ID
 
     statements = func.declaraciones.declaraciones
+    print >>out, "! push", statements
     emit_statements(out, statements)
 
     print >>out,"! function: %s (end)" % func.ID
@@ -22,6 +23,7 @@ def emit_function(out,func):
 def emit_statements(out,statements):
     for s in statements:
         emit_statement(out,s)
+
 
 def emit_statement(out,s):
     if isinstance(s,PrintStatement):
@@ -36,8 +38,9 @@ def emit_statement(out,s):
         emit_if(out,s)
     elif isinstance(s,IfStatementElse):
         emit_ifelse(out,s)
-    elif isinstance(s,Asignacion) :
+    elif isinstance(s,Asignacion):
         emit_assign(out,s)
+
 
 def emit_print(out,s):
     print >>out, "\n! print (start)"
@@ -112,11 +115,11 @@ def emit_ifelse(out,s):
 def emit_assign(out,s):
     print >>out, "\n! assign (start)"
     expr = s.expresion
+    print expr.__class__
     eval_expression(out,expr)
     print >>out, "! expr := pop"
     print >>out, "! assign(expr)"
     print >>out, "! assign (End)"
-
 
 
 def eval_expression(out, expr):
@@ -126,6 +129,10 @@ def eval_expression(out, expr):
         print >>out, "!  push", expr
     if isinstance(expr, ExpresionID):
         print >>out, "!  push", expr
+    if isinstance(expr, ExpresionFun):
+        #eval_expression(out,a)
+        for argumento in expr.arguments.argumentos:
+            eval_expression(out, argumento)
     if isinstance(expr, ExpresionIdArray):
         print >>out, "!  push", expr
     if isinstance(expr, RelOp):
