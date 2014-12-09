@@ -1,10 +1,10 @@
-fun mod(x:int, y:int):int
+fun mod(x:int, y:int)
       begin
          return x - (x/y) * y
       end
 
 
-fun factor(n:int,stor:int[1024]):int
+fun factor(n:int,stor:int[1024])
    i:int;
    nfacts:int;
    begin
@@ -15,10 +15,10 @@ fun factor(n:int,stor:int[1024]):int
         begin
    	   if mod(n,i) == 0 then
  	 	begin
-               	  nfacts := nfacts + 1; 
+               	  nfacts := nfacts + 1;
                   stor[i-1] := i
 		end;
-	   i := i + 1 
+	   i := i + 1
 	end;
       return nfacts
    end
@@ -37,8 +37,8 @@ fun print_arr(a:int[1024],nelem:int)
 		i := i + 1
            end
     end
-     
-             
+
+
 fun main()
    x:int;
    nfs:int;
@@ -50,6 +50,6 @@ fun main()
       print_arr(results,nfs)
    end
 
- 
+
 
 

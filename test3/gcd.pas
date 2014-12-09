@@ -1,4 +1,4 @@
-fun gcd(x:int, y:int):int
+fun gcd(x:int, y:int)
     g: int;
     begin
        g := y;

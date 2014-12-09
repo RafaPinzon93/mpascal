@@ -1,7 +1,7 @@
 
 /* Factorial sencillo */
 
-fun fact(n:int):int
+fun fact(n:int)
     r : int;
     begin
         r := 1;

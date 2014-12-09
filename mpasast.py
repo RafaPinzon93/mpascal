@@ -32,14 +32,18 @@ class Errorsemantico(Exception):
 
 class Symbol(): #att : name scope level
     paramnum=None
-    def __init__(self,name,scope,type,lineno):
+    def __init__(self,name,scope,type,lineno, size= None):
         self.name=name
         self.scope=scope
-        self.type=type
+        self.type= type
         self.lineno=lineno
+        self.size= size
 
     def changetype(self,type):
         self.type=type
+
+    def changesize(self, size):
+        self.size = size
 
     def __str__(self):
         return str(self.name)
@@ -230,7 +234,7 @@ class Declaracion(AST):
 class Funcion(AST):
     _fields = ['ID', 'parametros', 'locales', 'declaraciones']
 
-    type='int'
+    type=None
 
     def __str__(self):
         return self.__class__.__name__+" "+ self.ID.value +" ( "+ ''.join(str(x) for x in self.parametros.param_decls) +")"
@@ -238,7 +242,7 @@ class Funcion(AST):
     def semantico(self):
         global current
         global _scope
-        attach_symbol(self.ID, None)
+        attach_symbol(self.ID, self.type)
         m = get_symbol(self.ID.value)
         new_scope()
         if self.parametros:
@@ -251,15 +255,18 @@ class Funcion(AST):
         if self.locales:
             self.locales.semantico()
         self.declaraciones.semantico()
-        m = get_symbol("%return")
+        m = get_symbol("Freturn")
         if m:
             a = get_symbol(self.ID.value)
             self.type = m.type
             a.type = self.type
+
+            # print "%s %s Funcion"%(a, a.type)
         else : # Si no tiene es void
             a = get_symbol(self.ID.value)
             self.type = "void"
             a.type = "void"
+
         pop_scope()
 
 @validate_fields(param_decls=list)
@@ -285,6 +292,15 @@ class Parametro(AST):
     def semantico(self):
         attach_symbol(self.ID, eval(self.tipo.token))
         self.type = eval((self.tipo.token))
+        # print self.type, self
+        self.tipo.semantico()
+        # print self.ID.value
+        m = get_symbol(self.ID.value)
+        # print str(self.valor.value)
+        if self.tipo.valor:
+            m.changesize(self.tipo.valor.numero.value)
+        # print m.size
+
 
 
 @validate_fields(argumentos = list)
@@ -297,14 +313,16 @@ class Argumentos(AST):
 @validate_fields(locales = list)
 class Locales(AST):
     _fields = ['locales']
+
     def append(self, e):
         self.locales.append(e)
+
     def semantico(self):
         for local in self.locales :
             local.semantico()
 
-class Local(AST):
-    _fields = ['local']
+# class Local(AST):
+#     _fields = ['local']
 
 class Asignacion(AST):
     _fields = ['ID', 'expresion']
@@ -313,9 +331,9 @@ class Asignacion(AST):
         return str(self.ID.value) + " :=" + str(self.expresion)
 
     def semantico(self):
-        m=get_symbol(self.ID.value)
+        m = get_symbol(self.ID.value)
         if not m:
-            print("Error,  la variable %s no existe en la linea %s"% (self.ID.value,str(self.ID.lineno)))
+            print("Error,  la variable %s no existe en la linea %s asignacion"% (self.ID.value,str(self.ID.lineno)))
         else:
             self.expresion.semantico()
             if (m.type==self.expresion.type):
@@ -352,8 +370,9 @@ class Nint(AST):
     def semantico(self):
     #m=get_symbol(self.right)
         self.expr.semantico()
-        self.expr.type=eval(self.tipo)
-        self.type=self.expr.type
+        if self.expr:
+            self.expr.type=eval(self.tipo)
+            self.type=self.expr.type
 
 class Nfloat(AST):
     type = float
@@ -362,42 +381,64 @@ class Nfloat(AST):
     def semantico(self):
         #m=get_symbol(self.expr)
         self.expr.semantico()
-        self.expr.type=eval(self.tipo)
-        self.type=self.expr.type
+        if self.expr:
+            self.expr.type=eval(self.tipo)
+            self.type=self.expr.type
 
     def __str__(self):
         return self.__class__.__name__+" ("+ str(vars(self).values()[0])+")"
 
 class ArrayInt(AST):
-    type = None
-    _fields = ['token', 'expresion']
+    type = int
+    _fields = ['token', 'valor']
 
     def __str__(self):
-        if self.expresion:
-            return str(self.token) + " [ " + str(self.expresion.value) + " ] "
+        if self.valor:
+            return str(self.token) + " [ " + str(self.valor) + " ] "
         else:
             return str(self.token)
     def semantico(self):
-        if self.expresion:
-            self.expresion.semantico()
-            if self.expresion.type != int:
-                print("Error de tipo para la asignacion de tamaño en la linea %s" % (self.ID.lineno))
-
+        if self.valor:
+            # self.valor.semantico()
+            if self.valor.type != int:
+                # print self.valor
+                print("Error de tipo para la asignacion de tamaño en la linea %s" % (self.linea))
 
 class ArrayFloat(AST):
-    type = None
-    _fields = ['token', 'expresion']
+    type = float
+    _fields = ['token', 'valor']
 
     def __str__(self):
-        if self.expresion:
-            return str(self.token) + " [ " + str(self.expresion.value )+ " ] "
+        if self.valor:
+            return str(self.token) + " [ " + str(self.valor.value) + " ] "
         else:
             return str(self.token)
     def semantico(self):
-        if self.expresion:
-            self.expresion.semantico()
-            if self.expresion.type != int:
-                print("Error de tipo para la asignacion de tamaño en la linea %s" % (self.ID.lineno))
+        if self.valor:
+            # self.valor.semantico()
+            # print str(self.token)
+            m = get_symbol(str(self.token))
+            # print str(self.valor.value)
+            m.changesize(self.valor.value)
+
+            if self.valor.type != type(int):
+                print self.valor.type
+                print("Error de tipo para la asignacion de tamaño en la linea %s" % (self.linea))
+
+# class ArrayFloat(AST):
+#     type = float
+#     _fields = ['token', 'expresion']
+
+#     def __str__(self):
+#         if self.expresion:
+#             return str(self.token) + " [ " + str(self.expresion.value )+ " ] "
+#         else:
+#             return str(self.token)
+#     def semantico(self):
+#         if self.expresion:
+#             self.expresion.semantico()
+#             if self.expresion.type != int:
+#                 print("Error de tipo para la asignacion de tamaño en la linea %s" % (self.ID.lineno))
 
 
 class IfStatement(AST):
@@ -432,17 +473,17 @@ class ReadStatements(AST):
         m=get_symbol(self.expr.value)
 
         if not m:
-            print("Error, la variable %s no existe  en la linea %s"% (self.expr.value,str(self.expr.lineno)))
+            print("Error, la variable %s no existe  en la linea %s en el read"% (self.expr.value,str(self.expr.lineno)))
 
 class ExpresionIdArray(AST):
     type=None
-    _fields = ['id', 'expresion']
+    _fields = ['ID', 'expresion']
 
     def __str__(self):
         #return self.__class__.__name__+" ("+ str(vars(self).values()[1])+")"
-        return str(self.id.value)+ " [" + str(self.expresion)+"]"
+        return "ExpresionIdArray" + str(self.ID.value)+ " [" + str(self.expresion)+"]"
 
-    def Analisissemantico(self):
+    def semantico(self):
         n=get_symbol(self.ID.value)
         #print self.ID.value
         if not n:
@@ -515,8 +556,12 @@ class ExpresionFun(AST):
                     arg.semantico()
                     if arg.type != m.params[i].type:
                         print("Error de tipos en el llamado de la funcion  \"%s\" con argumentos \"%s\" en la linea %s" % (self.ID.value, arg , self.ID.lineno))
-
-
+                    # if arg.size != m.params[i].value:
+                    #     print("Error de tamaño")
+                    # print m, m.params[i].tipo.valor.numero.value
+                    # print arg.ID.value, get_symbol(arg.ID.value).size
+                    if m.params[i].tipo.valor.numero.value != get_symbol(arg.ID.value).size:
+                        print "Error de tamaño en argumento %s:%s con parametro %s:%s en linea %s"%(arg.ID.value, get_symbol(arg.ID.value).size, m.params[i].tipo.valor, m.params[i].tipo.valor.numero.value, self.linea)
                     # if m.params[i].tipo.expresion.value:
                     #     if len(vars(arg)) == 2:
                     #         if arg.expresion != m.params[i].tipo.expresion.value:
@@ -524,7 +569,6 @@ class ExpresionFun(AST):
                     i +=1
         elif not self.arguments and (len(m.params)>0):
             print "se requieren mas parametros en la funcion  \"%s\" en la linea %s" % (self.ID.value, self.ID.lineno)
-
         self.type = m.type
 
 
@@ -568,21 +612,26 @@ class LocationExpr(AST):
 # class StoreVar(AST):
     # _fields = ['name']
 class RelOp(AST):
+
     _fields = ['op', 'left', 'right']
 
     def __str__(self):
         return self.__class__.__name__+" ("+ str(vars(self).values()[2])+")"
 
-    def Analisissemantico(self):
-        self.left.Analisissemantico()
-        self.right.Analisissemantico()
-        if(self.left.type!=self.right.type):
-            print("Error de tipos en la expresion logica %s %s %s" % (self.left,self.op,self.right))
+    def semantico(self):
+        self.left.semantico()
+        self.right.semantico()
+        if (type(self.left) or type(self.right)) != type(self):
+            if(self.left.type!=self.right.type):
+                print("Error de tipos en la expresion logica %s %s %s" % (self.left,self.op,self.right))
+
+
 
 
 
 class Return(AST):
     type = None
+
     _fields = ['expresion', 'token']
 
     def __str__(self):
@@ -591,13 +640,21 @@ class Return(AST):
     def semantico(self):
         nombre  = "Freturn"
         self.expresion.semantico()
-        self.type=self.expresion.type
+        self.type= self.expresion.type
         m = get_symbol(nombre)
+        # for i in _scope:
+        #     print '%s adsf'%i
+        # print "%s %s return antes del if"%(_scope[0].keys()[0], m)
+        funcion = _scope[0].keys()[0]
+        n = get_symbol(funcion)
         self.token.value = nombre
         if not m:
             attach_symbol(self.token,self.type)
+            n.changetype(self.type)
+            # print"Attached %s %s" %(self.token,self.type)
         elif m.type != self.type:
-            print("Conflicto de tipos con el return en la linea %s"%(repr(self.token.lineno)))
+            print("Conflicto de tipos con el return en la linea %s %s:%s %s:%s"%(repr(self.token.lineno), m, m.type,self, self.type))
+
 
 class UnaryOp(AST):
     type=None
@@ -612,15 +669,22 @@ class BinaryOp(AST):
     _fields = ['op', 'left', 'right']
 
     def __str__(self):
-        return self.__class__.__name__+" ("+ str(vars(self).values()[2])+")"
+        return self.__class__.__name__+" ("+ str(self.op)+ ")"
+        #return str(self.left) + " " + str(self.op) + " "+ str(self.right)
 
     def semantico(self):
         self.left.semantico()
         self.right.semantico()
-        if self.left.type==self.right.type:
+        # print "%s %s",(self.left,  self.left.type)
+        # print "%s %s",(self.right,  self.right.type)
+
+        if self.left.type == self.right.type:
             self.type=self.left.type
+            # print "%s BinaryOp"%self.type
         else:
-            print("Error en la expresion : %s %s %s involucra diferentes tipos de variable en la linea."% (self.left,self.op,self.right))
+            # print "%s %s BinaryOpElse"%(self, self.type)
+            # print "%s:%s  %s:%s BinaryOpElse"%(self.left, self.left.type, self.right, self.right.type)
+            print "Error en la expresion : %s:%s  %s  %s:%s involucra diferentes tipos de variable en la linea %s."% (self.left,self.left.type,self.op,self.right,self.right.type, str(self.linea))
 
 class Numero(AST):
     _fields = ['numero']
