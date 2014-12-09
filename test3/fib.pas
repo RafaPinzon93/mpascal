@@ -1,5 +1,5 @@
 /* fib ineficiente */
-fun fib(n:int):int
+fun fib(n:int)
    begin
 	   if n == 0 or n == 1 then return n
 	   else return fib(n-1) + fib(n-2)

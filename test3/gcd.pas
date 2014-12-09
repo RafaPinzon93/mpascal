@@ -1,5 +1,5 @@
-fun gcd(x:int, y:int):int
-    g: int;
+fun gcd(x:int[4], y:int)
+    g: int [20];
     begin
        g := y;
        while x > 0 do
