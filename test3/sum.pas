@@ -1,6 +1,6 @@
 /* Una mala manera de sumar dos numeros */
 
-fun sum(a : int[1000], n:int):int
+fun sum(a : int[1000], n:int)
     s : int;
     i : int;
     begin
@@ -31,12 +31,12 @@ fun main()
                 s := sum(x,n);
                 write(s)
              end
-        else 
+        else
              print("Valor malo de n\n")
     end
 
 
-                 
- 
-  
-    
+
+
+
+

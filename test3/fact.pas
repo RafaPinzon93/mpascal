@@ -1,21 +1,17 @@
-
-fun fact(n:int):
-  a : int;
-  b : int
+fun fact(n:int)
   begin
-    a := 1;
-   if n == 1
-    then
-    a := 1
+     if n == 1 then return 1
+     else return n * fact(n-1)
   end
 
-fun main():
+fun main()
    x:int;
-   r:int
+   r:int;
    begin
       print("Entre un numero\n");
       read(x);
       r := fact(x);
       write(r)
    end
+
 

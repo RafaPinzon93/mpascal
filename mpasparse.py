@@ -101,7 +101,7 @@ def p_local(p):
     '''local : locales
               | empty
     '''
-    p[0] = Local(p[1])
+    p[0] = p[1]
 
 
 def p_locales(p):
@@ -333,18 +333,18 @@ def p_tipo_INT(p):
              | NINT LCORCH expresion RCORCH
     '''
     if len(p) == 5:
-        p[0] = ArrayInt(p[1], p.slice[3])
+        p[0] = ArrayInt(p[1], p[3], linea= p.lineno(1))
     else:
-        p[0] = ArrayInt(p[1], None)
+        p[0] = ArrayInt(p[1], None, linea= p.lineno(1))
 
 def p_tipo_FLOAT(p):
     ''' tipo : NFLOAT
-            | NFLOAT LCORCH expresion RCORCH
+             | NFLOAT LCORCH expresion RCORCH
     '''
     if len(p) == 5:
-        p[0] = ArrayFloat(p[1],p.slice[3])
+        p[0] = ArrayFloat(p[1],p.slice[3], linea= p.lineno(1))
     else:
-        p[0] = Nfloat(p[1], None)
+        p[0] = ArrayFloat(p[1], None, linea= p.lineno(1))
 
 def p_expresion_operadores_bin(p):
     '''  expresion : expresion PLUS expresion
@@ -352,7 +352,7 @@ def p_expresion_operadores_bin(p):
                   | expresion TIMES expresion
                   | expresion DIVIDE expresion
                   '''
-    p[0] = BinaryOp(p[2], p[1], p[3])
+    p[0] = BinaryOp(p[2], p[1], p[3], linea = p.lineno(2))
 
 
 def p_expresion_signo(p):
@@ -385,11 +385,11 @@ def p_expresion_ID(p):
 
     if len(p) > 4:
         if p[2] == '(':
-            p[0] = ExpresionFun(p.slice[1], p[3])
+            p[0] = ExpresionFun(p.slice[1], p[3], linea= p.lineno(1))
         else:
             p[0] = ExpresionIdArray(p.slice[1], p[3])
     elif len(p) == 4:
-        p[0] = ExpresionFun(p.slice[1], None)
+        p[0] = ExpresionFun(p.slice[1], None, linea= p.lineno(1))
     else:
         p[0] = ExpresionID(p.slice[1])
 

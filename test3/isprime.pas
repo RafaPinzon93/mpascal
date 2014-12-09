@@ -1,6 +1,6 @@
-fun isprime(n:int):int
+fun isprime(n:int)
    i:int;
-   fun mod(x:int, y:int):int
+   fun mod(x:int, y:int)
       begin
          return x - (x/y) * y
       end;
@@ -26,4 +26,4 @@ fun main()
       else print (" no es primo\n")
    end
 
-      	     
+
