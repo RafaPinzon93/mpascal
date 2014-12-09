@@ -307,7 +307,7 @@ class Parametro(AST):
 class Argumentos(AST):
     _fields = ['argumentos']
 
-    def append(self,e):
+    def append(self, e):
         self.argumentos.append(e)
 
 @validate_fields(locales = list)
