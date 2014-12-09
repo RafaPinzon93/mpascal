@@ -560,8 +560,9 @@ class ExpresionFun(AST):
                     #     print("Error de tamaño")
                     # print m, m.params[i].tipo.valor.numero.value
                     # print arg.ID.value, get_symbol(arg.ID.value).size
-                    if m.params[i].tipo.valor.numero.value != get_symbol(arg.ID.value).size:
-                        print "Error de tamaño en argumento %s:%s con parametro %s:%s en linea %s"%(arg.ID.value, get_symbol(arg.ID.value).size, m.params[i].tipo.valor, m.params[i].tipo.valor.numero.value, self.linea)
+                    if m.params[i].tipo.valor:
+                        if m.params[i].tipo.valor.numero.value != get_symbol(arg.ID.value).size:
+                            print "Error de tamaño en argumento %s:%s con parametro %s:%s en linea %s"%(arg.ID.value, get_symbol(arg.ID.value).size, m.params[i].tipo.valor, m.params[i].tipo.valor.numero.value, self.linea)
                     # if m.params[i].tipo.expresion.value:
                     #     if len(vars(arg)) == 2:
                     #         if arg.expresion != m.params[i].tipo.expresion.value:
