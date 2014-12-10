@@ -271,8 +271,8 @@ class Funcion(AST):
 
 @validate_fields(param_decls=list)
 class Parameters(AST):
-    _fields = ['param_decls']
 
+    _fields = ['param_decls']
     def append(self,e):
         self.param_decls.append(e)
 
