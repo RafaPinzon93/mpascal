@@ -1,4 +1,4 @@
-fun foo(x:int,y:int):int
+fun foo(x:int,y:int)
     begin
        return x + y
     end
@@ -9,7 +9,7 @@ fun main()
     begin
       a := foo(2,3);
       a := foo(a,b);
-      a := foo(b,a) 
+      a := foo(b,a)
     end
 
- 
+

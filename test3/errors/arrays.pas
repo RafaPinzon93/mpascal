@@ -1,17 +1,17 @@
 fun bar(a:int[200], b:float[200])
   z:int;
-  fun spam(a:int) 
+  fun spam(c:int)
     i:int;
     begin
     i := 0;
-    while i < a do
-      begin 
-        print("SPAM!"); 
+    while i < c do
+      begin
+        print("SPAM!");
         i := i + 1
      end
   end;
   x:float;
-  begin 
+  begin
     x := 1.0;
     /* errors */
     a := 5; /* a is array */
@@ -19,11 +19,11 @@ fun bar(a:int[200], b:float[200])
     a := a + a; /* a is an array */
 
     /* not errors */
-    a[0] := a[1]; 
-    a[0] := 5;  
+    a[0] := a[1];
+    a[0] := 5;
     a[int(x)] := a[int(4.0)];
 
-   /* errors */	
+   /* errors */
     a[-2] := a[5]; /* negative index */
     a[2] := a[5.0 * 4.0];  /* index not an int */
     a[0] := 5 + a;  /* a is an array */
@@ -31,8 +31,8 @@ fun bar(a:int[200], b:float[200])
     x[0] := x[0]; /* x is not an array */
     write(x)
   end
-    
-fun main() 
+
+fun main()
    y:int[200];
    x:float[200];
    z:int[201];
@@ -40,7 +40,7 @@ fun main()
    bar(y,x); /* correct */
 
   /* incorrect - wrong arg types */
-   bar(z,x);  
+   bar(z,x);
    bar(x,x);
    bar(x[0],y[0]);
    skip
