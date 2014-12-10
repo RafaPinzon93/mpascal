@@ -5,44 +5,37 @@
 
 ! program
 
-! function: gcd (start) 
+! function: isprime (start) 
 
-gcd:
-        save sp, -80, sp
+isprime:
+        save sp, -72, sp
 
 ! assign (start)
-!  push y
-!  g := pop
+!  push 2
+!  i := pop
 ! assign (end)
 
 ! while (start)
 
 .L1:
-!  push x
-!  push 0
-!  GT
+!  push i
+!  push n
+!  LT
 !  relop := pop
 !  if not relop: goto .L2
 
-! assign (start)
-!  push x
-!  g := pop
-! assign (end)
+! if (start)
+!  relop := pop
+!  if not relop: goto .L3
+
+.L3:
+! if (end)
 
 ! assign (start)
-!  push y
-!  push y
-!  push x
-!  div
-!  push x
-!  mult
-!  sub 
-!  x := pop
-! assign (end)
-
-! assign (start)
-!  push g
-!  y := pop
+!  push i
+!  push 1
+!  add
+!  i := pop
 ! assign (end)
 
 !  goto .L1
@@ -53,14 +46,14 @@ gcd:
               ret
               restore
 
-!function: gcd (end)
+!function: isprime (end)
 
 ! function: main (start) 
 
     .global main
 
 main:
-        save sp, -80, sp
+        save sp, -72, sp
         sethi %hi(.Ln), %o0
         or    %o0, %lo(.Ln), %o0
         call  flprint 
@@ -72,20 +65,39 @@ main:
 ! read (start)
 ! read (End)
 
-! read (start)
-! read (End)
-
 ! assign (start)
 !  push x
-!  push y
 !  r := pop
 ! assign (end)
 
 ! write (start)
-!  push r
+!  push x
 !  expr := pop
 !  write(expr)
 ! write (end)
+
+! ifelse (start)
+!  relop := pop
+!  if not relop: goto else label: .L6
+        sethi %hi(.Ln), %o0
+        or    %o0, %lo(.Ln), %o0
+        call  flprint 
+        nop
+
+! print (start)
+! print (end)
+!go to done .L5
+.L6: !else_label
+        sethi %hi(.Ln), %o0
+        or    %o0, %lo(.Ln), %o0
+        call  flprint 
+        nop
+
+! print (start)
+! print (end)
+
+.L5: !done_label
+! ifelse (end)
 .Ln:
              mov 0, %o0
              call _exit
@@ -97,5 +109,9 @@ main:
 
     .section   ".rodata"
 
-.L3:   .asciz  ""Entre dos numeros\n""
+.L4:   .asciz  ""Entre un numero\n""
+
+.L7:   .asciz  "" es primo\n""
+
+.L8:   .asciz  "" es primo\n""
 

@@ -30,9 +30,13 @@ def emit_program(out,top):
 def emit_function(out,func):
     print >>out,"\n! function: %s (start) " % func.ID.value
 
-    para = func.parametros.param_decls
-    local = func.locales.locales
-    emit_localpara(out, local, para)
+    if func.locales != None:
+        para = func.parametros.param_decls
+        local = func.locales.locales
+        emit_localpara(out, local, para)
+    else:
+        para = func.parametros.param_decls
+        emit_para1(out,para)
 
 
 
@@ -62,15 +66,36 @@ def emit_statements(out,statements):
     for s in statements:
         emit_statement(out,s)
 
-
 def emit_localpara(out,local,para):
     global marcoPila
     global marcoPila1
-    for s in local:
-        if s.tipo.valor != None:
-            marcoPila += int(s.tipo.expresion.value.numero.value)*4
-        marcoPila += 4
-        emit_local(out,s)
+    if local != None:
+        for s in local:
+            if s.__class__ != Funcion:
+                if s.tipo.valor != None:
+                    marcoPila += int(s.tipo.valor.numero.value)*4
+                marcoPila += 4
+                emit_local(out,s)
+
+    for s in para:
+        if s != None:
+            if  s.tipo.valor != None:
+                   marcoPila += int(s.tipo.valor.numero.value)*4
+        if s == None and marcoPila > 0:
+            marcoPila -= 4
+        emit_para(out,s)
+        marcoPila +=4
+
+    marcoPila1 = marcoPila + 64
+    b= marcoPila1%8
+
+    if b != 0:
+        marcoPila1 += 4
+    marcoPila = 0
+
+def emit_para1(out,para):
+    global marcoPila
+    global marcoPila1
 
     for s in para:
         if s != None:
@@ -79,8 +104,8 @@ def emit_localpara(out,local,para):
         if s == None and marcoPila > 0:
             marcoPila -= 4
         emit_para(out,s)
-        marcoPila +=4
 
+        marcoPila +=4
     marcoPila1 = marcoPila + 64
     b= marcoPila1%8
 
@@ -106,14 +131,14 @@ def emit_statement(out,s):
         emit_assign(out,s)
 
 
-
-
-
-
-
 def emit_print(out,s):
     value = s.expr
     label = new_label()
+    print >>out, "        sethi %hi(.Ln), %o0"
+    print >>out, "        or    %o0, %lo(.Ln), %o0"
+    if s.expr.__class__ == str:
+        print >>out, "        call  flprint "
+    print >>out, "        nop"
     print >>out, "\n! print (start)"
     print >>data, '\n%s:   .asciz  "%s"' % (label, value)
     print >>out, "! print (end)"
@@ -207,8 +232,6 @@ def emit_assign(out,s):
     print >>out, "! assign (end)"
 
 def emit_local(out,func):
-
-
     #print marcoPila
     expr = func
     #print expr

@@ -337,7 +337,8 @@ class Locales(AST):
     def semantico(self):
         for local in self.locales :
             # print local, local.type, "1local"
-            local.semantico()
+            if local != None:
+                local.semantico()
             # print local, local.type, "2local"
 
 # class Local(AST):

@@ -5,44 +5,37 @@
 
 ! program
 
-! function: gcd (start) 
+! function: fact (start) 
 
-gcd:
-        save sp, -80, sp
+fact:
+        save sp, -72, sp
 
 ! assign (start)
-!  push y
-!  g := pop
+!  push 1
+!  r := pop
 ! assign (end)
 
 ! while (start)
 
 .L1:
-!  push x
+!  push n
 !  push 0
 !  GT
 !  relop := pop
 !  if not relop: goto .L2
 
 ! assign (start)
-!  push x
-!  g := pop
-! assign (end)
-
-! assign (start)
-!  push y
-!  push y
-!  push x
-!  div
-!  push x
+!  push r
+!  push n
 !  mult
-!  sub 
-!  x := pop
+!  r := pop
 ! assign (end)
 
 ! assign (start)
-!  push g
-!  y := pop
+!  push n
+!  push 1
+!  sub 
+!  n := pop
 ! assign (end)
 
 !  goto .L1
@@ -53,14 +46,21 @@ gcd:
               ret
               restore
 
-!function: gcd (end)
+!function: fact (end)
 
 ! function: main (start) 
 
     .global main
 
 main:
-        save sp, -80, sp
+        save sp, -72, sp
+        sethi %hi(.Ln), %o0
+        or    %o0, %lo(.Ln), %o0
+        call  flprint 
+        nop
+
+! print (start)
+! print (end)
         sethi %hi(.Ln), %o0
         or    %o0, %lo(.Ln), %o0
         call  flprint 
@@ -72,17 +72,8 @@ main:
 ! read (start)
 ! read (End)
 
-! read (start)
-! read (End)
-
-! assign (start)
-!  push x
-!  push y
-!  r := pop
-! assign (end)
-
 ! write (start)
-!  push r
+!  push n
 !  expr := pop
 !  write(expr)
 ! write (end)
@@ -97,5 +88,7 @@ main:
 
     .section   ".rodata"
 
-.L3:   .asciz  ""Entre dos numeros\n""
+.L3:   .asciz  ""Hola. Soy un factorial sencillo.\n""
+
+.L4:   .asciz  ""Entre n :""
 

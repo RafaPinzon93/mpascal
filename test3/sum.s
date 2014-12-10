@@ -5,44 +5,42 @@
 
 ! program
 
-! function: gcd (start) 
+! function: sum (start) 
 
-gcd:
-        save sp, -80, sp
+sum:
+        save sp, -4080, sp
 
 ! assign (start)
-!  push y
-!  g := pop
+!  push 0
+!  s := pop
+! assign (end)
+
+! assign (start)
+!  push 0
+!  i := pop
 ! assign (end)
 
 ! while (start)
 
 .L1:
-!  push x
-!  push 0
-!  GT
+!  push i
+!  push n
+!  LT
 !  relop := pop
 !  if not relop: goto .L2
 
 ! assign (start)
-!  push x
-!  g := pop
+!  push s
+!  push a
+!  add
+!  s := pop
 ! assign (end)
 
 ! assign (start)
-!  push y
-!  push y
-!  push x
-!  div
-!  push x
-!  mult
-!  sub 
-!  x := pop
-! assign (end)
-
-! assign (start)
-!  push g
-!  y := pop
+!  push i
+!  push 1
+!  add
+!  i := pop
 ! assign (end)
 
 !  goto .L1
@@ -53,14 +51,14 @@ gcd:
               ret
               restore
 
-!function: gcd (end)
+!function: sum (end)
 
 ! function: main (start) 
 
     .global main
 
 main:
-        save sp, -80, sp
+        save sp, -4080, sp
         sethi %hi(.Ln), %o0
         or    %o0, %lo(.Ln), %o0
         call  flprint 
@@ -72,20 +70,14 @@ main:
 ! read (start)
 ! read (End)
 
-! read (start)
-! read (End)
+! ifelse (start)
+!  relop := pop
+!  if not relop: goto else label: .L5
+!go to done .L4
+.L5: !else_label
 
-! assign (start)
-!  push x
-!  push y
-!  r := pop
-! assign (end)
-
-! write (start)
-!  push r
-!  expr := pop
-!  write(expr)
-! write (end)
+.L4: !done_label
+! ifelse (end)
 .Ln:
              mov 0, %o0
              call _exit
@@ -97,5 +89,5 @@ main:
 
     .section   ".rodata"
 
-.L3:   .asciz  ""Entre dos numeros\n""
+.L3:   .asciz  ""Entre un numero n : ""
 
