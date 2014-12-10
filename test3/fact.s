@@ -7,30 +7,32 @@
 
 ! function: fact (start) 
 
-! assign (start)
-!  push 1
-!  a := pop
-! assign (end)
+fact:
+        save sp, -72, sp
 
-! if (start)
+! ifelse (start)
 !  relop := pop
-!  if not relop: goto .L1
+!  if not relop: goto else label: .L2
+!go to done .L1
+.L2: !else_label
 
-! assign (start)
-!  push 1
-!  a := pop
-! assign (end)
+.L1: !done_label
+! ifelse (end)
+              ret
+              restore
 
-.L1:
-! if (end)
-
-! function: fact (end)
+!function: fact (end)
 
 ! function: main (start) 
 
     .global main
 
- main:
+main:
+        save sp, -72, sp
+        sethi %hi(.Ln), %o0
+        or    %o0, %lo(.Ln), %o0
+        call  flprint 
+        nop
 
 ! print (start)
 ! print (end)
@@ -48,9 +50,16 @@
 !  expr := pop
 !  write(expr)
 ! write (end)
+.Ln:
+             mov 0, %o0
+             call _exit
+             nop
+             ret
+             restore
 
-! function: main (end)
+!function: main (end)
 
     .section   ".rodata"
-.L2:   .asciz  ""Entre un numero\n""
+
+.L3:   .asciz  ""Entre un numero\n""
 
