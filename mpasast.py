@@ -297,8 +297,12 @@ class Parametro(AST):
         # print self.ID.value
         m = get_symbol(self.ID.value)
         # print str(self.valor.value)
+
         if self.tipo.valor:
-            m.changesize(self.tipo.valor.numero.value)
+            if type(self.tipo.valor) == NumeroInt or type(self.tipo.valor) == NumeroFloat:
+                # print self.tipo.valor.numero.value
+                m.changesize(self.tipo.valor.numero.value)
+
         # print m.size
 
 
@@ -416,13 +420,8 @@ class ArrayFloat(AST):
     def semantico(self):
         if self.valor:
             # self.valor.semantico()
-            # print str(self.token)
-            m = get_symbol(str(self.token))
-            # print str(self.valor.value)
-            m.changesize(self.valor.value)
-
-            if self.valor.type != type(int):
-                print self.valor.type
+            if self.valor.value.type != int:
+                print self.valor.value.type
                 print("Error de tipo para la asignacion de tamaño en la linea %s" % (self.linea))
 
 # class ArrayFloat(AST):
@@ -481,7 +480,7 @@ class ExpresionIdArray(AST):
 
     def __str__(self):
         #return self.__class__.__name__+" ("+ str(vars(self).values()[1])+")"
-        return "ExpresionIdArray" + str(self.ID.value)+ " [" + str(self.expresion)+"]"
+        return str(self.ID.value)+ " [" + str(self.expresion)+"]"
 
     def semantico(self):
         n=get_symbol(self.ID.value)
@@ -501,49 +500,6 @@ class ExpresionFun(AST):
         return self.ID.value+ " ( " + str(self.arguments)+" )"
 
     def semantico(self):
-        # m=get_symbol(self.ID.value)
-        # if not m:
-        #     print("Error en la linea %s : La funcion %s no existe"% (self.ID.lineno,self.ID.value))
-        # elif m.name!="main":
-        #     if m.params or m.params==0 : #what the fuck
-        #         if m.params==0 :
-        #             if self.arguments :
-        #                 print("Error en la linea %s : La funcion %s no espera argumentos." % (self.ID.lineno,self.ID.value))
-        #             else:
-        #                 self.type = m.type
-        #         else:
-        #             if self.arguments :
-        #                 if len(m.params) > len(self.arguments.argumentos):
-        #                     print("Error en la linea %s : Faltan parametros en el llamado a la funcion %s, se esperaban %s parametros."% (self.ID.lineno,self.ID.value,len(m.params)))
-        #                 elif len(m.params) < len(self.arguments.argumentos):
-        #                     print("Error en la linea %s : Sobran parametros en el llamado a la funcion %s, se esperaban %s parametros."% (self.ID.lineno,self.ID.value,len(m.params)))
-        #                 else : # Desde aca muto
-        #                     i = 0
-        #                     for arg in self.arguments.argumentos:
-        #                         if not m.params[i].tipo.expresion : # Si no es un vector el parametro
-        #                             arg.semantico()
-        #                             if arg.type != m.params[i].type: # si los tipos son diferentes error
-        #                                 print("Error en la linea %s : Los tipos en el llamado de la funcion %s no son correctos.En el argumento %s se esperaba un %s y se ingreso un %s. " % (self.ID.lineno,self.ID.value,str(i+1),m.params[i].type,arg.type ))
-        #                     # else : # Si es un vector el parametro
-        #                     #     if self.arguments.argumentos[i]: # si se le engresa una posicion
-        #                     #         arg.semantico()
-        #                     #         if arg.type != m.params[i].type:
-        #                     #             print("1.Error en la linea %s : Los tipos en el llamado de la funcion %s no son correctos.En el argumento %s se esperaba un %s y se ingreso un %s. " % (self.ID.lineno,self.ID.value,str(i+1),m.params[i].type,arg.type ))
-        #                     #     else: # si no se le ingresa posicion
-        #                     #         arg.semantico(1)
-        #                     #         l=get_symbol(arg.ID.value) # Buscamos el argumento como variable
-        #                     #         if l.indice.value != m.params[i].valor.value : # si los indices del parametro y del vector ingresado son diferentes
-        #                     #             print ("2.Error en la linea %s : En la funcion %s el argumento %s ( %s ) es un vector de %s y se esperaba un vector de %s " % (self.ID.lineno,self.ID.value,str(i+1),arg.ID.value,l.indice.value,m.params[i].valor.value ))
-        #                     #         elif arg.type != m.params[i].type : # si los indices son iguales pero los tipos son diferentes
-        #                     #             print("3.Error en la linea %s : Los tipos en el llamado de la funcion %s no son correctos. En el argumento %s (%s) se esperaba un %s y se ingreso un %s. " % (self.ID.lineno,self.ID.value,str(i+1),arg.ID.value,m.params[i].type,arg.type ))
-        #                     i +=1
-        #             else:
-        #                 print("Error en la linea %s : Hacen falta parametros en el llamado a la funcion %s, se esperaban %s parametros."% (self.ID.lineno,self.ID.value,len(m.params)))
-        #             self.type = m.type
-        #     else:
-        #         print("Error en la linea %s : La variable %s no es una funcion." % (self.ID.lineno, self.ID.value))
-        # else:
-        #     print("Error en la linea %s : No es posible llamar la funcion principal main dentro de una funcion."% self.ID.lineno)
         m=get_symbol(self.ID.value)
         if not m:
             print("Error, la funcion \"%s\" no existe  en la linea \"%s\""% (self.ID.value,str(self.ID.lineno)))
@@ -560,9 +516,12 @@ class ExpresionFun(AST):
                     #     print("Error de tamaño")
                     # print m, m.params[i].tipo.valor.numero.value
                     # print arg.ID.value, get_symbol(arg.ID.value).size
-                    if m.params[i].tipo.valor:
-                        if m.params[i].tipo.valor.numero.value != get_symbol(arg.ID.value).size:
-                            print "Error de tamaño en argumento %s:%s con parametro %s:%s en linea %s"%(arg.ID.value, get_symbol(arg.ID.value).size, m.params[i].tipo.valor, m.params[i].tipo.valor.numero.value, self.linea)
+                    # print type(m.params[i].tipo.valor)
+                    elif m.params[i].tipo.valor:
+                        if type(m.params[i].tipo.valor) == NumeroInt or type(m.params[i].tipo.valor) == NumeroFloat:
+                            if m.params[i].tipo.valor.numero.value != get_symbol(arg.ID.value).size:
+                                print "Error de tamaño en argumento %s de tamano %s, con parametro %s, en linea %s"%(arg.ID.value, get_symbol(arg.ID.value).size, m.params[i].tipo, self.linea)
+
                     # if m.params[i].tipo.expresion.value:
                     #     if len(vars(arg)) == 2:
                     #         if arg.expresion != m.params[i].tipo.expresion.value:
@@ -697,7 +656,8 @@ class NumeroInt(AST):
     _fields = ['numero']
 
     def __str__(self):
-        return self.__class__.__name__+" ("+ str(self.numero.value) +")"
+        # return self.__class__.__name__+" ("+ str(self.numero.value) +")"
+        return str(self.numero.value)
 
 class NumeroFloat(AST):
     type = float
