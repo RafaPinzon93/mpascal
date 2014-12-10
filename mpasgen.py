@@ -31,7 +31,7 @@ def emit_function(out,func):
     print >>out,"\n! function: %s (start) " % func.ID.value
 
     para = func.parametros.param_decls
-    local = func.locales.local.locales
+    local = func.locales.locales
     emit_localpara(out, local, para)
 
 
@@ -67,14 +67,14 @@ def emit_localpara(out,local,para):
     global marcoPila
     global marcoPila1
     for s in local:
-        if s.tipo.expresion != None:
+        if s.tipo.valor != None:
             marcoPila += int(s.tipo.expresion.value.numero.value)*4
         marcoPila += 4
         emit_local(out,s)
 
     for s in para:
         if s != None:
-            if  s.tipo.expresion != None:
+            if  s.tipo.valor != None:
                    marcoPila += int(s.tipo.expresion.value.numero.value)*4
         if s == None and marcoPila > 0:
             marcoPila -= 4

@@ -8,7 +8,7 @@
 ! function: gcd (start) 
 
 gcd:
-        save sp, -176, sp
+        save sp, -80, sp
 
 ! assign (start)
 !  push y
@@ -50,8 +50,8 @@ gcd:
 .L2:
 
 ! while (end)
-ret
-restore
+              ret
+              restore
 
 !function: gcd (end)
 
