@@ -61,6 +61,10 @@ gcd:
 
 main:
         save sp, -80, sp
+        sethi %hi(.Ln), %o0
+        or    %o0, %lo(.Ln), %o0
+        call  flprint 
+        nop
 
 ! print (start)
 ! print (end)

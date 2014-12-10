@@ -319,7 +319,8 @@ class Locales(AST):
 
     def semantico(self):
         for local in self.locales :
-            local.semantico()
+            if local != None:
+                local.semantico()
 
 # class Local(AST):
 #     _fields = ['local']
