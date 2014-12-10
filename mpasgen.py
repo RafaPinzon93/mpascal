@@ -77,7 +77,8 @@ def emit_localpara(out,local,para):
             if s.__class__ != Funcion:
                 if s.tipo.valor != None:
                     marcoPila += int(s.tipo.valor.numero.value)*4
-                marcoPila += 4
+                else:
+                    marcoPila += 4
                 s.ID.symtab.fram_offset = marcoPila
                 emit_local(out,s)
 
@@ -85,10 +86,12 @@ def emit_localpara(out,local,para):
         if s != None:
             if  s.tipo.valor != None:
                    marcoPila += int(s.tipo.valor.numero.value)*4
+            else:
+                marcoPila +=4
             if s == None and marcoPila > 0:
                 marcoPila -= 4
             emit_para(out,s)
-            marcoPila +=4
+
 
     marcoPila1 = marcoPila + 64
     b= marcoPila1%8
@@ -105,11 +108,11 @@ def emit_para1(out,para):
         if s != None:
             if  s.tipo.valor != None:
                    marcoPila += int(s.tipo.expresion.value.numero.value)*4
+            else:
+                marcoPila +=4
             if s == None and marcoPila > 0:
                 marcoPila -= 4
             emit_para(out,s)
-
-            marcoPila +=4
 
     marcoPila1 = marcoPila + 64
     b= marcoPila1%8
