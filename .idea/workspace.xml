@@ -53,11 +53,31 @@
       <file leaf-file-name="mpasgen.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mpasgen.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6997579" vertical-offset="1649" max-vertical-offset="5321">
-              <caret line="114" column="28" selection-start-line="114" selection-start-column="28" selection-end-line="114" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.041162226" vertical-offset="1343" max-vertical-offset="5304">
+              <caret line="80" column="26" selection-start-line="80" selection-start-column="26" selection-end-line="80" selection-end-column="26" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="hello.pas" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test3/hello.pas">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
+              <caret line="1" column="10" selection-start-line="1" selection-start-column="10" selection-end-line="1" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="hello.s" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test3/hello.s">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="663">
+              <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -101,8 +121,8 @@
         <option value="$PROJECT_DIR$/test3/isprime.pas" />
         <option value="$PROJECT_DIR$/test3/hello.s" />
         <option value="$PROJECT_DIR$/.idea/workspace.xml" />
-        <option value="$PROJECT_DIR$/mpasgen.py" />
         <option value="$PROJECT_DIR$/test3/hello.pas" />
+        <option value="$PROJECT_DIR$/mpasgen.py" />
       </list>
     </option>
   </component>
@@ -540,7 +560,11 @@
       <created>1418248876093</created>
       <updated>1418248876093</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary=" parte 9 cuarta entrega casi final">
+      <created>1418249341974</created>
+      <updated>1418249341974</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -619,7 +643,8 @@
     <MESSAGE value=" parte 7 cuarta entrega beta" />
     <MESSAGE value=" parte 7 cuarta entrega beta&#10; reparacion de  funcion sin locales" />
     <MESSAGE value=" parte 9 cuarta entrega beta&#10; reparacion de  funcion sin locales" />
-    <option name="LAST_COMMIT_MESSAGE" value=" parte 9 cuarta entrega beta&#10; reparacion de  funcion sin locales" />
+    <MESSAGE value=" parte 9 cuarta entrega casi final" />
+    <option name="LAST_COMMIT_MESSAGE" value=" parte 9 cuarta entrega casi final" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -983,14 +1008,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mpasast.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4624" max-vertical-offset="13974">
-          <caret line="272" column="0" selection-start-line="272" selection-start-column="0" selection-end-line="272" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="18003">
@@ -999,26 +1016,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/mpasast.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4624" max-vertical-offset="13974">
+          <caret line="272" column="0" selection-start-line="272" selection-start-column="0" selection-end-line="272" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test3/hello.s">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="663">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="663">
+          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test3/hello.pas">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="413">
-          <caret line="0" column="11" selection-start-line="0" selection-start-column="11" selection-end-line="0" selection-end-column="11" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
+          <caret line="1" column="10" selection-start-line="1" selection-start-column="10" selection-end-line="1" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mpasgen.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6997579" vertical-offset="1649" max-vertical-offset="5321">
-          <caret line="114" column="28" selection-start-line="114" selection-start-column="28" selection-end-line="114" selection-end-column="28" />
+        <state vertical-scroll-proportion="0.041162226" vertical-offset="1343" max-vertical-offset="5304">
+          <caret line="80" column="26" selection-start-line="80" selection-start-column="26" selection-end-line="80" selection-end-column="26" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>

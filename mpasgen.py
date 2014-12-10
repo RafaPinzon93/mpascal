@@ -66,8 +66,6 @@ def emit_statements(out,statements):
     for s in statements:
         emit_statement(out,s)
 
-def allocate_local(local):
-    a[len (local)] = []
 
 def emit_localpara(out,local,para):
     global marcoPila
@@ -80,6 +78,7 @@ def emit_localpara(out,local,para):
                 else:
                     marcoPila += 4
                 s.ID.symtab.fram_offset = marcoPila
+                print s.ID
                 emit_local(out,s)
 
     for s in para:
