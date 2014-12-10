@@ -66,6 +66,9 @@ def emit_statements(out,statements):
     for s in statements:
         emit_statement(out,s)
 
+def allocate_local(local):
+    a[len (local)] = []
+
 def emit_localpara(out,local,para):
     global marcoPila
     global marcoPila1
@@ -75,16 +78,17 @@ def emit_localpara(out,local,para):
                 if s.tipo.valor != None:
                     marcoPila += int(s.tipo.valor.numero.value)*4
                 marcoPila += 4
+                s.ID.symtab.fram_offset = marcoPila
                 emit_local(out,s)
 
     for s in para:
         if s != None:
             if  s.tipo.valor != None:
                    marcoPila += int(s.tipo.valor.numero.value)*4
-        if s == None and marcoPila > 0:
-            marcoPila -= 4
-        emit_para(out,s)
-        marcoPila +=4
+            if s == None and marcoPila > 0:
+                marcoPila -= 4
+            emit_para(out,s)
+            marcoPila +=4
 
     marcoPila1 = marcoPila + 64
     b= marcoPila1%8
@@ -101,17 +105,19 @@ def emit_para1(out,para):
         if s != None:
             if  s.tipo.valor != None:
                    marcoPila += int(s.tipo.expresion.value.numero.value)*4
-        if s == None and marcoPila > 0:
-            marcoPila -= 4
-        emit_para(out,s)
+            if s == None and marcoPila > 0:
+                marcoPila -= 4
+            emit_para(out,s)
 
-        marcoPila +=4
+            marcoPila +=4
+
     marcoPila1 = marcoPila + 64
     b= marcoPila1%8
 
     if b != 0:
         marcoPila1 += 4
     marcoPila = 0
+
 
 
 def emit_statement(out,s):

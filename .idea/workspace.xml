@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/mpaslex.py" line="50" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="993e43f6-6c88-47e6-ac4f-37c6e374f52b" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test3/fact.s" afterPath="$PROJECT_DIR$/test3/fact.s" />
@@ -9,7 +12,6 @@
     </list>
     <ignored path="mpascal.iws" />
     <ignored path=".idea/workspace.xml" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,9 +30,6 @@
     <favorites_list name="mpascal" />
   </component>
   <component name="FileEditorManager">
-<<<<<<< HEAD
-    <leaf />
-=======
     <leaf>
       <file leaf-file-name="mpascal.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mpascal.py">
@@ -85,7 +84,6 @@
         </entry>
       </file>
     </leaf>
->>>>>>> d19edced1a461acc4f3ee6cd01c9c1ce50cda4b0
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -95,25 +93,44 @@
   <component name="Git.Settings">
     <option name="UPDATE_TYPE" value="MERGE" />
     <option name="PUSH_AUTO_UPDATE" value="true" />
+    <option name="SYNC_SETTING" value="DONT" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
+    <option name="changedFiles">
       <list>
+        <option value="$PROJECT_DIR$/mpaslex.py" />
+        <option value="C:/ply-3.4/example/BASIC/basparse.py" />
+        <option value="$PROJECT_DIR$/la.py" />
+        <option value="$PROJECT_DIR$/Pruebas.pas" />
+        <option value="$USER_HOME$/Desktop/la.txt" />
+        <option value="$PROJECT_DIR$/mpascal.py" />
+        <option value="$PROJECT_DIR$/lala.py" />
+        <option value="$PROJECT_DIR$/test2/hello.pas" />
+        <option value="$PROJECT_DIR$/mpasparse.py" />
+        <option value="$PROJECT_DIR$/test2/write1.pas" />
+        <option value="$PROJECT_DIR$/test2/write1.s" />
+        <option value="$PROJECT_DIR$/test2/new.pas" />
+        <option value="$PROJECT_DIR$/test2/la.s" />
+        <option value="$PROJECT_DIR$/test2/quick.pas" />
+        <option value="$PROJECT_DIR$/test2/la.pas" />
+        <option value="$PROJECT_DIR$/test3/fact.pas" />
+        <option value="$PROJECT_DIR$/test3/fact.s" />
+        <option value="$PROJECT_DIR$/mpasast.py" />
+        <option value="$PROJECT_DIR$/test3/hello.s" />
+        <option value="$PROJECT_DIR$/test3/hello.pas" />
+        <option value="$PROJECT_DIR$/test3/gcd.pas" />
         <option value="$PROJECT_DIR$/mpasgen.py" />
         <option value="$PROJECT_DIR$/test3/isprime.s" />
-<<<<<<< HEAD
-=======
         <option value="$PROJECT_DIR$/test3/isprime.pas" />
->>>>>>> d19edced1a461acc4f3ee6cd01c9c1ce50cda4b0
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="55" />
+    <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1319" />
-    <option name="height" value="784" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -147,6 +164,44 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="mpascal" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mpascal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mpascal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mpascal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mpascal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mpascal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mpascal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -201,7 +256,6 @@
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mpaslex.py" />
       <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
@@ -246,52 +300,10 @@
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mpasparse.py" />
       <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="mpascal" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Unittests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="mpascal" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="py.test">
@@ -319,7 +331,7 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="tests" factoryName="Attests">
+    <configuration default="true" type="tests" factoryName="Nosetests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -337,6 +349,48 @@
       <option name="TEST_TYPE" value="TEST_SCRIPT" />
       <option name="PATTERN" value="" />
       <option name="USE_PATTERN" value="false" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="mpascal" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="mpascal" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -359,7 +413,7 @@
       <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="tests" factoryName="Nosetests">
+    <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -377,8 +431,6 @@
       <option name="TEST_TYPE" value="TEST_SCRIPT" />
       <option name="PATTERN" value="" />
       <option name="USE_PATTERN" value="false" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
     <list size="3">
@@ -402,124 +454,82 @@
     <task active="true" id="Default" summary="Default task">
       <changelist id="993e43f6-6c88-47e6-ac4f-37c6e374f52b" name="Default" comment="" />
       <created>1408718480193</created>
-      <option name="number" value="Default" />
       <updated>1408718480193</updated>
     </task>
     <task id="LOCAL-00001" summary="Primer commit pycharm">
       <created>1408718700388</created>
-      <option name="number" value="00001" />
-      <option name="project" value="LOCAL" />
       <updated>1408718700388</updated>
     </task>
     <task id="LOCAL-00002" summary="Agregado lexer">
       <created>1408719804194</created>
-      <option name="number" value="00002" />
-      <option name="project" value="LOCAL" />
       <updated>1408719804194</updated>
     </task>
     <task id="LOCAL-00003" summary="Corrección lexer&#10;">
       <created>1408721856002</created>
-      <option name="number" value="00003" />
-      <option name="project" value="LOCAL" />
       <updated>1408721856002</updated>
     </task>
     <task id="LOCAL-00004" summary="prueba de cambio en prueba D:">
       <created>1409323530012</created>
-      <option name="number" value="00004" />
-      <option name="project" value="LOCAL" />
       <updated>1409323530012</updated>
     </task>
     <task id="LOCAL-00005" summary="Adición de errores al pasparse&#10; &#10;">
       <created>1412524588585</created>
-      <option name="number" value="00005" />
-      <option name="project" value="LOCAL" />
       <updated>1412524588585</updated>
     </task>
     <task id="LOCAL-00006" summary="Adición de errores al pasparse&#10; &#10;">
       <created>1412524868645</created>
-      <option name="number" value="00006" />
-      <option name="project" value="LOCAL" />
       <updated>1412524868645</updated>
     </task>
     <task id="LOCAL-00007" summary="Adición de errores al pasparse&#10; &#10;">
       <created>1412525110467</created>
-      <option name="number" value="00007" />
-      <option name="project" value="LOCAL" />
       <updated>1412525110467</updated>
     </task>
     <task id="LOCAL-00008" summary="Adición de errores al pasparse&#10; &#10;">
       <created>1412525983351</created>
-      <option name="number" value="00008" />
-      <option name="project" value="LOCAL" />
       <updated>1412525983351</updated>
     </task>
     <task id="LOCAL-00009" summary="Adición de errores al pasparse&#10;cambio de prints &#10; &#10;">
       <created>1415591239830</created>
-      <option name="number" value="00009" />
-      <option name="project" value="LOCAL" />
       <updated>1415591239830</updated>
     </task>
     <task id="LOCAL-00010" summary="Parte 1 Cuarta entrega">
       <created>1416866097755</created>
-      <option name="number" value="00010" />
-      <option name="project" value="LOCAL" />
       <updated>1416866097755</updated>
     </task>
     <task id="LOCAL-00011" summary="Parte 2 Cuarta entrega">
       <created>1417640723762</created>
-      <option name="number" value="00011" />
-      <option name="project" value="LOCAL" />
       <updated>1417640723762</updated>
     </task>
     <task id="LOCAL-00012" summary=" parte 2 cuarta entrega beta">
       <created>1417640750663</created>
-      <option name="number" value="00012" />
-      <option name="project" value="LOCAL" />
       <updated>1417640750663</updated>
     </task>
     <task id="LOCAL-00013" summary=" parte 3 cuarta entrega beta">
       <created>1417980932223</created>
-      <option name="number" value="00013" />
-      <option name="project" value="LOCAL" />
       <updated>1417980932223</updated>
     </task>
     <task id="LOCAL-00014" summary=" parte 3 cuarta entrega beta">
       <created>1417980941199</created>
-      <option name="number" value="00014" />
-      <option name="project" value="LOCAL" />
       <updated>1417980941199</updated>
     </task>
     <task id="LOCAL-00015" summary=" parte 3 cuarta entrega beta">
       <created>1417985905213</created>
-      <option name="number" value="00015" />
-      <option name="project" value="LOCAL" />
       <updated>1417985905213</updated>
     </task>
     <task id="LOCAL-00016" summary=" parte 3 cuarta entrega beta">
       <created>1417986301457</created>
-      <option name="number" value="00016" />
-      <option name="project" value="LOCAL" />
       <updated>1417986301457</updated>
     </task>
     <task id="LOCAL-00017" summary=" parte 3 cuarta entrega beta">
       <created>1417991596937</created>
-      <option name="number" value="00017" />
-      <option name="project" value="LOCAL" />
       <updated>1417991596937</updated>
     </task>
     <task id="LOCAL-00018" summary=" parte 7 cuarta entrega beta">
       <created>1418171475479</created>
-      <option name="number" value="00018" />
-      <option name="project" value="LOCAL" />
       <updated>1418171475479</updated>
     </task>
     <task id="LOCAL-00019" summary=" parte 7 cuarta entrega beta&#10; reparacion de  funcion sin locales">
       <created>1418224677882</created>
-<<<<<<< HEAD
-      <option name="number" value="00019" />
-      <option name="project" value="LOCAL" />
-=======
->>>>>>> d19edced1a461acc4f3ee6cd01c9c1ce50cda4b0
       <updated>1418224677882</updated>
     </task>
     <option name="localTasksCounter" value="20" />
@@ -546,17 +556,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="55" y="-8" width="1319" height="784" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
-<<<<<<< HEAD
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.04738562" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18969555" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32352942" sideWeight="0.35863096" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-=======
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30555555" sideWeight="0.5818452" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2009804" sideWeight="0.60491073" order="11" side_tool="false" content_ui="tabs" />
@@ -567,29 +569,15 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2009804" sideWeight="0.39434522" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.105511814" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
->>>>>>> d19edced1a461acc4f3ee6cd01c9c1ce50cda4b0
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22875817" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20061256" sideWeight="0.640625" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-<<<<<<< HEAD
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-=======
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32843137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
->>>>>>> d19edced1a461acc4f3ee6cd01c9c1ce50cda4b0
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.105511814" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24963397" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32843137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39869282" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="UnknownFeatures">
@@ -626,11 +614,8 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
-    <watches-manager />
   </component>
   <component name="editorHistoryManager">
-<<<<<<< HEAD
-=======
     <entry file="file://$USER_HOME$/Desktop/la.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2305" max-vertical-offset="2669">
@@ -849,7 +834,6 @@
         </state>
       </provider>
     </entry>
->>>>>>> d19edced1a461acc4f3ee6cd01c9c1ce50cda4b0
     <entry file="file://C:/Python27/Lib/site-packages/ply/yacc.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334" vertical-offset="53243" max-vertical-offset="55794">
@@ -857,19 +841,6 @@
         </state>
       </provider>
     </entry>
-<<<<<<< HEAD
-    <entry file="file://$PROJECT_DIR$/mpascal.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39872068" vertical-offset="0" max-vertical-offset="469">
-          <caret line="11" column="29" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mpasast.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="14365">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-=======
     <entry file="file://$PROJECT_DIR$/parsetab.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.9230769" vertical-offset="1428" max-vertical-offset="1955">
@@ -1004,23 +975,11 @@
         <state vertical-scroll-proportion="-290.2143" vertical-offset="510" max-vertical-offset="14365">
           <caret line="508" column="23" selection-start-line="508" selection-start-column="14" selection-end-line="508" selection-end-column="23" />
           <folding />
->>>>>>> d19edced1a461acc4f3ee6cd01c9c1ce50cda4b0
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mpasgen.py">
       <provider selected="true" editor-type-id="text-editor">
-<<<<<<< HEAD
-        <state vertical-scroll-proportion="0.57995737" vertical-offset="3774" max-vertical-offset="5168">
-          <caret line="238" column="0" selection-start-line="238" selection-start-column="0" selection-end-line="238" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test3/isprime.s">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.55060726" vertical-offset="0" max-vertical-offset="2091">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-=======
         <state vertical-scroll-proportion="-31.571428" vertical-offset="612" max-vertical-offset="5168">
           <caret line="88" column="31" selection-start-line="88" selection-start-column="31" selection-end-line="88" selection-end-column="31" />
           <folding>
@@ -1049,10 +1008,10 @@
           <caret line="10" column="42" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
           <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
           <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
->>>>>>> d19edced1a461acc4f3ee6cd01c9c1ce50cda4b0
           <folding />
         </state>
       </provider>
     </entry>
   </component>
 </project>
+

@@ -1,5 +1,5 @@
-fun main(a:int)
-
+fun main()
+    a:int;
    begin
       print("Hola Mundo\n")
    end
