@@ -10,14 +10,39 @@
 fact:
         save sp, -72, sp
 
-! ifelse (start)
-!  relop := pop
-!  if not relop: goto else label: .L2
-!go to done .L1
-.L2: !else_label
+! assign (start)
+!  push 1
+!  r := pop
+! assign (end)
 
-.L1: !done_label
-! ifelse (end)
+! while (start)
+
+.L1:
+!  push n
+!  push 0
+!  GT
+!  relop := pop
+!  if not relop: goto .L2
+
+! assign (start)
+!  push r
+!  push n
+!  mult
+!  r := pop
+! assign (end)
+
+! assign (start)
+!  push n
+!  push 1
+!  sub 
+!  n := pop
+! assign (end)
+
+!  goto .L1
+
+.L2:
+
+! while (end)
               ret
               restore
 
@@ -36,17 +61,19 @@ main:
 
 ! print (start)
 ! print (end)
+        sethi %hi(.Ln), %o0
+        or    %o0, %lo(.Ln), %o0
+        call  flprint 
+        nop
+
+! print (start)
+! print (end)
 
 ! read (start)
 ! read (End)
 
-! assign (start)
-!  push x
-!  r := pop
-! assign (end)
-
 ! write (start)
-!  push r
+!  push n
 !  expr := pop
 !  write(expr)
 ! write (end)
@@ -61,5 +88,7 @@ main:
 
     .section   ".rodata"
 
-.L3:   .asciz  ""Entre un numero\n""
+.L3:   .asciz  ""Hola. Soy un factorial sencillo.\n""
+
+.L4:   .asciz  ""Entre n :""
 

@@ -1,39 +1,65 @@
 ! Creado por mpascal.py
 ! Rafael Pinzon, Daniel Osorio, Alejandro Lopez IS744 (2014-2)
+
     .section   ".text"
 
 ! program
 
-! function: LexToken(ID,'fib',2,26) (start) 
+! function: fib (start) 
+
+fib:
+        save sp, -72, sp
 
 ! ifelse (start)
-! expr := pop
-!   if(expr)
-! goto test
-! done:
-! ifelse (End)
-! function: LexToken(ID,'fib',2,26) (end)
+!  relop := pop
+!  if not relop: goto else label: .L2
+!go to done .L1
+.L2: !else_label
 
-! function: LexToken(ID,'main',9,133) (start) 
+.L1: !done_label
+! ifelse (end)
+              ret
+              restore
+
+!function: fib (end)
+
+! function: main (start) 
+
+    .global main
+
+main:
+        save sp, -72, sp
+        sethi %hi(.Ln), %o0
+        or    %o0, %lo(.Ln), %o0
+        call  flprint 
+        nop
 
 ! print (start)
-! print (End)
+! print (end)
 
 ! read (start)
 ! read (End)
 
 ! assign (start)
-!  push ID x
-! expr := pop
-! assign(expr)
-! assign (End)
+!  push x
+!  r := pop
+! assign (end)
 
 ! write (start)
-!  push ID r
-! expr := pop
-!   write(expr)
-! write (End)
-! function: LexToken(ID,'main',9,133) (end)
+!  push r
+!  expr := pop
+!  write(expr)
+! write (end)
+.Ln:
+             mov 0, %o0
+             call _exit
+             nop
+             ret
+             restore
+
+!function: main (end)
+
     .section   ".rodata"
-.L0:   .asciz  ""Entre un nuemro\n""
+
+.L3:   .asciz  ""Entre un nuemro\n""
 

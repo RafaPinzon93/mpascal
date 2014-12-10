@@ -5,24 +5,6 @@
 
 ! program
 
-! function: fact (start) 
-
-fact:
-        save sp, -72, sp
-
-! ifelse (start)
-!  relop := pop
-!  if not relop: goto else label: .L2
-!go to done .L1
-.L2: !else_label
-
-.L1: !done_label
-! ifelse (end)
-              ret
-              restore
-
-!function: fact (end)
-
 ! function: main (start) 
 
     .global main
@@ -37,19 +19,52 @@ main:
 ! print (start)
 ! print (end)
 
-! read (start)
-! read (End)
-
 ! assign (start)
-!  push x
-!  r := pop
+!  push 1
+!  i := pop
 ! assign (end)
 
+! while (start)
+
+.L2:
+!  push i
+!  push 10
+!  LE
+!  relop := pop
+!  if not relop: goto .L3
+
 ! write (start)
-!  push r
+!  push i
 !  expr := pop
 !  write(expr)
 ! write (end)
+        sethi %hi(.Ln), %o0
+        or    %o0, %lo(.Ln), %o0
+        call  flprint 
+        nop
+
+! print (start)
+! print (end)
+
+! assign (start)
+!  push i
+!  push 1
+!  add
+!  i := pop
+! assign (end)
+
+!  goto .L2
+
+.L3:
+
+! while (end)
+        sethi %hi(.Ln), %o0
+        or    %o0, %lo(.Ln), %o0
+        call  flprint 
+        nop
+
+! print (start)
+! print (end)
 .Ln:
              mov 0, %o0
              call _exit
@@ -61,5 +76,9 @@ main:
 
     .section   ".rodata"
 
-.L3:   .asciz  ""Entre un numero\n""
+.L1:   .asciz  ""Contando a 10\n""
+
+.L4:   .asciz  ""\n""
+
+.L5:   .asciz  ""Adios\n""
 
