@@ -587,7 +587,7 @@ class ExpresionFun(AST):
         m=get_symbol(self.ID.value)
         if not m:
             print("--> Error, la funcion \"%s\" no existe, en la linea %s"% (self.ID.value,str(self.ID.lineno)))
-        if self.arguments:
+        elif self.arguments:
             if len(m.params) != len(self.arguments.argumentos):
                 print("--> Hacen falta parametros en la funcion \"%s\", en la linea %s" % (m.name,self.ID.lineno))
             else :
@@ -614,7 +614,8 @@ class ExpresionFun(AST):
                     i +=1
         elif not self.arguments and (len(m.params)>0):
             print "--> Se requieren mas parametros en la funcion  \"%s\", en la linea %s" % (self.ID.value, self.ID.lineno)
-        self.type = m.type
+        else:
+            self.type = m.type
 
 
 class ExpresionID(AST):
