@@ -476,10 +476,11 @@ class IfStatement(AST):
         self.condition.semantico()
         self.then_b.semantico()
         if not self.ciclo:
-            if self.then_b.declaracion == 'break':
-                print "--> Error break, linea %s"%self.linea
-            if self.then_b.declaracion == 'skip':
-                print "--> Error skip, linea %s"%self.linea
+            if hasattr(self.then_b, 'declaracion'):
+                if self.then_b.declaracion == 'break':
+                    print "--> Error break, linea %s"%self.linea
+                # if self.then_b.declaracion == 'skip':
+                #     print "--> Error skip, linea %s"%self.linea
 
 class IfStatementElse(AST):
     ciclo = False
@@ -490,14 +491,16 @@ class IfStatementElse(AST):
         self.then_b.semantico()
         self.else_b.semantico()
         if not self.ciclo:
-            if self.then_b.declaracion == 'break':
-                print "--> Error break, linea %s"%str(self.lineaT)
-            if self.else_b.declaracion == 'break':
-                print "--> Error break, linea %s"%str(self.lineaE)
-            if self.then_b.declaracion == 'skip':
-                print "--> Error skip, linea %s"%str(self.lineaT)
-            if self.else_b.declaracion == 'skip':
-                print "--> Error skip, linea %s"%str(self.lineaE)
+            if hasattr(self.then_b, 'declaracion'):
+                if self.then_b.declaracion == 'break':
+                    print "--> Error break, linea %s"%str(self.lineaT)
+                # if self.then_b.declaracion == 'skip':
+                #     print "--> Error skip, linea %s"%str(self.lineaT)
+            if hasattr(self.else_b, 'declaracion'):
+                if self.else_b.declaracion == 'break':
+                    print "--> Error break, linea %s"%str(self.lineaE)
+                # if self.else_b.declaracion == 'skip':
+                #     print "--> Error skip, linea %s"%str(self.lineaE)
 class WhileStatement(AST):
     _fields = ['condition', 'body']
 
@@ -509,6 +512,12 @@ class WhileStatement(AST):
 
 class WriteStatements(AST):
     _fields = ['expr']
+
+    def semantico(self):
+        self.expr.semantico()
+        if self.expr.type == 'intA' or self.expr.type == 'floatA':
+            print "--> Error en el write, la variable \"%s\" es un vector, en la linea %s"%(self.expr, self.linea)
+
 
 class ReadStatements(AST):
     _fields = ['expr', 'index']
@@ -554,10 +563,14 @@ class ExpresionIdArray(AST):
         if not n:
             print("--> Error en la expresion, la variable %s no existe, en la linea %s"% (self.ID.value,str(self.ID.lineno)))
         else:
-            if hasattr(n.type, 'name'):
-                self.type=str(n.type.__name__)+"A"
+            if n.type == 'intA' or n.type == 'floatA':
+                if hasattr(n.type, 'name'):
+                    self.type=str(n.type.__name__)+"A"
+                else:
+                    self.type = n.type
             else:
-                self.type = n.type
+                print "--> Error la variable \"%s\" debe ser un vector, linea: %s"%(self.ID.value, str(self.ID.lineno))
+
         if self.expresion.type != int:
             print("--> Error en el indice de la variable \"%s[%s]\" se esperan indices naturales, en la linea %s"% (self.ID.value , self.expresion.type ,str(self.ID.lineno)))
 
@@ -656,7 +669,7 @@ class RelOp(AST):
         self.right.semantico()
         if (type(self.left) or type(self.right)) != type(self):
             if(self.left.type!=self.right.type):
-                print("--> Error de tipos en la expresion logica %s %s %s" % (self.left,self.op,self.right))
+                print("--> Error de tipos en la expresion logica %s %s %s, en la linea %s" % (self.left,self.op,self.right, self.linea))
 
 
 
@@ -679,6 +692,8 @@ class Return(AST):
         #     print '%s adsf'%i
         # print "%s %s return antes del if"%(_scope[0].keys()[0], m)
         funcion = _scope[0].keys()[0]
+        funcion1 = current.keys()
+        # print funcion1, _scope
         n = get_symbol(funcion)
         self.token.value = nombre
         if not m:
@@ -689,6 +704,7 @@ class Return(AST):
             print("--> Conflicto de tipos con el return en la linea %s %s:%s %s:%s"%(repr(self.token.lineno), m, m.type,self, self.type))
 
 
+
 class UnaryOp(AST):
     type=None
     _fields = ['op', 'left']
@@ -696,8 +712,12 @@ class UnaryOp(AST):
     def semantico(self):
         self.left.semantico()
         if self.op == '-':
-            self.type='-'+str(self.left.type.__name__)
+            if self.type != float and self.type != None:
+                # print self.type
+                self.type='-'+str(self.left.type.__name__)
             # print 1
+            else:
+                self.type=self.left.type
         else:
             self.type=self.left.type
 

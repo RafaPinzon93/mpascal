@@ -1,4 +1,4 @@
-fun foo(x:int):int
+fun foo(x:int)/*:int*/
     begin
        if (x > 3) then return 3
 
@@ -7,11 +7,11 @@ fun foo(x:int):int
     end
 
 
-fun foo2(x:int):int
+fun foo2(x:int)/*:int*/
     begin
         while x > 0 do return 3
 
         /* Same problem as above. While might not execute */
     end
-        
+
 

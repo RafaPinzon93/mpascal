@@ -230,7 +230,7 @@ def p_declaracion_write(p):
     '''
         declaracion : WRITE LPAREN expresion RPAREN
     '''
-    p[0] = WriteStatements(p[3])
+    p[0] = WriteStatements(p[3], linea=p.lineno(1))
 
 def p_declaracion_write_error(p):
     '''declaracion : WRITE LPAREN error RPAREN
@@ -447,7 +447,7 @@ def p_relacion(p) :
         if p[1] == '(':
             p[0] = p[2]
         else:
-            p[0] = RelOp(p[2], p[1], p[3])
+            p[0] = RelOp(p[2], p[1], p[3], linea= p.lineno(2))
     if len(p) == 3:
             p[0] = UnaryOp(p[1], p[2])
 

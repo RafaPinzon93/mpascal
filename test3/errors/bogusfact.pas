@@ -1,5 +1,5 @@
-fun bogus_fact(a:int):float
-  fun bogus_nested(b:int):float
+fun bogus_fact(a:int)
+  fun bogus_nested(b:int)
      a:float;
      begin
      /* this return sets rettype of bogus_nested to float
@@ -8,10 +8,10 @@ fun bogus_fact(a:int):float
   end;
   begin
   if a > 1 then return bogus_nested(a) * bogus_fact(a - 1); /* okay: float * float */
-  if a == -7 then return 2 
+  if a == -7 then return 2
   else return 1  /* conflicting return types */
   end
 
 
 
-    
+
