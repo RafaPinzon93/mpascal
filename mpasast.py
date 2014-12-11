@@ -516,7 +516,8 @@ class WriteStatements(AST):
     def semantico(self):
         self.expr.semantico()
         if self.expr.type == 'intA' or self.expr.type == 'floatA':
-            print "--> Error en el write, la variable \"%s\" es un vector, en la linea %s"%(self.expr, self.linea)
+            if type(self.expr) != ExpresionIdArray:
+                print "--> Error en el write, la variable \"%s\" es un vector, en la linea %s"%(self.expr, self.linea)
 
 
 class ReadStatements(AST):
@@ -566,6 +567,10 @@ class ExpresionIdArray(AST):
             if n.type == 'intA' or n.type == 'floatA':
                 if hasattr(n.type, 'name'):
                     self.type=str(n.type.__name__)+"A"
+                    # if n.type == 'intA':
+                    #     self.type= int
+                    # else:
+                    #     self.type= float
                 else:
                     self.type = n.type
             else:
@@ -612,6 +617,7 @@ class ExpresionFun(AST):
                     #         if arg.expresion != m.params[i].tipo.expresion.value:
                     #             print ("Error en el tamaño de argumento")
                     i +=1
+                self.type = m.type
         elif not self.arguments and (len(m.params)>0):
             print "--> Se requieren mas parametros en la funcion  \"%s\", en la linea %s" % (self.ID.value, self.ID.lineno)
         else:
@@ -693,13 +699,15 @@ class Return(AST):
         #     print '%s adsf'%i
         # print "%s %s return antes del if"%(_scope[0].keys()[0], m)
         funcion = _scope[0].keys()[0]
-        funcion1 = current.keys()
+        # funcion1 = current.keys()
         # print funcion1, _scope
         n = get_symbol(funcion)
+        n.changetype(self.type)
+        # print n, n.type
         self.token.value = nombre
         if not m:
             attach_symbol(self.token,self.type)
-            n.changetype(self.type)
+            # n.changetype(self.type)
             # print"Attached %s %s" %(self.token,self.type)
         elif m.type != self.type:
             print("--> Conflicto de tipos con el return en la linea %s %s:%s %s:%s"%(repr(self.token.lineno), m, m.type,self, self.type))
@@ -743,7 +751,14 @@ class BinaryOp(AST):
         else:
             # print "%s %s BinaryOpElse"%(self, self.type)
             # print "%s:%s  %s:%s BinaryOpElse"%(self.left, self.left.type, self.right, self.right.type)
-            print "--> Error en la expresion : %s:%s  %s  %s:%s involucra diferentes tipos de variable en la linea %s."% (self.left,self.left.type,self.op,self.right,self.right.type, str(self.linea))
+            if type(self.left)  == ExpresionIdArray or type(self.right)  == ExpresionIdArray:
+                if (self.left.type == 'intA' and self.right.type == int) or (self.right.type == 'intA' and self.left.type == int):
+                    self.type = int
+                elif(self.left.type == 'floatA' and self.right.type == float) or (self.right.type == 'floatA' and self.left.type == float):
+                    self.type = float
+                else:
+                    print "--> Error en la expresion : %s:%s  %s  %s:%s involucra diferentes tipos de variable en la linea %s."% (self.left,self.left.type,self.op,self.right,self.right.type, str(self.linea))
+
 
 class Numero(AST):
     _fields = ['numero']
