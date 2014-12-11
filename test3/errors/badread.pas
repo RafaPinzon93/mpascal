@@ -1,4 +1,3 @@
-
 fun bad_read()
    a : int[40];
    n : int;
@@ -10,6 +9,6 @@ fun bad_read()
       read(a)        /* Can't read into an array */
    end
 
-	
 
-        
+
+

@@ -197,9 +197,9 @@ def p_declaracion_if(p):
                   | IF relacion THEN declaracion ELSE declaracion
     '''
     if len(p) == 5:
-        p[0] = IfStatement(p[2], p[4]) #('IF', p[2], p[4])
+        p[0] = IfStatement(p[2], p[4], linea= p.lineno(3)) #('IF', p[2], p[4])
     else:
-        p[0] = IfStatementElse(p[2], p[4], p[6])
+        p[0] = IfStatementElse(p[2], p[4], p[6], lineaT= p.lineno(3), lineaE= p.lineno(5))
 
 def p_declaracion_if_error(p):
     '''declaracion : IF error THEN declaracion
@@ -243,9 +243,13 @@ def p_declaracion_write_error(p):
 
 def p_declaracion_read(p):
     '''
-        declaracion : READ LPAREN ID RPAREN
+        declaracion : READ LPAREN ID LCORCH expresion RCORCH RPAREN
+                    | READ LPAREN ID RPAREN
     '''
-    p[0] = ReadStatements(p.slice[3])
+    if len(p) == 5:
+        p[0] = ReadStatements(p.slice[3], None)
+    else:
+        p[0] = ReadStatements(p.slice[3], p[5])
 
 def p_declaracion_read_error(p):
     '''declaracion : READ LPAREN error RPAREN
